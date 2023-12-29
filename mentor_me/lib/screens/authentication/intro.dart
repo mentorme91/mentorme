@@ -19,7 +19,7 @@ class _IntroState extends State<Intro> {
       ),
       body: Column(
         children: [
-          Image(image: AssetImage('lib\images\logo.png')),
+          Image(image: AssetImage('assets/images/logo.png')),
           Text('MentorMe'),
           Text('MentorMe'),
           TextButton(
