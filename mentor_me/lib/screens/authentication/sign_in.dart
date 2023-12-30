@@ -12,18 +12,22 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  final AuthService _auth = AuthService();
+  final AuthService _auth =
+      AuthService(); // auth service used to sign in to firebase
   String email = '', password = '';
-  final _formkey = GlobalKey<FormState>();
-  bool loading = false;
-  String wrongCredentials = '';
+  final _formkey = GlobalKey<FormState>(); // used to validate inputs
+  bool loading = false; // used to display loading screen
+  String wrongCredentials = ''; // display error of wrong credentials
+  bool obscure = false;
+
   @override
   Widget build(BuildContext context) {
     return loading
-        ? Loading()
+        ? Loading() //loading screen
         : Scaffold(
             appBar: AppBar(
               elevation: 0.0,
+              backgroundColor: Theme.of(context).colorScheme.secondary,
               leading: IconButton(
                 icon: BackButtonIcon(),
                 onPressed: () => widget.toggleAuth(0),
@@ -35,6 +39,7 @@ class _SignInState extends State<SignIn> {
               ),
             ),
             body: Container(
+              color: Theme.of(context).colorScheme.secondary,
               padding: EdgeInsets.symmetric(
                 horizontal: 20,
               ),
@@ -42,7 +47,7 @@ class _SignInState extends State<SignIn> {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: 50,
+                      height: 30,
                     ),
                     Center(
                       child: Text(
@@ -55,12 +60,15 @@ class _SignInState extends State<SignIn> {
                       ),
                     ),
                     SizedBox(
-                      height: 30,
+                      height: 20,
                     ),
                     Center(
                       child: Text(
                         '$wrongCredentials',
-                        style: TextStyle(color: Colors.red, fontSize: 17),
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 17,
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -80,34 +88,75 @@ class _SignInState extends State<SignIn> {
                           SizedBox(
                             height: 5,
                           ),
-                          TextFormField(
-                            style: TextStyle(decorationColor: Colors.black),
-                            autofocus: true,
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: const InputDecoration(
-                              // iconColor: Colors.blue,
-                              suffix: Icon(Icons.email),
-                              suffixIconColor: Colors.black,
-                              border: OutlineInputBorder(
-                                  gapPadding: 1,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(25.0),
-                                  ),
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 0.2,
-                                  )),
+                          Container(
+                            height: 55,
+                            padding: EdgeInsets.only(
+                              left: 10,
                             ),
-                            onChanged: (value) {
-                              setState(() {
-                                email = value;
-                              });
-                            },
-                            validator: (value) =>
-                                validateText(email, 'Enter email'),
+                            margin: EdgeInsets.symmetric(
+                              horizontal: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(
+                                color: Theme.of(context).colorScheme.primary,
+                                width: 0.3,
+                              ),
+                              borderRadius: BorderRadius.circular(25.0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  spreadRadius: 5,
+                                  blurRadius: 10,
+                                  offset: Offset(
+                                      0, 3), // changes position of shadow
+                                ),
+                              ],
+                            ),
+                            alignment: AlignmentDirectional.center,
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: 300,
+                                  child: TextFormField(
+                                    style: TextStyle(
+                                      decorationColor: Colors.black,
+                                    ),
+                                    autofocus: true,
+                                    keyboardType: TextInputType.emailAddress,
+                                    decoration: const InputDecoration(
+                                      // iconColor: Colors.blue,
+                                      // suffix: Icon(Icons.email),
+                                      // suffixIconColor: Colors.black,
+                                      border: OutlineInputBorder(
+                                          gapPadding: 1,
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(0),
+                                          ),
+                                          borderSide: BorderSide(
+                                            color: Colors.black,
+                                            width: 0.0,
+                                            style: BorderStyle.none,
+                                          )),
+                                    ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        email = value;
+                                      });
+                                    },
+                                    validator: (value) =>
+                                        validateText(email, 'Enter email'),
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () => {},
+                                  icon: Icon(Icons.email),
+                                ),
+                              ],
+                            ),
                           ),
                           SizedBox(
-                            height: 30,
+                            height: 40,
                           ),
                           Text(
                             'Password',
@@ -115,30 +164,81 @@ class _SignInState extends State<SignIn> {
                               fontSize: 15,
                             ),
                           ),
-                          TextFormField(
-                            style: TextStyle(decorationColor: Colors.black),
-                            autofocus: true,
-                            keyboardType: TextInputType.visiblePassword,
-                            decoration: const InputDecoration(
-                              // iconColor: Colors.blue,
-                              suffix: Icon(Icons.remove_red_eye),
-                              suffixIconColor: Colors.black,
-                              border: OutlineInputBorder(
-                                  gapPadding: 1,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(25.0),
-                                  ),
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 0.2,
-                                  )),
+                          Container(
+                            height: 55,
+                            padding: EdgeInsets.only(
+                              left: 10,
                             ),
-                            onChanged: (value) {
-                              setState(() {
-                                password = value;
-                              });
-                            },
-                            validator: (value) => validatePassword(password),
+                            margin: EdgeInsets.symmetric(
+                              horizontal: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(
+                                color: Theme.of(context).colorScheme.primary,
+                                width: 0.3,
+                              ),
+                              borderRadius: BorderRadius.circular(25.0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  spreadRadius: 5,
+                                  blurRadius: 10,
+                                  offset: Offset(
+                                      0, 3), // changes position of shadow
+                                ),
+                              ],
+                            ),
+                            alignment: AlignmentDirectional.center,
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: 300,
+                                  child: TextFormField(
+                                    obscureText: obscure,
+                                    style: TextStyle(
+                                      decorationColor: Colors.black,
+                                    ),
+                                    autofocus: true,
+                                    keyboardType: TextInputType.visiblePassword,
+                                    decoration: const InputDecoration(
+                                      // iconColor: Colors.blue,
+                                      // suffix: Icon(Icons.remove_red_eye),
+                                      // suffixIconColor: Colors.black,
+                                      border: OutlineInputBorder(
+                                          gapPadding: 1,
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(0),
+                                          ),
+                                          borderSide: BorderSide(
+                                            color: Colors.black,
+                                            width: 0.0,
+                                            style: BorderStyle.none,
+                                          )),
+                                    ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        password = value;
+                                      });
+                                    },
+                                    validator: (value) =>
+                                        validatePassword(password),
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () => {
+                                    setState(
+                                      () {
+                                        obscure = !obscure;
+                                      },
+                                    )
+                                  },
+                                  icon: Icon(!obscure
+                                      ? Icons.remove_red_eye
+                                      : Icons.visibility_off),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),

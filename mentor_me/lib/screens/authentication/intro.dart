@@ -32,88 +32,91 @@ class _IntroState extends State<Intro> {
           )
         ],
       ),
-      body: SingleChildScrollView(
-        // allows user to scroll down and up on the page
-        child: Column(
-          children: [
-            SizedBox(
-              // just for space
-              height: 5,
-            ),
-            Center(
-              child: Image(
-                image: AssetImage('assets/images/logo.png'),
+      body: Container(
+        color: Theme.of(context).colorScheme.secondary,
+        child: SingleChildScrollView(
+          // allows user to scroll down and up on the page
+          child: Column(
+            children: [
+              SizedBox(
+                // just for space
+                height: 5,
               ),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 60),
-              child: Text(
-                'Enhance Learning and Knowledge Sharing',
-                textAlign: TextAlign.center,
-                style: TextStyle(
+              Center(
+                child: Image(
+                  image: AssetImage('assets/images/logo.png'),
+                ),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 60),
+                child: Text(
+                  'Enhance Learning and Knowledge Sharing',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 30),
+                child: Text(
+                  'MentorMe aims at lorem ipsum dolor sit amet consectetur. Diam integer felis etiam neque id viv.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
                     color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 30),
-              child: Text(
-                'MentorMe aims at lorem ipsum dolor sit amet consectetur. Diam integer felis etiam neque id viv.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 15,
+                    fontSize: 15,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            TextButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStatePropertyAll<Color>(
-                    Theme.of(context).colorScheme.primary),
-                padding: MaterialStatePropertyAll<EdgeInsets>(
-                    EdgeInsets.symmetric(horizontal: 40)),
+              SizedBox(
+                height: 40,
               ),
-              onPressed: () => widget.toggleAuth(2),
-              child: Text(
-                'Create An Account',
-                style: TextStyle(
-                  fontSize: 17,
-                  color: Theme.of(context).colorScheme.secondary,
+              TextButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll<Color>(
+                      Theme.of(context).colorScheme.primary),
+                  padding: MaterialStatePropertyAll<EdgeInsets>(
+                      EdgeInsets.symmetric(horizontal: 40)),
+                ),
+                onPressed: () => widget.toggleAuth(2),
+                child: Text(
+                  'Create An Account',
+                  style: TextStyle(
+                    fontSize: 17,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 7,
-            ),
-            TextButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStatePropertyAll<Color>(
-                    Theme.of(context).colorScheme.secondary),
-                padding: MaterialStatePropertyAll<EdgeInsets>(
-                    EdgeInsets.symmetric(horizontal: 80)),
-                side: MaterialStatePropertyAll<BorderSide>(BorderSide(
-                    width: 2, color: Theme.of(context).colorScheme.primary)),
+              SizedBox(
+                height: 7,
               ),
-              onPressed: () => widget.toggleAuth(1),
-              child: Text(
-                'Log In',
-                style: TextStyle(
-                  fontSize: 17,
-                  color: Theme.of(context).colorScheme.primary,
+              TextButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll<Color>(
+                      Theme.of(context).colorScheme.secondary),
+                  padding: MaterialStatePropertyAll<EdgeInsets>(
+                      EdgeInsets.symmetric(horizontal: 80)),
+                  side: MaterialStatePropertyAll<BorderSide>(BorderSide(
+                      width: 2, color: Theme.of(context).colorScheme.primary)),
+                ),
+                onPressed: () => widget.toggleAuth(1),
+                child: Text(
+                  'Log In',
+                  style: TextStyle(
+                    fontSize: 17,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
