@@ -1,23 +1,14 @@
-import 'package:flutter/material.dart';
-// import 'dart:html';
+// Services module
+// Contains relevant services utilized by the app
+// 1. The Custom User: Creates a custom user class to ease user data manipulation
+// 2. AuthService: Contains methods for user authentication (register and log in)
+// 3. DatabaseService: Contains our database servce with methods that are used for our firebase database reading and writing
+
 import 'dart:core';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:provider/provider.dart';
 
-const schools_id = {
-  'Howard University': 'x3xptJcAjCdFPLGgMNxG',
-};
-
-const schools_factulties = {
-  'Howard University': ['Others'],
-};
-
-const faculties_dept = {
-  'Others': ['mist'],
-};
-
+// Custom user class: Contains user information
 class MyUser {
   String? uid;
   String? email;
@@ -65,35 +56,6 @@ class MyUser {
   }
 }
 
-// create a custom user class from Firebase user class
-Future CreateUserFromAuthUser(User? AuthUser) async {
-  final DocumentSnapshot snapshot = await FirebaseFirestore.instance
-      .collection('all_students')
-      .doc(AuthUser?.uid)
-      .get();
-
-  dynamic UserData = snapshot.data;
-  try {
-    if (UserData == null) {
-      throw Error();
-    }
-    MyUser user = MyUser(
-      uid: AuthUser?.uid,
-      email: AuthUser?.email,
-      first_name: UserData['first_name'],
-      last_name: UserData['last_name'],
-      school_id: UserData['sid'],
-      department: UserData['department'],
-      faculty: UserData['faculty'],
-      status: UserData['status'],
-      year: UserData['year'],
-    );
-    return user;
-  } catch (e) {
-    return null;
-  }
-}
-
 // this class control our firebase authentication
 class AuthService {
   // This serves as our entry point into firebase authentication
@@ -125,36 +87,46 @@ class AuthService {
   }
 
   // method to register a user
-  Future Register(String email, String password, String name, String major,
-      String clasification) async {
+  Future Register(MyUser user) async {
     try {
+      // register user with email and password from firebase auth service and get user credentials
       UserCredential res = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      await DatabaseService(uid: res.user?.uid)
-          .UpdateStudentCollection(await CreateUserFromAuthUser(
-        res.user,
-      ));
+          email: user.email ?? '', password: user.GetPassword() ?? '');
+      // use user credentials to create an instance of database service for user or update user
+      user.uid = res.user?.uid;
+      await DatabaseService(uid: res.user?.uid).UpdateStudentCollection(user);
       return res.user;
     } catch (e) {
+      // if an error was thrown, return null
+      print(e.toString());
       return null;
     }
   }
 }
 
+// Database service: controls manipulation of the database
 class DatabaseService {
+  // string user id
   final String? uid;
 
+  // constructor for database service
   DatabaseService({
     required this.uid,
   });
 
+  // get the collection of all students in the database
   final CollectionReference studentsCollection =
       FirebaseFirestore.instance.collection('all_students');
+  // get the collection of all schools in the database
   final CollectionReference schoolsCollection =
       FirebaseFirestore.instance.collection('schools');
 
+  // update all student collections and student collections in respective schools
   Future UpdateStudentCollection(MyUser? user) async {
+    // get dictionary representation of user
     Map<String, dynamic> dic = user?.todict() ?? {};
+
+    // update all student collections and student collections in respective schools
     await studentsCollection.doc(user?.uid).set(dic);
     return await schoolsCollection
         .doc(user?.school_id)
@@ -178,6 +150,7 @@ class DatabaseService {
   //       .snapshots();
   // }
 
+  // get user data snapshots
   Stream<DocumentSnapshot> get userData {
     return studentsCollection.doc(uid).snapshots();
   }
