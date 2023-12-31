@@ -35,7 +35,7 @@ class _RegisterState extends State<Register> {
     // Color primaryColor = Theme.of(context).colorScheme.primary;
     // Color secondaryColor = Theme.of(context).colorScheme.secondary;
     return loading
-        ? Loading()
+        ? LoadingScreen()
         : Scaffold(
             resizeToAvoidBottomInset: true,
             appBar: AppBar(
@@ -249,36 +249,37 @@ class _RegisterState extends State<Register> {
                             alignment: AlignmentDirectional.center,
                             child: Row(
                               children: [
-                                SizedBox(
-                                  width: 300,
-                                  child: TextFormField(
-                                    style: TextStyle(
-                                        decorationColor: Colors.black),
-                                    autofocus: true,
-                                    keyboardType: TextInputType.emailAddress,
-                                    decoration: const InputDecoration(
-                                      // iconColor: Colors.blue,
-                                      // suffix: Icon(Icons.remove_red_eye),
-                                      // suffixIconColor: Colors.black,
-                                      border: OutlineInputBorder(
-                                        gapPadding: 1,
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(0),
-                                        ),
-                                        borderSide: BorderSide(
-                                          color: Colors.black,
-                                          width: 0.0,
-                                          style: BorderStyle.none,
+                                Expanded(
+                                  child: FractionallySizedBox(
+                                    child: TextFormField(
+                                      style: TextStyle(
+                                          decorationColor: Colors.black),
+                                      autofocus: true,
+                                      keyboardType: TextInputType.emailAddress,
+                                      decoration: const InputDecoration(
+                                        // iconColor: Colors.blue,
+                                        // suffix: Icon(Icons.remove_red_eye),
+                                        // suffixIconColor: Colors.black,
+                                        border: OutlineInputBorder(
+                                          gapPadding: 1,
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(0),
+                                          ),
+                                          borderSide: BorderSide(
+                                            color: Colors.black,
+                                            width: 0.0,
+                                            style: BorderStyle.none,
+                                          ),
                                         ),
                                       ),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          user.email = value;
+                                        });
+                                      },
+                                      validator: (value) => validateText(
+                                          user.email, 'Enter email'),
                                     ),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        user.email = value;
-                                      });
-                                    },
-                                    validator: (value) =>
-                                        validateText(user.email, 'Enter email'),
                                   ),
                                 ),
                                 IconButton(
@@ -640,37 +641,39 @@ class _RegisterState extends State<Register> {
                             alignment: AlignmentDirectional.center,
                             child: Row(
                               children: [
-                                SizedBox(
-                                  width: 300,
-                                  child: TextFormField(
-                                    style: TextStyle(
-                                        decorationColor: Colors.black),
-                                    autofocus: true,
-                                    obscureText: !obscure,
-                                    keyboardType: TextInputType.visiblePassword,
-                                    decoration: const InputDecoration(
-                                      // iconColor: Colors.blue,
-                                      // suffix: Icon(Icons.remove_red_eye),
-                                      // suffixIconColor: Colors.black,
-                                      border: OutlineInputBorder(
-                                        gapPadding: 1,
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(0),
-                                        ),
-                                        borderSide: BorderSide(
-                                          color: Colors.black,
-                                          width: 0.0,
-                                          style: BorderStyle.none,
+                                Expanded(
+                                  child: FractionallySizedBox(
+                                    child: TextFormField(
+                                      style: TextStyle(
+                                          decorationColor: Colors.black),
+                                      autofocus: true,
+                                      obscureText: !obscure,
+                                      keyboardType:
+                                          TextInputType.visiblePassword,
+                                      decoration: const InputDecoration(
+                                        // iconColor: Colors.blue,
+                                        // suffix: Icon(Icons.remove_red_eye),
+                                        // suffixIconColor: Colors.black,
+                                        border: OutlineInputBorder(
+                                          gapPadding: 1,
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(0),
+                                          ),
+                                          borderSide: BorderSide(
+                                            color: Colors.black,
+                                            width: 0.0,
+                                            style: BorderStyle.none,
+                                          ),
                                         ),
                                       ),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          user.SetPassword(value);
+                                        });
+                                      },
+                                      validator: (value) =>
+                                          validatePassword(user.GetPassword()),
                                     ),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        user.SetPassword(value);
-                                      });
-                                    },
-                                    validator: (value) =>
-                                        validatePassword(user.GetPassword()),
                                   ),
                                 ),
                                 IconButton(
@@ -725,39 +728,41 @@ class _RegisterState extends State<Register> {
                             alignment: AlignmentDirectional.center,
                             child: Row(
                               children: [
-                                SizedBox(
-                                  width: 300,
-                                  child: TextFormField(
-                                    style: TextStyle(
-                                        decorationColor: Colors.black),
-                                    autofocus: true,
-                                    obscureText: !reobscure,
-                                    keyboardType: TextInputType.visiblePassword,
-                                    decoration: const InputDecoration(
-                                      // iconColor: Colors.blue,
-                                      // suffix: Icon(Icons.remove_red_eye),
-                                      // suffixIconColor: Colors.black,
-                                      border: OutlineInputBorder(
-                                        gapPadding: 1,
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(0),
-                                        ),
-                                        borderSide: BorderSide(
-                                          color: Colors.black,
-                                          width: 0.0,
-                                          style: BorderStyle.none,
+                                Expanded(
+                                  child: FractionallySizedBox(
+                                    child: TextFormField(
+                                      style: TextStyle(
+                                          decorationColor: Colors.black),
+                                      autofocus: true,
+                                      obscureText: !reobscure,
+                                      keyboardType:
+                                          TextInputType.visiblePassword,
+                                      decoration: const InputDecoration(
+                                        // iconColor: Colors.blue,
+                                        // suffix: Icon(Icons.remove_red_eye),
+                                        // suffixIconColor: Colors.black,
+                                        border: OutlineInputBorder(
+                                          gapPadding: 1,
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(0),
+                                          ),
+                                          borderSide: BorderSide(
+                                            color: Colors.black,
+                                            width: 0.0,
+                                            style: BorderStyle.none,
+                                          ),
                                         ),
                                       ),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          retypePassword = value;
+                                        });
+                                      },
+                                      validator: (value) =>
+                                          (retypePassword == user.GetPassword())
+                                              ? null
+                                              : 'Password does not match',
                                     ),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        retypePassword = value;
-                                      });
-                                    },
-                                    validator: (value) =>
-                                        (retypePassword == user.GetPassword())
-                                            ? null
-                                            : 'Password does not match',
                                   ),
                                 ),
                                 IconButton(
