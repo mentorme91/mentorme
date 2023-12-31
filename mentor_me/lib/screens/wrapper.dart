@@ -21,6 +21,6 @@ class _WrapperState extends State<Wrapper> {
   Widget build(BuildContext context) {
     // get user information to determine whether user is signed in or not (not null or null)
     final user = Provider.of<User?>(context);
-    return user == null ? Auhenticate() : Home();
+    return user == null ? Auhenticate() : Home(user: user);
   }
 }
