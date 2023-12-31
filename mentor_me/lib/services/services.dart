@@ -94,6 +94,7 @@ class AuthService {
           email: user.email ?? '', password: user.GetPassword() ?? '');
       // use user credentials to create an instance of database service for user or update user
       user.uid = res.user?.uid;
+      res.user?.updateDisplayName(user.first_name);
       await DatabaseService(uid: res.user?.uid).UpdateStudentCollection(user);
       return res.user;
     } catch (e) {
@@ -130,6 +131,8 @@ class DatabaseService {
   // get the collection of all schools in the database
   final CollectionReference schoolsCollection =
       FirebaseFirestore.instance.collection('schools');
+  final CollectionReference postsCollection =
+      FirebaseFirestore.instance.collection('posts');
 
   // update all student collections and student collections in respective schools
   Future UpdateStudentCollection(MyUser? user) async {
@@ -163,5 +166,9 @@ class DatabaseService {
   // get user data snapshots
   Stream<DocumentSnapshot> get userData {
     return studentsCollection.doc(uid).snapshots();
+  }
+
+  Stream<DocumentSnapshot> get posts {
+    return postsCollection.doc('posts').snapshots();
   }
 }

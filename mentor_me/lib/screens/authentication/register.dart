@@ -25,6 +25,7 @@ class _RegisterState extends State<Register> {
     status: '',
     year: 0,
   );
+  final double _formheight = 60;
   bool obscure = false, reobscure = false;
   final _formkey = GlobalKey<FormState>();
   bool loading = false;
@@ -85,7 +86,7 @@ class _RegisterState extends State<Register> {
                             height: 5,
                           ),
                           Container(
-                            height: 55,
+                            height: _formheight,
                             padding: EdgeInsets.only(
                               left: 10,
                             ),
@@ -153,7 +154,7 @@ class _RegisterState extends State<Register> {
                             height: 5,
                           ),
                           Container(
-                            height: 55,
+                            height: _formheight,
                             padding: EdgeInsets.only(
                               left: 10,
                             ),
@@ -222,7 +223,7 @@ class _RegisterState extends State<Register> {
                             height: 5,
                           ),
                           Container(
-                            height: 55,
+                            height: _formheight,
                             padding: EdgeInsets.only(
                               left: 10,
                             ),
@@ -299,7 +300,7 @@ class _RegisterState extends State<Register> {
                             ),
                           ),
                           Container(
-                            height: 55,
+                            height: _formheight,
                             padding: EdgeInsets.only(
                               left: 10,
                             ),
@@ -362,7 +363,7 @@ class _RegisterState extends State<Register> {
                             ),
                           ),
                           Container(
-                            height: 55,
+                            height: _formheight,
                             padding: EdgeInsets.only(
                               left: 10,
                             ),
@@ -425,7 +426,7 @@ class _RegisterState extends State<Register> {
                             ),
                           ),
                           Container(
-                            height: 55,
+                            height: _formheight,
                             padding: EdgeInsets.only(
                               left: 10,
                             ),
@@ -488,7 +489,7 @@ class _RegisterState extends State<Register> {
                             ),
                           ),
                           Container(
-                            height: 55,
+                            height: _formheight,
                             padding: EdgeInsets.only(
                               left: 10,
                             ),
@@ -516,7 +517,7 @@ class _RegisterState extends State<Register> {
                             child: DropdownButtonFormField(
                               validator: (value) => validateText(
                                   (user.year == 0) ? '' : 'not zero',
-                                  'Enter email'),
+                                  'Enter school year'),
                               decoration: const InputDecoration(
                                 // iconColor: Colors.blue,
                                 // suffix: Icon(Icons.remove_red_eye),
@@ -551,7 +552,7 @@ class _RegisterState extends State<Register> {
                             ),
                           ),
                           Container(
-                            height: 55,
+                            height: _formheight,
                             padding: EdgeInsets.only(
                               left: 10,
                             ),
@@ -599,7 +600,7 @@ class _RegisterState extends State<Register> {
                                   ['Mentor', 'Mentee', 'Visitor']),
                               onChanged: (val) {
                                 setState(() {
-                                  user.year = int.tryParse(val) ?? 0;
+                                  user.status = val;
                                 });
                               },
                             ),
@@ -614,7 +615,7 @@ class _RegisterState extends State<Register> {
                             ),
                           ),
                           Container(
-                            height: 55,
+                            height: _formheight,
                             padding: EdgeInsets.only(
                               left: 10,
                             ),
@@ -701,7 +702,7 @@ class _RegisterState extends State<Register> {
                             ),
                           ),
                           Container(
-                            height: 55,
+                            height: _formheight,
                             padding: EdgeInsets.only(
                               left: 10,
                             ),
