@@ -3,16 +3,15 @@ import 'package:mentor_me/screens/loading.dart';
 import '../../services/services.dart';
 import '../../services/helper_methods.dart';
 
-class SignIn extends StatefulWidget {
+class ForgotPassword extends StatefulWidget {
   final Function toggleAuth;
-  String message;
-  SignIn({required this.toggleAuth, this.message = ''});
+  ForgotPassword({required this.toggleAuth});
 
   @override
-  State<SignIn> createState() => _SignInState();
+  State<ForgotPassword> createState() => _ForgotPasswordState();
 }
 
-class _SignInState extends State<SignIn> {
+class _ForgotPasswordState extends State<ForgotPassword> {
   final AuthService _auth =
       AuthService(); // auth service used to sign in to firebase
   String email = '', password = '';
@@ -23,7 +22,6 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    wrongCredentials = widget.message;
     return loading
         ? LoadingScreen() //loading screen
         : Scaffold(
@@ -32,7 +30,7 @@ class _SignInState extends State<SignIn> {
               backgroundColor: Theme.of(context).colorScheme.secondary,
               leading: IconButton(
                 icon: BackButtonIcon(),
-                onPressed: () => widget.toggleAuth(0),
+                onPressed: () => widget.toggleAuth(1),
                 style: ButtonStyle(
                   elevation: MaterialStatePropertyAll(200),
                   iconColor: MaterialStatePropertyAll(
@@ -53,12 +51,22 @@ class _SignInState extends State<SignIn> {
                     ),
                     Center(
                       child: Text(
-                        'Log In',
+                        'Forgot Passowrd',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                             fontSize: 30),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Center(
+                      child: Text(
+                        'Enter your account email, we will send you a verification code',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.black, fontSize: 15),
                       ),
                     ),
                     SizedBox(
@@ -146,8 +154,8 @@ class _SignInState extends State<SignIn> {
                                           email = value;
                                         });
                                       },
-                                      validator: (value) =>
-                                          validateText(email, 'Enter email'),
+                                      validator: (value) => validateText(
+                                          email, 'Enter a valid email'),
                                     ),
                                   ),
                                 ),
@@ -161,106 +169,11 @@ class _SignInState extends State<SignIn> {
                           SizedBox(
                             height: 40,
                           ),
-                          Text(
-                            'Password',
-                            style: TextStyle(
-                              fontSize: 15,
-                            ),
-                          ),
-                          Container(
-                            height: 55,
-                            padding: EdgeInsets.only(
-                              left: 10,
-                            ),
-                            margin: EdgeInsets.symmetric(
-                              horizontal: 5,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                color: Theme.of(context).colorScheme.primary,
-                                width: 0.3,
-                              ),
-                              borderRadius: BorderRadius.circular(25.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.1),
-                                  spreadRadius: 5,
-                                  blurRadius: 10,
-                                  offset: Offset(
-                                      0, 3), // changes position of shadow
-                                ),
-                              ],
-                            ),
-                            alignment: AlignmentDirectional.center,
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: FractionallySizedBox(
-                                    child: TextFormField(
-                                      obscureText: !obscure,
-                                      style: TextStyle(
-                                        decorationColor: Colors.black,
-                                      ),
-                                      autofocus: true,
-                                      keyboardType:
-                                          TextInputType.visiblePassword,
-                                      decoration: const InputDecoration(
-                                        // iconColor: Colors.blue,
-                                        // suffix: Icon(Icons.remove_red_eye),
-                                        // suffixIconColor: Colors.black,
-                                        border: OutlineInputBorder(
-                                            gapPadding: 1,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(0),
-                                            ),
-                                            borderSide: BorderSide(
-                                              color: Colors.black,
-                                              width: 0.0,
-                                              style: BorderStyle.none,
-                                            )),
-                                      ),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          password = value;
-                                        });
-                                      },
-                                      validator: (value) =>
-                                          validatePassword(password),
-                                    ),
-                                  ),
-                                ),
-                                IconButton(
-                                  onPressed: () => {
-                                    setState(
-                                      () {
-                                        obscure = !obscure;
-                                      },
-                                    )
-                                  },
-                                  icon: Icon(obscure
-                                      ? Icons.remove_red_eye
-                                      : Icons.visibility_off),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                TextButton(
-                                  onPressed: () => widget.toggleAuth(3),
-                                  child: Text('Forgot Password?'),
-                                )
-                              ],
-                            ),
-                          )
                         ],
                       ),
                     ),
                     SizedBox(
-                      height: 40,
+                      height: 10,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -278,16 +191,20 @@ class _SignInState extends State<SignIn> {
                                 setState(() {
                                   loading = true;
                                 });
-                                dynamic auth_user =
-                                    await _auth.SignInUser(email, password);
-                                if (auth_user == null) {
+                                String? res = await _auth.resetPassword(email);
+                                if (res != null) {
                                   setState(() {
                                     loading = false;
+                                    widget.toggleAuth(1,
+                                        message:
+                                            'Recovery email sent successfully!');
                                   });
-                                  widget.message = 'Incorrect credentials';
-                                  print('Failed to sign in');
                                 } else {
-                                  print('Success');
+                                  setState(() {
+                                    loading = false;
+                                    wrongCredentials =
+                                        'This email is not in our database';
+                                  });
                                 }
                               }
                             } else {
@@ -295,7 +212,7 @@ class _SignInState extends State<SignIn> {
                             }
                           },
                           child: Text(
-                            'Log In',
+                            'Verify Email',
                             style: TextStyle(
                               fontSize: 17,
                               color: Theme.of(context).colorScheme.secondary,

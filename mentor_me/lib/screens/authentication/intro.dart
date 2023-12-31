@@ -1,18 +1,73 @@
 import 'package:flutter/material.dart';
-// import '../../services/services.dart';
+import 'dart:async';
+import '../loading.dart';
 
-// the introduction page or Squash (First page the user sees)
 class Intro extends StatefulWidget {
   final Function
-      toggleAuth; // allows toggle between the intro, register and signIn pages
+      toggleAuth; // allows toggle between the Onboarding, register and signIn pages
   Intro({required this.toggleAuth});
 
   @override
   State<Intro> createState() => _IntroState();
 }
 
-// Intro state class
-class _IntroState extends State<Intro> {
+class _IntroState extends State<Intro>
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+  int currentIndex = 1;
+  late AnimationController _controller;
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 2),
+    )..repeat();
+
+    _controller.addListener(() {
+      if (mounted && (currentIndex < 2)) {
+        setState(() {
+          currentIndex = (_controller.value * 2).floor() + 1;
+        });
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return (currentIndex == 1)
+            ? LoadingScreen()
+            : Onboarding(toggleAuth: widget.toggleAuth);
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+}
+
+// the introduction page or Squash (First page the user sees)
+class Onboarding extends StatefulWidget {
+  final Function
+      toggleAuth; // allows toggle between the Onboarding, register and signIn pages
+  Onboarding({required this.toggleAuth});
+
+  @override
+  State<Onboarding> createState() => _OnboardingState();
+}
+
+// Onboarding state class
+class _OnboardingState extends State<Onboarding> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

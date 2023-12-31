@@ -102,6 +102,16 @@ class AuthService {
       return null;
     }
   }
+
+  Future<String?> resetPassword(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      return 'success';
+    } catch (e) {
+      print('Error sending password reset email: $e');
+      return null;
+    }
+  }
 }
 
 // Database service: controls manipulation of the database
