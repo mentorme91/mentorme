@@ -7,7 +7,8 @@ import '../../services/helper_methods.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final Function toggleTheme;
+  const HomePage({required this.toggleTheme, super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -33,9 +34,10 @@ class _HomePageState extends State<HomePage> {
           children: [
                 Container(
                   height: 100,
-                  color: Colors.white,
-                  padding: EdgeInsets.fromLTRB(5, 0, 20, 0),
+                  color: Theme.of(context).colorScheme.background,
+                  padding: const EdgeInsets.fromLTRB(5, 0, 20, 0),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
                         flex: 2,
@@ -47,34 +49,37 @@ class _HomePageState extends State<HomePage> {
                                 TextButton(
                                   onPressed: () => {},
                                   child: CircleAvatar(
-                                    radius: 40,
-                                    backgroundImage:
-                                        AssetImage('assets/images/Logo2.png'),
+                                    radius: 30,
+                                    backgroundImage: const AssetImage(
+                                        'assets/images/face.png'),
                                     foregroundImage: (user?.photoURL != null)
                                         ? NetworkImage(user?.photoURL ?? '')
                                         : null,
                                   ),
-                                ),
-                                const SizedBox(
-                                  width: 10,
                                 ),
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Welcome',
+                                      (user?.displayName == null)
+                                          ? 'Welcome'
+                                          : 'Welcome back',
                                       style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 18,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary,
+                                        fontSize: 15,
                                       ),
                                     ),
                                     Text(
-                                      user?.displayName ?? 'User',
+                                      user?.displayName ?? 'New user',
                                       style: TextStyle(
-                                        color: Colors.black,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary,
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 23,
+                                        fontSize: 20,
                                       ),
                                     ),
                                   ],
@@ -85,26 +90,33 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       ElevatedButton(
-                        style: ButtonStyle(),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).primaryColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          minimumSize: Size(20, 40),
+                        ),
                         onPressed: _auth.SignOut,
                         child: Icon(
                           Icons.notifications,
+                          color: Theme.of(context).colorScheme.background,
                         ),
                       ),
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Container(
-                  height: 70,
+                  height: 60,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: Theme.of(context).colorScheme.primary,
+                    color: Theme.of(context).primaryColor,
                   ),
-                  margin: EdgeInsets.symmetric(horizontal: 20),
-                  child: const Row(
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
                     children: [
                       Expanded(
                         child: FractionallySizedBox(
@@ -114,8 +126,9 @@ class _HomePageState extends State<HomePage> {
                                 padding: const EdgeInsets.only(left: 10),
                                 child: Icon(
                                   Icons.public,
-                                  color: Colors.white,
-                                  size: 60,
+                                  color:
+                                      Theme.of(context).colorScheme.background,
+                                  size: 50,
                                 ),
                               ),
                               SizedBox(
@@ -128,15 +141,19 @@ class _HomePageState extends State<HomePage> {
                                   Text(
                                     'Join A',
                                     style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .background,
+                                      fontSize: 15,
                                     ),
                                   ),
                                   Text(
                                     'Community',
                                     style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .background,
+                                      fontSize: 15,
                                     ),
                                   ),
                                 ],
@@ -146,28 +163,33 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       IconButton(
-                        onPressed: null,
+                        onPressed: () => widget.toggleTheme(),
                         icon: Icon(
                           Icons.arrow_forward,
-                          color: Colors.white,
-                          size: 50,
+                          color: Theme.of(context).colorScheme.background,
+                          size: 40,
                         ),
                       ),
                     ],
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 20, top: 40),
+                  padding: EdgeInsets.only(left: 20, top: 30),
                   child: Text(
                     'Recent Posts',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Theme.of(context).colorScheme.onPrimary,
                       fontSize: 20,
                     ),
                   ),
                 ),
               ] +
-              createPostTile(posts),
+              createPostTile(test_posts) +
+              [
+                SizedBox(
+                  height: 30,
+                )
+              ],
         );
       },
     );

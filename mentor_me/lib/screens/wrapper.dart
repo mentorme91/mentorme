@@ -8,19 +8,33 @@ import 'package:provider/provider.dart';
 
 import 'authentication/authenticate.dart';
 import 'Home_screens/Home.dart';
+import 'themes.dart';
 
 class Wrapper extends StatefulWidget {
   const Wrapper({super.key});
-
   @override
   State<Wrapper> createState() => _WrapperState();
 }
 
 class _WrapperState extends State<Wrapper> {
+  bool isDarkMode = false;
+  void toggleTheme() {
+    setState(() {
+      isDarkMode = !isDarkMode;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // get user information to determine whether user is signed in or not (not null or null)
     final user = Provider.of<User?>(context);
-    return user == null ? Auhenticate() : Home(user: user);
+    return Theme(
+        data: isDarkMode ? darkTheme : lightTheme,
+        child: (user == null)
+            ? const Auhenticate()
+            : Home(
+                toggleTheme: toggleTheme,
+                user: user,
+              ));
   }
 }

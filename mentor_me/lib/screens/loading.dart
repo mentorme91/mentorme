@@ -54,7 +54,7 @@ class _LoadingScreenState extends State<LoadingScreen>
     super.build(context);
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: Color.fromARGB(255, 56, 107, 246),
       body: Center(
         child: AnimatedBuilder(
           animation: _controller,

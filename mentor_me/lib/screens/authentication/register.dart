@@ -40,25 +40,27 @@ class _RegisterState extends State<Register> {
         : Scaffold(
             resizeToAvoidBottomInset: true,
             appBar: AppBar(
+              backgroundColor: Colors.white,
               elevation: 0.0,
               leading: IconButton(
-                icon: BackButtonIcon(),
+                icon: const BackButtonIcon(),
                 onPressed: () => widget.toggleAuth(0),
                 style: ButtonStyle(
-                  elevation: MaterialStatePropertyAll(200),
+                  elevation: const MaterialStatePropertyAll(200),
                   iconColor: MaterialStatePropertyAll(
-                      Theme.of(context).colorScheme.primary),
+                      Color.fromARGB(255, 56, 107, 246)),
                 ),
               ),
             ),
             body: Container(
-              padding: EdgeInsets.symmetric(
+              color: Colors.white,
+              padding: const EdgeInsets.symmetric(
                 horizontal: 20,
               ),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Center(
+                    const Center(
                       child: Text(
                         'Create Account',
                         textAlign: TextAlign.center,
@@ -68,7 +70,7 @@ class _RegisterState extends State<Register> {
                             fontSize: 30),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Form(
@@ -76,46 +78,48 @@ class _RegisterState extends State<Register> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'First Name',
                             style: TextStyle(
+                              color: Colors.black,
                               fontSize: 15,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Container(
                             height: _formheight,
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                               left: 10,
                             ),
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                               horizontal: 5,
                             ),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               border: Border.all(
-                                color: Theme.of(context).colorScheme.primary,
+                                color: Color.fromARGB(255, 56, 107, 246),
                                 width: 0.3,
                               ),
                               borderRadius: BorderRadius.circular(25.0),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.grey.withOpacity(0.1),
+                                  color: Colors.grey.withOpacity(0.2),
                                   spreadRadius: 5,
                                   blurRadius: 10,
-                                  offset: Offset(
+                                  offset: const Offset(
                                       0, 3), // changes position of shadow
                                 ),
                               ],
                             ),
                             alignment: AlignmentDirectional.center,
                             child: TextFormField(
-                              style: TextStyle(
+                              cursorColor: Colors.black,
+                              style: const TextStyle(
+                                color: Colors.black,
                                 decorationColor: Colors.black,
                               ),
-                              autofocus: true,
                               keyboardType: TextInputType.name,
                               decoration: const InputDecoration(
                                 // iconColor: Colors.blue,
@@ -141,39 +145,40 @@ class _RegisterState extends State<Register> {
                                   user.first_name, 'Enter first name'),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 25,
                           ),
-                          Text(
+                          const Text(
                             'Last Name',
                             style: TextStyle(
+                              color: Colors.black,
                               fontSize: 15,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Container(
                             height: _formheight,
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                               left: 10,
                             ),
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                               horizontal: 5,
                             ),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               border: Border.all(
-                                color: Theme.of(context).colorScheme.primary,
+                                color: Color.fromARGB(255, 56, 107, 246),
                                 width: 0.3,
                               ),
                               borderRadius: BorderRadius.circular(25.0),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.grey.withOpacity(0.1),
+                                  color: Colors.grey.withOpacity(0.2),
                                   spreadRadius: 5,
                                   blurRadius: 10,
-                                  offset: Offset(
+                                  offset: const Offset(
                                       0, 3), // changes position of shadow
                                 ),
                               ],
@@ -181,10 +186,11 @@ class _RegisterState extends State<Register> {
                             alignment: AlignmentDirectional.center,
                             child: TextFormField(
                               keyboardType: TextInputType.name,
-                              style: TextStyle(
+                              cursorColor: Colors.black,
+                              style: const TextStyle(
+                                color: Colors.black,
                                 decorationColor: Colors.black,
                               ),
-                              autofocus: true,
                               decoration: const InputDecoration(
                                 // iconColor: Colors.blue,
                                 // suffix: Icon(Icons.remove_red_eye),
@@ -210,39 +216,40 @@ class _RegisterState extends State<Register> {
                                   user.last_name, 'Enter last name'),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 25,
                           ),
-                          Text(
+                          const Text(
                             'Email',
                             style: TextStyle(
+                              color: Colors.black,
                               fontSize: 15,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Container(
                             height: _formheight,
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                               left: 10,
                             ),
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                               horizontal: 5,
                             ),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               border: Border.all(
-                                color: Theme.of(context).colorScheme.primary,
+                                color: Color.fromARGB(255, 56, 107, 246),
                                 width: 0.3,
                               ),
                               borderRadius: BorderRadius.circular(25.0),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.grey.withOpacity(0.1),
+                                  color: Colors.grey.withOpacity(0.2),
                                   spreadRadius: 5,
                                   blurRadius: 10,
-                                  offset: Offset(
+                                  offset: const Offset(
                                       0, 3), // changes position of shadow
                                 ),
                               ],
@@ -253,9 +260,11 @@ class _RegisterState extends State<Register> {
                                 Expanded(
                                   child: FractionallySizedBox(
                                     child: TextFormField(
-                                      style: TextStyle(
-                                          decorationColor: Colors.black),
-                                      autofocus: true,
+                                      cursorColor: Colors.black,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        decorationColor: Colors.black,
+                                      ),
                                       keyboardType: TextInputType.emailAddress,
                                       decoration: const InputDecoration(
                                         // iconColor: Colors.blue,
@@ -285,47 +294,57 @@ class _RegisterState extends State<Register> {
                                 ),
                                 IconButton(
                                   onPressed: () => {},
-                                  icon: Icon(Icons.email),
+                                  icon: const Icon(
+                                    Icons.email,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
-                          Text(
+                          const Text(
                             'School',
                             style: TextStyle(
+                              color: Colors.black,
                               fontSize: 15,
                             ),
                           ),
                           Container(
                             height: _formheight,
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                               left: 10,
                             ),
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                               horizontal: 5,
                             ),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               border: Border.all(
-                                color: Theme.of(context).colorScheme.primary,
+                                color: Color.fromARGB(255, 56, 107, 246),
                                 width: 0.3,
                               ),
                               borderRadius: BorderRadius.circular(25.0),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.grey.withOpacity(0.1),
+                                  color: Colors.grey.withOpacity(0.2),
                                   spreadRadius: 5,
                                   blurRadius: 10,
-                                  offset: Offset(
+                                  offset: const Offset(
                                       0, 3), // changes position of shadow
                                 ),
                               ],
                             ),
                             alignment: AlignmentDirectional.center,
                             child: DropdownButtonFormField(
+                              dropdownColor: Colors.white,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                backgroundColor: Colors.white,
+                                decorationColor: Colors.black,
+                              ),
                               validator: (value) =>
                                   validateText(user.school_id, 'Enter school'),
                               decoration: const InputDecoration(
@@ -353,42 +372,49 @@ class _RegisterState extends State<Register> {
                               },
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
-                          Text(
+                          const Text(
                             'Faculty',
                             style: TextStyle(
+                              color: Colors.black,
                               fontSize: 15,
                             ),
                           ),
                           Container(
                             height: _formheight,
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                               left: 10,
                             ),
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                               horizontal: 5,
                             ),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               border: Border.all(
-                                color: Theme.of(context).colorScheme.primary,
+                                color: Color.fromARGB(255, 56, 107, 246),
                                 width: 0.3,
                               ),
                               borderRadius: BorderRadius.circular(25.0),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.grey.withOpacity(0.1),
+                                  color: Colors.grey.withOpacity(0.2),
                                   spreadRadius: 5,
                                   blurRadius: 10,
-                                  offset: Offset(
+                                  offset: const Offset(
                                       0, 3), // changes position of shadow
                                 ),
                               ],
                             ),
                             alignment: AlignmentDirectional.center,
                             child: DropdownButtonFormField(
+                              dropdownColor: Colors.white,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                backgroundColor: Colors.white,
+                                decorationColor: Colors.black,
+                              ),
                               validator: (value) =>
                                   validateText(user.faculty, 'Enter faculty'),
                               decoration: const InputDecoration(
@@ -416,42 +442,49 @@ class _RegisterState extends State<Register> {
                               },
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
-                          Text(
+                          const Text(
                             'Department',
                             style: TextStyle(
+                              color: Colors.black,
                               fontSize: 15,
                             ),
                           ),
                           Container(
                             height: _formheight,
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                               left: 10,
                             ),
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                               horizontal: 5,
                             ),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               border: Border.all(
-                                color: Theme.of(context).colorScheme.primary,
+                                color: Color.fromARGB(255, 56, 107, 246),
                                 width: 0.3,
                               ),
                               borderRadius: BorderRadius.circular(25.0),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.grey.withOpacity(0.1),
+                                  color: Colors.grey.withOpacity(0.2),
                                   spreadRadius: 5,
                                   blurRadius: 10,
-                                  offset: Offset(
+                                  offset: const Offset(
                                       0, 3), // changes position of shadow
                                 ),
                               ],
                             ),
                             alignment: AlignmentDirectional.center,
                             child: DropdownButtonFormField(
+                              dropdownColor: Colors.white,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                backgroundColor: Colors.white,
+                                decorationColor: Colors.black,
+                              ),
                               validator: (value) => validateText(
                                   user.department, 'Enter department'),
                               decoration: const InputDecoration(
@@ -479,42 +512,49 @@ class _RegisterState extends State<Register> {
                               },
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
-                          Text(
+                          const Text(
                             'Year in School',
                             style: TextStyle(
+                              color: Colors.black,
                               fontSize: 15,
                             ),
                           ),
                           Container(
                             height: _formheight,
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                               left: 10,
                             ),
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                               horizontal: 5,
                             ),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               border: Border.all(
-                                color: Theme.of(context).colorScheme.primary,
+                                color: Color.fromARGB(255, 56, 107, 246),
                                 width: 0.3,
                               ),
                               borderRadius: BorderRadius.circular(25.0),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.grey.withOpacity(0.1),
+                                  color: Colors.grey.withOpacity(0.2),
                                   spreadRadius: 5,
                                   blurRadius: 10,
-                                  offset: Offset(
+                                  offset: const Offset(
                                       0, 3), // changes position of shadow
                                 ),
                               ],
                             ),
                             alignment: AlignmentDirectional.center,
                             child: DropdownButtonFormField(
+                              dropdownColor: Colors.white,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                backgroundColor: Colors.white,
+                                decorationColor: Colors.black,
+                              ),
                               validator: (value) => validateText(
                                   (user.year == 0) ? '' : 'not zero',
                                   'Enter school year'),
@@ -542,45 +582,53 @@ class _RegisterState extends State<Register> {
                               },
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
-                          Text(
+                          const Text(
                             'Satus (Mentor/Mentee)',
                             style: TextStyle(
+                              color: Colors.black,
                               fontSize: 15,
                             ),
                           ),
                           Container(
                             height: _formheight,
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                               left: 10,
                             ),
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                               horizontal: 5,
                             ),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               border: Border.all(
-                                color: Theme.of(context).colorScheme.primary,
+                                color: Color.fromARGB(255, 56, 107, 246),
                                 width: 0.3,
                               ),
                               borderRadius: BorderRadius.circular(25.0),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.grey.withOpacity(0.1),
+                                  color: Colors.grey.withOpacity(0.2),
                                   spreadRadius: 5,
                                   blurRadius: 10,
-                                  offset: Offset(
+                                  offset: const Offset(
                                       0, 3), // changes position of shadow
                                 ),
                               ],
                             ),
                             alignment: AlignmentDirectional.center,
                             child: DropdownButtonFormField(
+                              dropdownColor: Colors.white,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                backgroundColor: Colors.white,
+                                decorationColor: Colors.black,
+                              ),
                               validator: (value) =>
                                   validateText(user.status, 'Enter status'),
                               decoration: const InputDecoration(
+                                fillColor: Colors.white,
                                 // iconColor: Colors.blue,
                                 // suffix: Icon(Icons.remove_red_eye),
                                 // suffixIconColor: Colors.black,
@@ -605,36 +653,37 @@ class _RegisterState extends State<Register> {
                               },
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
-                          Text(
+                          const Text(
                             'Password',
                             style: TextStyle(
+                              color: Colors.black,
                               fontSize: 15,
                             ),
                           ),
                           Container(
                             height: _formheight,
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                               left: 10,
                             ),
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                               horizontal: 5,
                             ),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               border: Border.all(
-                                color: Theme.of(context).colorScheme.primary,
+                                color: Color.fromARGB(255, 56, 107, 246),
                                 width: 0.3,
                               ),
                               borderRadius: BorderRadius.circular(25.0),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.grey.withOpacity(0.1),
+                                  color: Colors.grey.withOpacity(0.2),
                                   spreadRadius: 5,
                                   blurRadius: 10,
-                                  offset: Offset(
+                                  offset: const Offset(
                                       0, 3), // changes position of shadow
                                 ),
                               ],
@@ -645,9 +694,11 @@ class _RegisterState extends State<Register> {
                                 Expanded(
                                   child: FractionallySizedBox(
                                     child: TextFormField(
-                                      style: TextStyle(
-                                          decorationColor: Colors.black),
-                                      autofocus: true,
+                                      cursorColor: Colors.black,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        decorationColor: Colors.black,
+                                      ),
                                       obscureText: !obscure,
                                       keyboardType:
                                           TextInputType.visiblePassword,
@@ -685,43 +736,47 @@ class _RegisterState extends State<Register> {
                                       },
                                     )
                                   },
-                                  icon: Icon(obscure
-                                      ? Icons.remove_red_eye
-                                      : Icons.visibility_off),
+                                  icon: Icon(
+                                    obscure
+                                        ? Icons.remove_red_eye
+                                        : Icons.visibility_off,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
-                          Text(
+                          const Text(
                             'Retype password',
                             style: TextStyle(
+                              color: Colors.black,
                               fontSize: 15,
                             ),
                           ),
                           Container(
                             height: _formheight,
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                               left: 10,
                             ),
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                               horizontal: 5,
                             ),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               border: Border.all(
-                                color: Theme.of(context).colorScheme.primary,
+                                color: Color.fromARGB(255, 56, 107, 246),
                                 width: 0.3,
                               ),
                               borderRadius: BorderRadius.circular(25.0),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.grey.withOpacity(0.1),
+                                  color: Colors.grey.withOpacity(0.2),
                                   spreadRadius: 5,
                                   blurRadius: 10,
-                                  offset: Offset(
+                                  offset: const Offset(
                                       0, 3), // changes position of shadow
                                 ),
                               ],
@@ -732,13 +787,16 @@ class _RegisterState extends State<Register> {
                                 Expanded(
                                   child: FractionallySizedBox(
                                     child: TextFormField(
-                                      style: TextStyle(
-                                          decorationColor: Colors.black),
-                                      autofocus: true,
+                                      cursorColor: Colors.black,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        decorationColor: Colors.black,
+                                      ),
                                       obscureText: !reobscure,
                                       keyboardType:
                                           TextInputType.visiblePassword,
                                       decoration: const InputDecoration(
+                                        fillColor: Colors.black,
                                         // iconColor: Colors.blue,
                                         // suffix: Icon(Icons.remove_red_eye),
                                         // suffixIconColor: Colors.black,
@@ -774,9 +832,12 @@ class _RegisterState extends State<Register> {
                                       },
                                     )
                                   },
-                                  icon: Icon(reobscure
-                                      ? Icons.remove_red_eye
-                                      : Icons.visibility_off),
+                                  icon: Icon(
+                                    reobscure
+                                        ? Icons.remove_red_eye
+                                        : Icons.visibility_off,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ],
                             ),
@@ -784,7 +845,7 @@ class _RegisterState extends State<Register> {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
                     Row(
@@ -793,8 +854,8 @@ class _RegisterState extends State<Register> {
                         TextButton(
                           style: ButtonStyle(
                             backgroundColor: MaterialStatePropertyAll<Color>(
-                                Theme.of(context).colorScheme.primary),
-                            padding: MaterialStatePropertyAll<EdgeInsets>(
+                                Color.fromARGB(255, 56, 107, 246)),
+                            padding: const MaterialStatePropertyAll<EdgeInsets>(
                                 EdgeInsets.symmetric(horizontal: 40)),
                           ),
                           onPressed: () async {
@@ -821,26 +882,38 @@ class _RegisterState extends State<Register> {
                             'Create An Account',
                             style: TextStyle(
                               fontSize: 17,
-                              color: Theme.of(context).colorScheme.secondary,
+                              color: Colors.white,
                             ),
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Already have an Account?'),
+                        const Text(
+                          'Already have an Account?',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.black,
+                          ),
+                        ),
                         TextButton(
                           onPressed: () => widget.toggleAuth(1),
-                          child: Text('Sign In'),
+                          child: const Text(
+                            'Sign In',
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Color.fromARGB(255, 56, 107, 246),
+                            ),
+                          ),
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 50,
                     ),
                   ],
