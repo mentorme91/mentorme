@@ -27,19 +27,20 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         : Scaffold(
             appBar: AppBar(
               elevation: 0.0,
-              backgroundColor: Theme.of(context).colorScheme.secondary,
+              backgroundColor: Colors.white,
               leading: IconButton(
                 icon: BackButtonIcon(),
                 onPressed: () => widget.toggleAuth(1),
                 style: ButtonStyle(
                   elevation: MaterialStatePropertyAll(200),
                   iconColor: MaterialStatePropertyAll(
-                      Theme.of(context).colorScheme.primary),
+                      Color.fromARGB(255, 56, 107, 246)),
                 ),
               ),
             ),
             body: Container(
-              color: Theme.of(context).colorScheme.secondary,
+              height: double.infinity,
+              color: Colors.white,
               padding: EdgeInsets.symmetric(
                 horizontal: 20,
               ),
@@ -92,6 +93,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           Text(
                             'Email',
                             style: TextStyle(
+                              color: Colors.black,
                               fontSize: 15,
                             ),
                           ),
@@ -109,13 +111,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             decoration: BoxDecoration(
                               color: Colors.white,
                               border: Border.all(
-                                color: Theme.of(context).colorScheme.primary,
+                                color: Color.fromARGB(255, 56, 107, 246),
                                 width: 0.3,
                               ),
                               borderRadius: BorderRadius.circular(25.0),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.grey.withOpacity(0.1),
+                                  color: Colors.grey.withOpacity(0.2),
                                   spreadRadius: 5,
                                   blurRadius: 10,
                                   offset: Offset(
@@ -129,7 +131,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                 Expanded(
                                   child: FractionallySizedBox(
                                     child: TextFormField(
-                                      style: TextStyle(
+                                      cursorColor: Colors.black,
+                                      style: const TextStyle(
+                                        color: Colors.black,
                                         decorationColor: Colors.black,
                                       ),
                                       autofocus: true,
@@ -161,7 +165,10 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                 ),
                                 IconButton(
                                   onPressed: () => {},
-                                  icon: Icon(Icons.email),
+                                  icon: Icon(
+                                    Icons.email,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ],
                             ),
@@ -181,7 +188,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         TextButton(
                           style: ButtonStyle(
                             backgroundColor: MaterialStatePropertyAll<Color>(
-                                Theme.of(context).colorScheme.primary),
+                                Color.fromARGB(255, 56, 107, 246)),
                             padding: MaterialStatePropertyAll<EdgeInsets>(
                                 EdgeInsets.symmetric(horizontal: 100)),
                           ),
@@ -215,7 +222,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             'Verify Email',
                             style: TextStyle(
                               fontSize: 17,
-                              color: Theme.of(context).colorScheme.secondary,
+                              color: Colors.white,
                             ),
                           ),
                         ),
@@ -227,10 +234,20 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Don\'t have an account yet?'),
+                        Text(
+                          'Don\'t have an account yet?',
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
                         TextButton(
                           onPressed: () => widget.toggleAuth(2),
-                          child: Text('Create Account'),
+                          child: Text(
+                            'Create Account',
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 56, 107, 246),
+                            ),
+                          ),
                         ),
                       ],
                     )

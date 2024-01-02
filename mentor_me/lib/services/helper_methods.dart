@@ -6,9 +6,10 @@ import 'dart:core';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-Map<String, Map<String, dynamic>> posts = {
+Map<String, Map<String, dynamic>> test_posts = {
   '1': {
-    'photURL': null,
+    'photoURL':
+        'https://drive.google.com/uc?id=1sU9A3_w1i58aNAkEWNN1KTBKwYqvB9to',
     'userName': 'James Brown',
     'time': '12/31/2023 3:20pm',
     'content': 'Hello world, How are you guys?',
@@ -16,7 +17,17 @@ Map<String, Map<String, dynamic>> posts = {
     'comments': 0,
   },
   '2': {
-    'photURL': null,
+    'photoURL':
+        'https://drive.google.com/uc?id=1rFtFKrH_CxIbYcWw-8-uh8H2h0rjLpp-',
+    'userName': 'Ruby Rose',
+    'time': '12/31/2023 3:20pm',
+    'content':
+        'Meta is hiring! Use this link -> https://www.androidpolice.com/install-adb-windows-mac-linux-guide/',
+    'likes': 0,
+    'comments': 0,
+  },
+  '3': {
+    'photoURL': 'https://picsum.photos/250?image=9',
     'userName': 'Mac Daniels',
     'time': '12/31/2023 1:20pm',
     'content':
@@ -26,6 +37,70 @@ Map<String, Map<String, dynamic>> posts = {
   },
 };
 
+List<MyUser> test_users = [
+  MyUser(
+      uid: '1',
+      email: 'allojeff',
+      first_name: 'Jeff',
+      last_name: 'Allo',
+      school_id: 'Howard',
+      faculty: 'CEA',
+      department: 'Electrical',
+      status: 'Mentor',
+      year: 2),
+  MyUser(
+      uid: '1',
+      email: 'allojeff',
+      first_name: 'Jeff',
+      last_name: 'Allo',
+      school_id: 'Howard',
+      faculty: 'CEA',
+      department: 'Electrical',
+      status: 'Mentor',
+      year: 2,
+      photoURL: 'https://picsum.photos/250?image=9'),
+  MyUser(
+      uid: '1',
+      email: 'allojeff',
+      first_name: 'Jeff',
+      last_name: 'Allo',
+      school_id: 'Howard',
+      faculty: 'CEA',
+      department: 'Electrical',
+      status: 'Mentor',
+      year: 2),
+  MyUser(
+      uid: '1',
+      email: 'allojeff',
+      first_name: 'Jeff',
+      last_name: 'Allo',
+      school_id: 'Howard',
+      faculty: 'CEA',
+      department: 'Electrical',
+      status: 'Mentor',
+      year: 2),
+  MyUser(
+      uid: '1',
+      email: 'allojeff',
+      first_name: 'Jeff',
+      last_name: 'Allo',
+      school_id: 'Howard',
+      faculty: 'CEA',
+      department: 'Electrical',
+      status: 'Mentor',
+      year: 2),
+  MyUser(
+      uid: '1',
+      email: 'allojeff',
+      first_name: 'Jeff',
+      last_name: 'Allo',
+      school_id: 'Howard',
+      faculty: 'CEA',
+      department: 'Electrical',
+      status: 'Mentor',
+      year: 2),
+];
+
 // CreatePostTile: Used to create a post tile
 List<Widget> createPostTile(Map<String, Map<String, dynamic>> postInfo) {
   List<Widget> postTiles = [];
@@ -33,6 +108,72 @@ List<Widget> createPostTile(Map<String, Map<String, dynamic>> postInfo) {
     postTiles.add(PostTile(postInfo: value));
   });
   return postTiles;
+}
+
+class ConnectTile extends StatefulWidget {
+  final MyUser user;
+  const ConnectTile({required this.user, super.key});
+
+  @override
+  State<ConnectTile> createState() => _ConnectTileState();
+}
+
+class _ConnectTileState extends State<ConnectTile> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 120,
+      height: 140,
+      margin: const EdgeInsets.only(top: 0, left: 10, right: 10),
+      padding: const EdgeInsets.only(bottom: 0),
+      decoration: BoxDecoration(
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: Theme.of(context).shadowColor,
+        //     spreadRadius: 5,
+        //     blurRadius: 5,
+        //     offset: const Offset(0, 3), // changes the position of the shadow
+        //   ),
+        // ],
+        borderRadius: BorderRadius.circular(
+          20,
+        ),
+        border: Border.all(
+          color: Theme.of(context).primaryColor,
+          width: 0.2,
+        ),
+        color: Theme.of(context).colorScheme.surface,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          TextButton(
+            onPressed: () => {},
+            child: CircleAvatar(
+              radius: 28,
+              backgroundImage: (widget.user.photoURL == null)
+                  ? const AssetImage('assets/images/face.png')
+                  : null,
+              foregroundImage: (widget.user.photoURL != null)
+                  ? NetworkImage(widget.user.photoURL ?? '', scale: 1)
+                  : null,
+            ),
+          ),
+          Text(
+            "${widget.user.first_name} ${widget.user.last_name}",
+            style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimary, fontSize: 12),
+          ),
+          Text(
+            '${widget.user.department} Major',
+            style:
+                TextStyle(color: Theme.of(context).primaryColor, fontSize: 10),
+          )
+        ],
+      ),
+    );
+  }
 }
 
 class PostTile extends StatefulWidget {
@@ -45,32 +186,32 @@ class PostTile extends StatefulWidget {
 }
 
 class _PostTileState extends State<PostTile> {
-  bool bookmark_tapped = false;
+  bool bookmarkTapped = false;
 
-  bool like_tapped = false;
+  bool likeTapped = false;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 25, left: 20, right: 20),
-      padding: EdgeInsets.only(bottom: 0),
+      margin: const EdgeInsets.only(top: 25, left: 20, right: 20),
+      padding: const EdgeInsets.only(bottom: 0),
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 10,
-            blurRadius: 10,
-            offset: Offset(0, 3), // changes the position of the shadow
+            color: Theme.of(context).shadowColor,
+            spreadRadius: 5,
+            blurRadius: 5,
+            offset: const Offset(0, 3), // changes the position of the shadow
           ),
         ],
         borderRadius: BorderRadius.circular(
           20,
         ),
         border: Border.all(
-          color: Theme.of(context).colorScheme.primary,
+          color: Theme.of(context).primaryColor,
           width: 0.2,
         ),
-        color: Color.fromRGBO(83, 86, 255, 0.094),
+        color: Theme.of(context).colorScheme.surface,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -90,11 +231,14 @@ class _PostTileState extends State<PostTile> {
                           child: CircleAvatar(
                             radius: 25,
                             backgroundImage:
-                                AssetImage('assets/images/Logo2.png'),
+                                (widget.postInfo['photoURL'] == null)
+                                    ? const AssetImage('assets/images/face.png')
+                                    : null,
                             foregroundImage:
                                 (widget.postInfo['photoURL'] != null)
                                     ? NetworkImage(
-                                        widget.postInfo['photoURL'] ?? '')
+                                        widget.postInfo['photoURL'] ?? '',
+                                        scale: 1)
                                     : null,
                           ),
                         ),
@@ -105,13 +249,13 @@ class _PostTileState extends State<PostTile> {
                             Text(
                               widget.postInfo['userName'] ?? 'User',
                               style: TextStyle(
-                                color: Colors.black,
+                                color: Theme.of(context).colorScheme.onPrimary,
                                 fontSize: 18,
                               ),
                             ),
                             Text(
                               widget.postInfo['time'],
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Color.fromARGB(255, 87, 87, 87),
                                 fontSize: 12,
                               ),
@@ -123,17 +267,21 @@ class _PostTileState extends State<PostTile> {
                   ),
                 ),
               ),
-              IconButton(onPressed: null, icon: Icon(Icons.menu))
+              const IconButton(onPressed: null, icon: Icon(Icons.menu))
             ],
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Text(
               widget.postInfo['content'],
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimary,
+                fontSize: 13,
+              ),
             ),
           ),
           Container(
-            padding: EdgeInsets.only(left: 15),
+            padding: const EdgeInsets.only(left: 15),
             child: Row(
               children: [
                 Expanded(
@@ -143,24 +291,40 @@ class _PostTileState extends State<PostTile> {
                     child: Container(
                       child: Row(
                         children: [
-                          Text(widget.postInfo['likes'].toString()),
+                          Text(
+                            widget.postInfo['likes'].toString(),
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                              fontSize: 13,
+                            ),
+                          ),
                           IconButton(
                             onPressed: () => {
                               setState(() {
-                                like_tapped = !like_tapped;
+                                likeTapped = !likeTapped;
+                                widget.postInfo['likes'] += likeTapped ? 1 : -1;
                               })
                             },
                             icon: Icon(
                               Icons.thumb_up,
-                              color: like_tapped
-                                  ? Theme.of(context).colorScheme.primary
+                              color: likeTapped
+                                  ? const Color.fromARGB(255, 56, 107, 246)
                                   : Colors.grey,
                             ),
                           ),
-                          Text(widget.postInfo['comments'].toString()),
+                          Text(
+                            widget.postInfo['comments'].toString(),
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                              fontSize: 13,
+                            ),
+                          ),
                           IconButton(
                             onPressed: () => {},
-                            icon: Icon(Icons.chat_rounded),
+                            icon: const Icon(
+                              Icons.chat_rounded,
+                              color: Colors.grey,
+                            ),
                           )
                         ],
                       ),
@@ -170,12 +334,12 @@ class _PostTileState extends State<PostTile> {
                 IconButton(
                     onPressed: () => {
                           setState(() {
-                            bookmark_tapped = !bookmark_tapped;
+                            bookmarkTapped = !bookmarkTapped;
                           })
                         },
                     icon: Icon(
                       Icons.bookmark,
-                      color: bookmark_tapped ? Colors.yellow : Colors.grey,
+                      color: bookmarkTapped ? Colors.yellow : Colors.grey,
                     ))
               ],
             ),
@@ -191,7 +355,13 @@ List<DropdownMenuItem> createDropDown(List<String> items) {
   return items
       .map((item) => DropdownMenuItem(
             value: item,
-            child: Text(item),
+            child: Text(
+              item,
+              style: const TextStyle(
+                color: Colors.black,
+                backgroundColor: Colors.white,
+              ),
+            ),
           ))
       .toList();
 }

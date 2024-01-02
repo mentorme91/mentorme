@@ -21,19 +21,20 @@ class MyUser {
   int? year;
   String? _password;
   String? status;
+  String? photoURL;
 
   // User constructor
-  MyUser({
-    required this.uid,
-    required this.email,
-    required this.first_name,
-    required this.last_name,
-    required this.school_id,
-    required this.faculty,
-    required this.department,
-    required this.status,
-    required this.year,
-  });
+  MyUser(
+      {required this.uid,
+      required this.email,
+      required this.first_name,
+      required this.last_name,
+      required this.school_id,
+      required this.faculty,
+      required this.department,
+      required this.status,
+      required this.year,
+      this.photoURL});
 
   // get user password
   String? GetPassword() => _password;

@@ -24,7 +24,7 @@ class _IntroState extends State<Intro>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 2),
+      duration: const Duration(seconds: 2),
     )..repeat();
 
     _controller.addListener(() {
@@ -78,36 +78,38 @@ class _OnboardingState extends State<Onboarding> {
           TextButton(
             // used to toggle to the signIn page
             onPressed: () => widget.toggleAuth(1),
-            child: Text(
+            child: const Text(
               'Skip',
               style: TextStyle(
                 fontSize: 15,
+                color: Color.fromARGB(255, 56, 107, 246),
               ),
             ),
           )
         ],
       ),
       body: Container(
-        color: Theme.of(context).colorScheme.secondary,
+        height: double.infinity,
+        color: Colors.white,
         child: SingleChildScrollView(
           // allows user to scroll down and up on the page
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 // just for space
                 height: 5,
               ),
-              Center(
+              const Center(
                 child: Image(
                   image: AssetImage('assets/images/logo.png'),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 60),
-                child: Text(
+                margin: const EdgeInsets.symmetric(horizontal: 60),
+                child: const Text(
                   'Enhance Learning and Knowledge Sharing',
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -116,12 +118,12 @@ class _OnboardingState extends State<Onboarding> {
                       fontSize: 20),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 30),
-                child: Text(
+                margin: const EdgeInsets.symmetric(horizontal: 30),
+                child: const Text(
                   'MentorMe aims at lorem ipsum dolor sit amet consectetur. Diam integer felis etiam neque id viv.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -130,13 +132,13 @@ class _OnboardingState extends State<Onboarding> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               TextButton(
-                style: ButtonStyle(
+                style: const ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll<Color>(
-                      Theme.of(context).colorScheme.primary),
+                      Color.fromARGB(255, 56, 107, 246)),
                   padding: MaterialStatePropertyAll<EdgeInsets>(
                       EdgeInsets.symmetric(horizontal: 40)),
                 ),
@@ -145,28 +147,32 @@ class _OnboardingState extends State<Onboarding> {
                   'Create An Account',
                   style: TextStyle(
                     fontSize: 17,
-                    color: Theme.of(context).colorScheme.secondary,
+                    color: Colors.white,
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 7,
               ),
               TextButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll<Color>(
-                      Theme.of(context).colorScheme.secondary),
+                style: const ButtonStyle(
+                  backgroundColor:
+                      const MaterialStatePropertyAll<Color>(Colors.white),
                   padding: MaterialStatePropertyAll<EdgeInsets>(
                       EdgeInsets.symmetric(horizontal: 80)),
-                  side: MaterialStatePropertyAll<BorderSide>(BorderSide(
-                      width: 2, color: Theme.of(context).colorScheme.primary)),
+                  side: MaterialStatePropertyAll<BorderSide>(
+                    BorderSide(
+                      width: 2,
+                      color: Color.fromARGB(255, 56, 107, 246),
+                    ),
+                  ),
                 ),
                 onPressed: () => widget.toggleAuth(1),
                 child: Text(
                   'Log In',
                   style: TextStyle(
                     fontSize: 17,
-                    color: Theme.of(context).colorScheme.primary,
+                    color: Color.fromARGB(255, 56, 107, 246),
                   ),
                 ),
               ),
