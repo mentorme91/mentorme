@@ -5,17 +5,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../services/services.dart';
 import '../../services/helper_methods.dart';
 import 'package:provider/provider.dart';
+import '../profile.dart';
 
 class HomePage extends StatefulWidget {
   final Function toggleTheme;
-  const HomePage({required this.toggleTheme, super.key});
+  final Function mode;
+  const HomePage({required this.toggleTheme, required this.mode, super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User?>(context);
@@ -47,7 +48,28 @@ class _HomePageState extends State<HomePage> {
                             child: Row(
                               children: [
                                 TextButton(
-                                  onPressed: () => {},
+                                  onPressed: () async {
+                                    MyUser? thisUser =
+                                        await CreateUserFromAuthUser(user);
+                                    if (thisUser == null) {
+                                      print('Conversion error');
+                                      return null;
+                                    }
+                                    setState(
+                                      () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) {
+                                            return UserProfile(
+                                              user: thisUser,
+                                              toggleTheme: widget.toggleTheme,
+                                              mode: widget.mode,
+                                            );
+                                          }),
+                                        );
+                                      },
+                                    );
+                                  },
                                   child: CircleAvatar(
                                     radius: 30,
                                     backgroundImage: const AssetImage(
@@ -95,9 +117,9 @@ class _HomePageState extends State<HomePage> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
-                          minimumSize: Size(20, 40),
+                          minimumSize: const Size(20, 40),
                         ),
-                        onPressed: _auth.SignOut,
+                        onPressed: () {},
                         child: Icon(
                           Icons.notifications,
                           color: Theme.of(context).colorScheme.background,
@@ -118,16 +140,15 @@ class _HomePageState extends State<HomePage> {
                   margin: const EdgeInsets.symmetric(horizontal: 20),
                   child: Row(
                     children: [
-                      Expanded(
+                      const Expanded(
                         child: FractionallySizedBox(
                           child: Row(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(left: 10),
+                                padding: EdgeInsets.only(left: 10),
                                 child: Icon(
                                   Icons.public,
-                                  color:
-                                      Theme.of(context).colorScheme.background,
+                                  color: Colors.white,
                                   size: 50,
                                 ),
                               ),
@@ -141,18 +162,20 @@ class _HomePageState extends State<HomePage> {
                                   Text(
                                     'Join A',
                                     style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .background,
+                                      // color: Theme.of(context)
+                                      //     .colorScheme
+                                      //     .background,
+                                      color: Colors.white,
                                       fontSize: 15,
                                     ),
                                   ),
                                   Text(
                                     'Community',
                                     style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .background,
+                                      // color: Theme.of(context)
+                                      //     .colorScheme
+                                      //     .background,
+                                      color: Colors.white,
                                       fontSize: 15,
                                     ),
                                   ),
@@ -163,10 +186,10 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       IconButton(
-                        onPressed: () => widget.toggleTheme(),
-                        icon: Icon(
+                        onPressed: () {},
+                        icon: const Icon(
                           Icons.arrow_forward,
-                          color: Theme.of(context).colorScheme.background,
+                          color: Colors.white,
                           size: 40,
                         ),
                       ),
@@ -174,7 +197,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 20, top: 30),
+                  padding: const EdgeInsets.only(left: 20, top: 30),
                   child: Text(
                     'Recent Posts',
                     style: TextStyle(
@@ -186,7 +209,7 @@ class _HomePageState extends State<HomePage> {
               ] +
               createPostTile(test_posts) +
               [
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 )
               ],
