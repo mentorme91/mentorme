@@ -127,14 +127,6 @@ class _ConnectTileState extends State<ConnectTile> {
       margin: const EdgeInsets.only(top: 0, left: 10, right: 10),
       padding: const EdgeInsets.only(bottom: 0),
       decoration: BoxDecoration(
-        // boxShadow: [
-        //   BoxShadow(
-        //     color: Theme.of(context).shadowColor,
-        //     spreadRadius: 5,
-        //     blurRadius: 5,
-        //     offset: const Offset(0, 3), // changes the position of the shadow
-        //   ),
-        // ],
         borderRadius: BorderRadius.circular(
           20,
         ),
@@ -391,15 +383,14 @@ void initPassword(MyUser u) {
 }
 
 // create a custom user class from Firebase user class
-Future CreateUserFromAuthUser(User? authUser) async {
+Future<MyUser?> CreateUserFromAuthUser(User? authUser) async {
   // get a snapshot of all student data
   final DocumentSnapshot snapshot = await FirebaseFirestore.instance
       .collection('all_students')
       .doc(authUser?.uid)
       .get();
   // get student data as a dictionary (Map<String, dynamic>)
-  dynamic UserData = snapshot.data;
-
+  dynamic UserData = snapshot.data();
   // try creating user object from dictionary
   try {
     // return null is user data is null
@@ -413,11 +404,12 @@ Future CreateUserFromAuthUser(User? authUser) async {
       email: authUser?.email,
       first_name: UserData['first_name'],
       last_name: UserData['last_name'],
-      school_id: UserData['sid'],
+      school_id: UserData['school_id'],
       department: UserData['department'],
       faculty: UserData['faculty'],
       status: UserData['status'],
       year: UserData['year'],
+      photoURL: UserData['photoURL'],
     );
     return user;
   } catch (e) {

@@ -7,6 +7,9 @@
 import 'dart:core';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 
 // Custom user class: Contains user information
 class MyUser {
@@ -44,6 +47,7 @@ class MyUser {
   // still to implement
   Map<String, dynamic> todict() {
     Map<String, dynamic> user_dict = {
+      'uid': uid,
       'first_name': first_name,
       'last_name': last_name,
       'email': email,
@@ -52,9 +56,42 @@ class MyUser {
       'department': department,
       'status': status,
       'year': year,
+      'photoURL': photoURL
     };
     return user_dict;
   }
+
+  String toString() {
+    return 'User($first_name $last_name, email: $email, school: $school_id, faculty: $faculty, department: $department)';
+  }
+
+  void updateUserFromUser(MyUser user) {
+    _password = user.GetPassword();
+    uid = user.uid;
+    first_name = user.first_name;
+    last_name = user.last_name;
+    email = user.email;
+    school_id = user.school_id;
+    faculty = user.faculty;
+    department = user.department;
+    status = user.status;
+    year = user.year;
+    photoURL = user.photoURL;
+  }
+}
+
+MyUser newUser() {
+  return MyUser(
+    uid: '',
+    email: '',
+    first_name: '',
+    last_name: '',
+    school_id: '',
+    faculty: '',
+    department: '',
+    status: '',
+    year: 0,
+  );
 }
 
 // this class control our firebase authentication
@@ -96,7 +133,8 @@ class AuthService {
       // use user credentials to create an instance of database service for user or update user
       user.uid = res.user?.uid;
       res.user?.updateDisplayName(user.first_name);
-      await DatabaseService(uid: res.user?.uid).UpdateStudentCollection(user);
+      await DatabaseService(uid: res.user?.uid)
+          .UpdateStudentCollection(user, res.user);
       return res.user;
     } catch (e) {
       // if an error was thrown, return null
@@ -136,10 +174,21 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('posts');
 
   // update all student collections and student collections in respective schools
-  Future UpdateStudentCollection(MyUser? user) async {
+  Future UpdateStudentCollection(MyUser? user, User? auth_user) async {
     // get dictionary representation of user
     Map<String, dynamic> dic = user?.todict() ?? {};
 
+    String email = auth_user?.email ?? '', name = auth_user?.displayName ?? '';
+    // set auth_user attributes
+    if (user?.email != email) {
+      auth_user?.updateEmail(user?.email ?? email);
+    }
+    if (user?.first_name != name) {
+      auth_user?.updateDisplayName(user?.first_name ?? name);
+    }
+    if (user?.photoURL != auth_user?.photoURL) {
+      auth_user?.updatePhotoURL(user?.photoURL);
+    }
     // update all student collections and student collections in respective schools
     await studentsCollection.doc(user?.uid).set(dic);
     return await schoolsCollection
@@ -172,4 +221,26 @@ class DatabaseService {
   Stream<DocumentSnapshot> get posts {
     return postsCollection.doc('posts').snapshots();
   }
+}
+
+Future<String?> captureImage(MyUser user) async {
+  final ImagePicker picker = ImagePicker();
+  final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+  if (pickedFile != null) {
+    final imageFile = File(pickedFile.path);
+    final storage = FirebaseStorage.instance;
+
+    try {
+      await storage.ref('images/photoOf${user.uid}.png').putFile(imageFile);
+      final imageUrl =
+          await storage.ref('images/photoOf${user.uid}.png').getDownloadURL();
+
+      return imageUrl;
+    } on FirebaseException catch (e) {
+      print('Error uploading image: $e');
+      return null;
+    }
+  }
+  return null;
 }

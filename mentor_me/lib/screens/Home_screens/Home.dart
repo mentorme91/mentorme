@@ -14,7 +14,8 @@ import 'opportunities_page.dart';
 class Home extends StatefulWidget {
   final User? user;
   final Function toggleTheme;
-  const Home({required this.toggleTheme, this.user});
+  final Function mode;
+  const Home({required this.toggleTheme, this.user, required this.mode});
 
   @override
   State<Home> createState() => _HomeState();
@@ -40,12 +41,15 @@ class _HomeState extends State<Home> {
       body: SingleChildScrollView(
         child: (_pageIndex != 0)
             ? _pages[_pageIndex]
-            : HomePage(toggleTheme: widget.toggleTheme),
+            : HomePage(
+                toggleTheme: widget.toggleTheme,
+                mode: widget.mode,
+              ),
       ),
       floatingActionButton: (_pageIndex == 1)
           ? FloatingActionButton(
               backgroundColor: Theme.of(context).primaryColor,
-              onPressed: () => widget.toggleTheme(),
+              onPressed: () {},
               child: Icon(
                 Icons.messenger,
                 color: Colors.white,

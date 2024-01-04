@@ -24,6 +24,10 @@ class _WrapperState extends State<Wrapper> {
     });
   }
 
+  bool mode() {
+    return isDarkMode;
+  }
+
   @override
   Widget build(BuildContext context) {
     // get user information to determine whether user is signed in or not (not null or null)
@@ -35,6 +39,7 @@ class _WrapperState extends State<Wrapper> {
             : Home(
                 toggleTheme: toggleTheme,
                 user: user,
+                mode: mode,
               ));
   }
 }
