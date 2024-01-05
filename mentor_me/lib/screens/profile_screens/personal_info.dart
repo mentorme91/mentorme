@@ -3,7 +3,7 @@ import 'package:mentor_me/services/helper_methods.dart';
 import 'package:mentor_me/services/services.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../../services/schools_info.dart';
+import '../../../services/schools_info.dart';
 
 class PersonalInfo extends StatefulWidget {
   final Function switchPage;

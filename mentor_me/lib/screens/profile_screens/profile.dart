@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mentor_me/screens/personal_info.dart';
+import 'package:mentor_me/screens/profile_screens/personal_info.dart';
 import 'package:mentor_me/screens/themes.dart';
-import '../services/services.dart';
+import '../../services/services.dart';
 import 'notifications.dart';
+import 'calendar.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -58,10 +59,11 @@ class _UserProfileState extends State<UserProfile> {
                   switchPage: switchPage,
                   user: widget.user,
                 )
-              : Notifications(
-                  switchPage: switchPage,
-                  user: widget.user,
-                ),
+              : UserCalendar(),
+      // : Notifications(
+      //     switchPage: switchPage,
+      //     user: widget.user,
+      //   ),
     );
   }
 }
@@ -166,28 +168,54 @@ class _ProfileState extends State<Profile> {
                   const SizedBox(
                     height: 25,
                   ),
-                  TextButton(
-                    onPressed: () async {
-                      String? imageURL = await captureImage(widget.user);
-                      if (imageURL == null) {
-                        print('Failed!');
-                        return;
-                      }
-                      setState(() {
-                        widget.user.photoURL = imageURL;
-                        user?.updatePhotoURL(imageURL);
-                      });
-                      await DatabaseService(uid: '')
-                          .UpdateStudentCollection(widget.user, user);
-                    },
-                    child: CircleAvatar(
-                      radius: 60,
-                      backgroundImage:
-                          const AssetImage('assets/images/face.png'),
-                      foregroundImage: (widget.user.photoURL != null)
-                          ? NetworkImage(widget.user.photoURL ?? '')
-                          : null,
-                    ),
+                  Stack(
+                    alignment: Alignment.bottomRight,
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                DetailScreen(image: widget.user.photoURL),
+                          ));
+                        },
+                        child: Hero(
+                          tag: 'userImage',
+                          child: CircleAvatar(
+                            backgroundImage: NetworkImage(widget
+                                    .user.photoURL ??
+                                'https://drive.google.com/uc?export=view&id=1nEoPU2dKhwGuVA9gSXrUcvoYYwFsefzJ'),
+                            radius: 60.0,
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          String? imageURL = await captureImage(widget.user);
+                          if (imageURL == null) {
+                            print('Failed!');
+                            return;
+                          }
+                          setState(() {
+                            widget.user.photoURL = imageURL;
+                            user?.updatePhotoURL(imageURL);
+                          });
+                          await DatabaseService(uid: '')
+                              .UpdateStudentCollection(widget.user, user);
+                        },
+                        child: Container(
+                          width: 40.0,
+                          height: 40.0,
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Icon(
+                            Icons.image_search,
+                            color: Colors.white,
+                          ), // Change the color as needed
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(
                     height: 25,
@@ -374,6 +402,71 @@ class _ProfileState extends State<Profile> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class DetailScreen extends StatelessWidget {
+  final String? image;
+  const DetailScreen({required this.image, super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Stack(
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Container(
+              color:
+                  Colors.black.withOpacity(0.5), // Transparent black background
+            ),
+          ),
+          Center(
+            child: Hero(
+              tag: 'userImage',
+              child: ExpandingAvatar(
+                image: NetworkImage(image ??
+                    'https://drive.google.com/uc?export=view&id=1nEoPU2dKhwGuVA9gSXrUcvoYYwFsefzJ'),
+                radius: 300.0, // Expanded radius in the detail screen
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ExpandingAvatar extends StatelessWidget {
+  final ImageProvider image;
+  final double radius;
+
+  ExpandingAvatar({required this.image, required this.radius});
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipOval(
+      child: TweenAnimationBuilder<double>(
+        tween: Tween(begin: 60.0, end: radius),
+        duration: Duration(milliseconds: 500),
+        builder: (context, value, child) {
+          return Container(
+            width: value,
+            height: value,
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                image: image,
+                fit: BoxFit.cover,
+              ),
+            ),
+          );
+        },
       ),
     );
   }

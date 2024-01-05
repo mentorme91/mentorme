@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../services/services.dart';
 import '../../services/helper_methods.dart';
 import 'package:provider/provider.dart';
-import '../profile.dart';
+import '../profile_screens/profile.dart';
 
 class HomePage extends StatefulWidget {
   final Function toggleTheme;
