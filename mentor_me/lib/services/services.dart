@@ -10,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mentor_me/services/helper_methods.dart';
 
 // Custom user class: Contains user information
 class MyUser {
@@ -25,19 +26,21 @@ class MyUser {
   String? _password;
   String? status;
   String? photoURL;
+  List<String> connections = [];
 
   // User constructor
-  MyUser(
-      {required this.uid,
-      required this.email,
-      required this.first_name,
-      required this.last_name,
-      required this.school_id,
-      required this.faculty,
-      required this.department,
-      required this.status,
-      required this.year,
-      this.photoURL});
+  MyUser({
+    this.uid,
+    this.email,
+    this.first_name,
+    this.last_name,
+    this.school_id,
+    this.faculty,
+    this.department,
+    this.status,
+    this.year,
+    this.photoURL,
+  });
 
   // get user password
   String? GetPassword() => _password;
@@ -100,8 +103,10 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // get changes made to our auth service user
-  Stream<User?> get user {
-    return _auth.authStateChanges();
+  Stream<MyUser?> get user {
+    return _auth
+        .authStateChanges()
+        .asyncMap((event) => CreateUserFromAuthUser(event));
   }
 
   // method to signin a user using email and password
@@ -133,8 +138,7 @@ class AuthService {
       // use user credentials to create an instance of database service for user or update user
       user.uid = res.user?.uid;
       res.user?.updateDisplayName(user.first_name);
-      await DatabaseService(uid: res.user?.uid)
-          .UpdateStudentCollection(user, res.user);
+      await DatabaseService(uid: res.user?.uid).UpdateStudentCollection(user);
       return res.user;
     } catch (e) {
       // if an error was thrown, return null
@@ -172,23 +176,13 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('schools');
   final CollectionReference postsCollection =
       FirebaseFirestore.instance.collection('posts');
+  final CollectionReference chatCollection =
+      FirebaseFirestore.instance.collection('chat_rooms');
 
   // update all student collections and student collections in respective schools
-  Future UpdateStudentCollection(MyUser? user, User? auth_user) async {
+  Future UpdateStudentCollection(MyUser? user) async {
     // get dictionary representation of user
     Map<String, dynamic> dic = user?.todict() ?? {};
-
-    String email = auth_user?.email ?? '', name = auth_user?.displayName ?? '';
-    // set auth_user attributes
-    if (user?.email != email) {
-      auth_user?.updateEmail(user?.email ?? email);
-    }
-    if (user?.first_name != name) {
-      auth_user?.updateDisplayName(user?.first_name ?? name);
-    }
-    if (user?.photoURL != auth_user?.photoURL) {
-      auth_user?.updatePhotoURL(user?.photoURL);
-    }
     // update all student collections and student collections in respective schools
     await studentsCollection.doc(user?.uid).set(dic);
     return await schoolsCollection
@@ -220,6 +214,88 @@ class DatabaseService {
 
   Stream<DocumentSnapshot> get posts {
     return postsCollection.doc('posts').snapshots();
+  }
+
+  Stream<DocumentSnapshot> chatRoom(String roomID) {
+    return postsCollection.doc(roomID).snapshots();
+  }
+
+  Future<Map<MyUser, int>> matches(MyUser? user) async {
+    Map<MyUser, int> matches = {};
+
+    QuerySnapshot studentQuery = await studentsCollection.get();
+    for (var student in studentQuery.docs) {
+      Map<String, dynamic> studentData = student.data() as Map<String, dynamic>;
+      if ((studentData['school_id'] == user?.school_id) &&
+          (studentData['uid'] != user?.uid)) {
+        int percent = 20;
+        percent += (studentData['faculty'] == user?.faculty) ? 55 : 0;
+        percent += (studentData['department'] == user?.department) ? 20 : 0;
+        if (studentData['status'] != user?.status) {
+          MyUser match = MyUser(
+              uid: studentData['uid'],
+              email: studentData['email'],
+              first_name: studentData['first_name'],
+              last_name: studentData['last_name'],
+              school_id: studentData['school_id'],
+              faculty: studentData['faculty'],
+              department: studentData['department'],
+              status: studentData['status'],
+              year: studentData['year'],
+              photoURL: studentData['photoURL']);
+          matches[match] = percent;
+        }
+      }
+    }
+    // QuerySnapshot schoolsQuery = await schoolsCollection.get();
+    //
+
+    // for (var school in schoolsQuery.docs) {
+    //   if (school.id == user?.school_id) {
+    //     int percent = 10;
+    //     QuerySnapshot facultyQuery =
+    //         await school.reference.collection('faculties').get();
+
+    //     for (var faculty in facultyQuery.docs) {
+    //       percent += (faculty.id == user?.faculty) ? 20 : 0;
+    //       QuerySnapshot deptQuery =
+    //           await faculty.reference.collection('departments').get();
+
+    //       for (var dept in deptQuery.docs) {
+    //         percent += (dept.id == user?.department) ? 25 : 0;
+    //         QuerySnapshot studentsQuery =
+    //             await dept.reference.collection('students').get();
+
+    //         for (var student in studentsQuery.docs) {
+    //           percent += 30;
+    //           if (student.id != user?.uid) {
+    //             Map<String, dynamic> studentData =
+    //                 student.data() as Map<String, dynamic>;
+    //             String? status = user?.status;
+    //             if (studentData['status'] != status) {
+    //               MyUser match = MyUser(
+    //                   uid: studentData['uid'],
+    //                   email: studentData['email'],
+    //                   first_name: studentData['first_name'],
+    //                   last_name: studentData['last_name'],
+    //                   school_id: studentData['school_id'],
+    //                   faculty: studentData['faculty'],
+    //                   department: studentData['deprtment'],
+    //                   status: studentData['status'],
+    //                   year: studentData['year'],
+    //                   photoURL: studentData['photoURL']);
+    //               matches[match] == percent;
+    //             }
+    //           }
+    //           percent -= 30;
+    //         }
+    //         percent -= (dept.id == user?.department) ? 25 : 0;
+    //       }
+    //       percent -= (faculty.id == user?.faculty) ? 20 : 0;
+    //     }
+    //   }
+    // }
+    return matches;
   }
 }
 

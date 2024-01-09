@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mentor_me/services/helper_methods.dart';
+import '../../services/tests.dart';
+import '../../services/services.dart';
 
 class ConnectionsPage extends StatefulWidget {
-  const ConnectionsPage({super.key});
+  final Map<MyUser, int> matches;
+  const ConnectionsPage({required this.matches, super.key});
 
   @override
   State<ConnectionsPage> createState() => _ConnectionsPageState();
@@ -10,6 +13,7 @@ class ConnectionsPage extends StatefulWidget {
 
 class _ConnectionsPageState extends State<ConnectionsPage> {
   String searchVal = '';
+  List<Map<MyUser, int>> matches = [];
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -119,8 +123,12 @@ class _ConnectionsPageState extends State<ConnectionsPage> {
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children:
-                    test_users.map((user) => ConnectTile(user: user)).toList(),
+                children: widget.matches.keys
+                    .map((user) => ConnectTile(
+                          user: user,
+                          percent: widget.matches[user] ?? 0,
+                        ))
+                    .toList(),
               ),
             ),
           ),
@@ -139,8 +147,12 @@ class _ConnectionsPageState extends State<ConnectionsPage> {
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children:
-                    test_users.map((user) => ConnectTile(user: user)).toList(),
+                children: test_users
+                    .map((user) => ConnectTile(
+                          user: user,
+                          percent: 0,
+                        ))
+                    .toList(),
               ),
             ),
           ),

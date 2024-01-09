@@ -2,10 +2,29 @@
 
 // key value pairs of the various schools and thier departments
 const schools_faculties = {
-  'Howard University': ['Others'],
+  'Howard University': [
+    'College Of Engineering and Architecture',
+    'School Of Business',
+    'College Of Arts and Sciences'
+  ],
 };
 
 // key value pairs of all faculties and their departments
 const faculties_dept = {
-  'Others': ['mist'],
+  'College Of Engineering and Architecture': [
+    'Electrical Engineering',
+    'Computer Engineering',
+    'Computer Science',
+    'Civil Engineering',
+    'Chemical Engineering',
+    'Architecture',
+  ],
+  'School Of Business': ['Information Technology', 'Business Management'],
+  'College Of Arts and Sciences': [
+    'Biology',
+    'Physics',
+    'Chemistry',
+    'History',
+    'English',
+  ],
 };

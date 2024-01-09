@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mentor_me/screens/theme_provider.dart';
 import 'services/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'screens/wrapper.dart';
@@ -21,13 +21,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of this application.
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<User?>.value(
+    return StreamProvider<MyUser?>.value(
       value: AuthService().user,
       initialData: null,
-      child: MaterialApp(
-        theme: lightTheme,
-        darkTheme: darkTheme,
-        home: const Wrapper(),
+      child: ChangeNotifierProvider(
+        create: (context) => MyThemeProvider(),
+        child: MaterialApp(
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          home: const Wrapper(),
+        ),
       ),
     );
   }

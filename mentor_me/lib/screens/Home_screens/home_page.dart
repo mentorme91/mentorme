@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 import '../../services/services.dart';
 import '../../services/helper_methods.dart';
-import 'package:provider/provider.dart';
-import '../profile.dart';
+import '../../services/tests.dart';
+import '../profile_screens/profile.dart';
 
 class HomePage extends StatefulWidget {
-  final Function toggleTheme;
-  final Function mode;
-  const HomePage({required this.toggleTheme, required this.mode, super.key});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -19,7 +16,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User?>(context);
+    final user = Provider.of<MyUser?>(context);
     return StreamBuilder<DocumentSnapshot>(
       stream: DatabaseService(uid: user?.uid).posts,
       builder: (context, snapshot) {
@@ -49,22 +46,12 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 TextButton(
                                   onPressed: () async {
-                                    MyUser? thisUser =
-                                        await CreateUserFromAuthUser(user);
-                                    if (thisUser == null) {
-                                      print('Conversion error');
-                                      return null;
-                                    }
                                     setState(
                                       () {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(builder: (context) {
-                                            return UserProfile(
-                                              user: thisUser,
-                                              toggleTheme: widget.toggleTheme,
-                                              mode: widget.mode,
-                                            );
+                                            return UserProfile();
                                           }),
                                         );
                                       },
@@ -84,7 +71,7 @@ class _HomePageState extends State<HomePage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      (user?.displayName == null)
+                                      (user?.first_name == null)
                                           ? 'Welcome'
                                           : 'Welcome back',
                                       style: TextStyle(
@@ -95,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     ),
                                     Text(
-                                      user?.displayName ?? 'New user',
+                                      user?.first_name ?? 'New user',
                                       style: TextStyle(
                                         color: Theme.of(context)
                                             .colorScheme
