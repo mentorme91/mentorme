@@ -1,14 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:mentor_me/screens/theme_provider.dart';
 import 'package:mentor_me/services/helper_methods.dart';
 import 'package:mentor_me/services/services.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../../../services/schools_info.dart';
 
+class PersonalInfoThemeLoader extends StatefulWidget {
+  const PersonalInfoThemeLoader({super.key});
+
+  @override
+  State<PersonalInfoThemeLoader> createState() =>
+      _PersonalInfoThemeLoaderState();
+}
+
+class _PersonalInfoThemeLoaderState extends State<PersonalInfoThemeLoader> {
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Provider.of<MyThemeProvider>(context).theme;
+    return Theme(data: theme, child: PersonalInfo());
+  }
+}
+
 class PersonalInfo extends StatefulWidget {
-  final Function switchPage;
-  final MyUser user;
-  const PersonalInfo({required this.switchPage, required this.user, super.key});
+  const PersonalInfo({super.key});
 
   @override
   State<PersonalInfo> createState() => _PersonalInfoState();
@@ -31,10 +45,10 @@ class _PersonalInfoState extends State<PersonalInfo> {
   MyUser dummy = newUser();
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<MyUser?>(context);
     if (dummy.toString() == newUser().toString()) {
-      dummy.updateUserFromUser(widget.user);
+      dummy.updateUserFromUser(user ?? MyUser());
     }
-    final user = Provider.of<User?>(context);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(10),
@@ -54,7 +68,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                       onPressed: () => {
                             setState(
                               () {
-                                widget.switchPage(0, widget.user);
+                                Navigator.pop(context);
                               },
                             )
                           },
@@ -194,8 +208,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
                               if (_formkey.currentState?.validate() ?? false) {
                                 setState(
                                   () {
-                                    enablers['school'] =
-                                        !(enablers['school'] ?? false);
+                                    // enablers['school'] =
+                                    //     !(enablers['school'] ?? false);
                                     dummy.updateUserFromUser(dummy);
                                   },
                                 );
@@ -434,13 +448,13 @@ class _PersonalInfoState extends State<PersonalInfo> {
                         if ((_formkey.currentState?.validate() ?? false) &&
                             (enablers.values
                                 .every((value) => value == false))) {
-                          widget.user.updateUserFromUser(dummy);
+                          user?.updateUserFromUser(dummy);
                           setState(() {
                             loading = true;
-                            widget.user.updateUserFromUser(dummy);
+                            user?.updateUserFromUser(dummy);
                           });
                           await DatabaseService(uid: '')
-                              .UpdateStudentCollection(widget.user, user);
+                              .UpdateStudentCollection(user);
                           setState(() {
                             loading = false;
                           });
@@ -475,7 +489,9 @@ class _PersonalInfoState extends State<PersonalInfo> {
                     ),
                     onPressed: () {
                       _formkey.currentState?.reset();
-                      setState(() {});
+                      setState(() {
+                        dummy.updateUserFromUser(user ?? MyUser());
+                      });
                     },
                     child: Text(
                       'Cancel changes',

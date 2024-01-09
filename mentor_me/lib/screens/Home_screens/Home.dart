@@ -1,21 +1,15 @@
 // This file contains the user's Home screen
 
-// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-// import '../../services/services.dart';
-// import '../../services/helper_methods.dart';
-// import 'package:provider/provider.dart';
+import 'package:mentor_me/services/services.dart';
+import 'package:provider/provider.dart';
 import 'home_page.dart';
 import 'connections_page.dart';
 import 'resources_page.dart';
 import 'opportunities_page.dart';
 
 class Home extends StatefulWidget {
-  final User? user;
-  final Function toggleTheme;
-  final Function mode;
-  const Home({required this.toggleTheme, this.user, required this.mode});
+  const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();
@@ -24,14 +18,14 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final double radius = 50;
   int _pageIndex = 0;
-  final List<Widget> _pages = const [
-    ConnectionsPage(),
-    ConnectionsPage(),
+  final List<Widget> _pages = [
     ResourcesPage(),
     OpportunitiesPage(),
   ];
+  Map<MyUser, int> matches = {};
   @override
   Widget build(BuildContext context) {
+    final MyUser? user = Provider.of<MyUser?>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: PreferredSize(
@@ -40,11 +34,12 @@ class _HomeState extends State<Home> {
       ),
       body: SingleChildScrollView(
         child: (_pageIndex != 0)
-            ? _pages[_pageIndex]
-            : HomePage(
-                toggleTheme: widget.toggleTheme,
-                mode: widget.mode,
-              ),
+            ? ((_pageIndex != 1)
+                ? _pages[_pageIndex - 2]
+                : ConnectionsPage(
+                    matches: matches,
+                  ))
+            : HomePage(),
       ),
       floatingActionButton: (_pageIndex == 1)
           ? FloatingActionButton(
@@ -66,9 +61,14 @@ class _HomeState extends State<Home> {
         landscapeLayout: BottomNavigationBarLandscapeLayout.spread,
         type: BottomNavigationBarType.fixed,
         currentIndex: _pageIndex,
-        onTap: (value) {
+        onTap: (value) async {
+          ;
+          Map<MyUser, int> match = await DatabaseService(uid: '').matches(user);
           setState(() {
             _pageIndex = value;
+            if (value == 1) {
+              matches = match;
+            }
           });
         },
         items: const [

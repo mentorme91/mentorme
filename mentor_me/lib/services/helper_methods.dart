@@ -1,105 +1,11 @@
 // This file contains all the helper functions used in this project
 
 import 'package:flutter/material.dart';
+import 'package:mentor_me/screens/Home_screens/connect_profile.dart';
 import 'package:mentor_me/services/services.dart';
 import 'dart:core';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-Map<String, Map<String, dynamic>> test_posts = {
-  '1': {
-    'photoURL':
-        'https://drive.google.com/uc?id=1sU9A3_w1i58aNAkEWNN1KTBKwYqvB9to',
-    'userName': 'James Brown',
-    'time': '12/31/2023 3:20pm',
-    'content': 'Hello world, How are you guys?',
-    'likes': 0,
-    'comments': 0,
-  },
-  '2': {
-    'photoURL':
-        'https://drive.google.com/uc?id=1rFtFKrH_CxIbYcWw-8-uh8H2h0rjLpp-',
-    'userName': 'Ruby Rose',
-    'time': '12/31/2023 3:20pm',
-    'content':
-        'Meta is hiring! Use this link -> https://www.androidpolice.com/install-adb-windows-mac-linux-guide/',
-    'likes': 0,
-    'comments': 0,
-  },
-  '3': {
-    'photoURL': 'https://picsum.photos/250?image=9',
-    'userName': 'Mac Daniels',
-    'time': '12/31/2023 1:20pm',
-    'content':
-        'Hello world, we are good and you?Hello world, we are good and you?Hello world, we are good and you?Hello world, we are good and you?Hello world, we are good and you?Hello world, we are good and you?Hello world, we are good and you?Hello world, we are good and you?Hello world, we are good and you?Hello world, we are good and you?Hello world, we are good and you?Hello world, we are good and you?',
-    'likes': 0,
-    'comments': 0,
-  },
-};
-
-List<MyUser> test_users = [
-  MyUser(
-      uid: '1',
-      email: 'allojeff',
-      first_name: 'Jeff',
-      last_name: 'Allo',
-      school_id: 'Howard',
-      faculty: 'CEA',
-      department: 'Electrical',
-      status: 'Mentor',
-      year: 2),
-  MyUser(
-      uid: '1',
-      email: 'allojeff',
-      first_name: 'Jeff',
-      last_name: 'Allo',
-      school_id: 'Howard',
-      faculty: 'CEA',
-      department: 'Electrical',
-      status: 'Mentor',
-      year: 2,
-      photoURL: 'https://picsum.photos/250?image=9'),
-  MyUser(
-      uid: '1',
-      email: 'allojeff',
-      first_name: 'Jeff',
-      last_name: 'Allo',
-      school_id: 'Howard',
-      faculty: 'CEA',
-      department: 'Electrical',
-      status: 'Mentor',
-      year: 2),
-  MyUser(
-      uid: '1',
-      email: 'allojeff',
-      first_name: 'Jeff',
-      last_name: 'Allo',
-      school_id: 'Howard',
-      faculty: 'CEA',
-      department: 'Electrical',
-      status: 'Mentor',
-      year: 2),
-  MyUser(
-      uid: '1',
-      email: 'allojeff',
-      first_name: 'Jeff',
-      last_name: 'Allo',
-      school_id: 'Howard',
-      faculty: 'CEA',
-      department: 'Electrical',
-      status: 'Mentor',
-      year: 2),
-  MyUser(
-      uid: '1',
-      email: 'allojeff',
-      first_name: 'Jeff',
-      last_name: 'Allo',
-      school_id: 'Howard',
-      faculty: 'CEA',
-      department: 'Electrical',
-      status: 'Mentor',
-      year: 2),
-];
 
 // CreatePostTile: Used to create a post tile
 List<Widget> createPostTile(Map<String, Map<String, dynamic>> postInfo) {
@@ -112,7 +18,8 @@ List<Widget> createPostTile(Map<String, Map<String, dynamic>> postInfo) {
 
 class ConnectTile extends StatefulWidget {
   final MyUser user;
-  const ConnectTile({required this.user, super.key});
+  final int percent;
+  const ConnectTile({required this.user, required this.percent, super.key});
 
   @override
   State<ConnectTile> createState() => _ConnectTileState();
@@ -122,10 +29,10 @@ class _ConnectTileState extends State<ConnectTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 120,
-      height: 140,
+      width: 130,
+      height: 150,
       margin: const EdgeInsets.only(top: 0, left: 10, right: 10),
-      padding: const EdgeInsets.only(bottom: 0),
+      padding: const EdgeInsets.only(bottom: 5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(
           20,
@@ -141,27 +48,51 @@ class _ConnectTileState extends State<ConnectTile> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           TextButton(
-            onPressed: () => {},
-            child: CircleAvatar(
-              radius: 28,
-              backgroundImage: (widget.user.photoURL == null)
-                  ? const AssetImage('assets/images/face.png')
-                  : null,
-              foregroundImage: (widget.user.photoURL != null)
-                  ? NetworkImage(widget.user.photoURL ?? '', scale: 1)
-                  : null,
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: ((context) => ConnectProfileThemeLoader(
+                            match: widget.user,
+                          ))));
+            },
+            child: Hero(
+              tag: 'matchImage',
+              child: CircleAvatar(
+                radius: 28,
+                backgroundImage: (widget.user.photoURL == null)
+                    ? const AssetImage('assets/images/face.png')
+                    : null,
+                foregroundImage: (widget.user.photoURL != null)
+                    ? NetworkImage(widget.user.photoURL ?? '', scale: 1)
+                    : null,
+              ),
             ),
           ),
           Text(
             "${widget.user.first_name} ${widget.user.last_name}",
+            textAlign: TextAlign.center,
             style: TextStyle(
                 color: Theme.of(context).colorScheme.onPrimary, fontSize: 12),
           ),
-          Text(
-            '${widget.user.department} Major',
-            style:
-                TextStyle(color: Theme.of(context).primaryColor, fontSize: 10),
-          )
+          Container(
+            padding: EdgeInsets.only(left: 5, right: 5),
+            alignment: Alignment.center,
+            child: Text(
+              '${widget.user.department} Major',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Theme.of(context).primaryColor, fontSize: 10),
+            ),
+          ),
+          (widget.percent != 0)
+              ? Text(
+                  '${widget.percent}% Match',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor, fontSize: 12),
+                )
+              : Text(''),
         ],
       ),
     );
@@ -385,9 +316,12 @@ void initPassword(MyUser u) {
 // create a custom user class from Firebase user class
 Future<MyUser?> CreateUserFromAuthUser(User? authUser) async {
   // get a snapshot of all student data
+  if (authUser == null) {
+    return null;
+  }
   final DocumentSnapshot snapshot = await FirebaseFirestore.instance
       .collection('all_students')
-      .doc(authUser?.uid)
+      .doc(authUser.uid)
       .get();
   // get student data as a dictionary (Map<String, dynamic>)
   dynamic UserData = snapshot.data();
@@ -400,8 +334,8 @@ Future<MyUser?> CreateUserFromAuthUser(User? authUser) async {
 
     // create user instance
     MyUser user = MyUser(
-      uid: authUser?.uid,
-      email: authUser?.email,
+      uid: authUser.uid,
+      email: authUser.email,
       first_name: UserData['first_name'],
       last_name: UserData['last_name'],
       school_id: UserData['school_id'],

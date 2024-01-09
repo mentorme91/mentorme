@@ -1,86 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:mentor_me/screens/profile_screens/notifications.dart';
 import 'package:mentor_me/screens/profile_screens/personal_info.dart';
-import 'package:mentor_me/screens/themes.dart';
+import 'package:mentor_me/screens/theme_provider.dart';
 import '../../services/services.dart';
-import 'notifications.dart';
-import 'calendar.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class UserProfile extends StatefulWidget {
-  MyUser user;
-  final Function toggleTheme;
-  final Function mode;
-  UserProfile(
-      {required this.user,
-      required this.toggleTheme,
-      required this.mode,
-      super.key});
+  const UserProfile({super.key});
 
   @override
   State<UserProfile> createState() => _UserProfileState();
 }
 
 class _UserProfileState extends State<UserProfile> {
-  bool isDarkMode = false;
-  int _pageNum = 0;
-  void toggleTheme() {
-    setState(() {
-      isDarkMode = !isDarkMode;
-    });
-  }
-
-  void switchPage(int page, MyUser editedUser) {
-    setState(() {
-      _pageNum = page;
-      widget.user = editedUser;
-    });
-  }
-
-  bool mode() {
-    return isDarkMode;
-  }
-
   @override
   Widget build(BuildContext context) {
-    isDarkMode = widget.mode();
+    final ThemeData theme = Provider.of<MyThemeProvider>(context).theme;
     return Theme(
-      data: isDarkMode ? darkTheme : lightTheme,
-      child: (_pageNum == 0)
-          ? Profile(
-              toggleTheme: widget.toggleTheme,
-              user: widget.user,
-              profileToggleTheme: toggleTheme,
-              mode: mode,
-              switchPage: switchPage,
-            )
-          : (_pageNum == 1)
-              ? PersonalInfo(
-                  switchPage: switchPage,
-                  user: widget.user,
-                )
-              : UserCalendar(),
-      // : Notifications(
-      //     switchPage: switchPage,
-      //     user: widget.user,
-      //   ),
+      data: theme,
+      child: Profile(),
     );
   }
 }
 
 class Profile extends StatefulWidget {
-  final MyUser user;
-  final Function toggleTheme;
-  final Function profileToggleTheme;
-  final Function mode;
-  final Function switchPage;
-  const Profile(
-      {required this.user,
-      required this.toggleTheme,
-      required this.profileToggleTheme,
-      required this.mode,
-      required this.switchPage,
-      super.key});
+  const Profile({super.key});
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -89,7 +33,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User?>(context);
+    final user = Provider.of<MyUser?>(context);
     final AuthService _auth = AuthService();
     return Scaffold(
       appBar: PreferredSize(
@@ -175,14 +119,13 @@ class _ProfileState extends State<Profile> {
                         onTap: () async {
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) =>
-                                DetailScreen(image: widget.user.photoURL),
+                                DetailScreen(image: user?.photoURL),
                           ));
                         },
                         child: Hero(
                           tag: 'userImage',
                           child: CircleAvatar(
-                            backgroundImage: NetworkImage(widget
-                                    .user.photoURL ??
+                            backgroundImage: NetworkImage(user?.photoURL ??
                                 'https://drive.google.com/uc?export=view&id=1nEoPU2dKhwGuVA9gSXrUcvoYYwFsefzJ'),
                             radius: 60.0,
                           ),
@@ -190,17 +133,17 @@ class _ProfileState extends State<Profile> {
                       ),
                       GestureDetector(
                         onTap: () async {
-                          String? imageURL = await captureImage(widget.user);
+                          String? imageURL =
+                              await captureImage(user ?? MyUser());
                           if (imageURL == null) {
                             print('Failed!');
                             return;
                           }
                           setState(() {
-                            widget.user.photoURL = imageURL;
-                            user?.updatePhotoURL(imageURL);
+                            user?.photoURL = imageURL;
                           });
                           await DatabaseService(uid: '')
-                              .UpdateStudentCollection(widget.user, user);
+                              .UpdateStudentCollection(user);
                         },
                         child: Container(
                           width: 40.0,
@@ -221,7 +164,7 @@ class _ProfileState extends State<Profile> {
                     height: 25,
                   ),
                   Text(
-                    '${widget.user.first_name} ${widget.user.last_name}',
+                    '${user?.first_name} ${user?.last_name}',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onPrimary,
                       fontWeight: FontWeight.bold,
@@ -231,7 +174,7 @@ class _ProfileState extends State<Profile> {
                   const SizedBox(
                     height: 5,
                   ),
-                  Text('${widget.user.email}'),
+                  Text('${user?.email}'),
                 ]),
               ),
               const SizedBox(
@@ -281,7 +224,11 @@ class _ProfileState extends State<Profile> {
                     ListTile(
                       onTap: () {
                         setState(() {
-                          widget.switchPage(1, widget.user);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) =>
+                                      PersonalInfoThemeLoader())));
                         });
                       },
                       leading: const Icon(
@@ -310,7 +257,10 @@ class _ProfileState extends State<Profile> {
                     ListTile(
                       onTap: () {
                         setState(() {
-                          widget.switchPage(2, widget.user);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) => Notifications())));
                         });
                       },
                       leading: const Icon(
@@ -342,7 +292,7 @@ class _ProfileState extends State<Profile> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Switch to ${widget.mode() ? 'light' : 'dark'} Mode',
+                            'Switch to ${Provider.of<MyThemeProvider>(context).isDarkMode ? 'light' : 'dark'} Mode',
                             style: const TextStyle(
                               fontSize: 16.0,
                               color: Colors.white,
@@ -350,7 +300,7 @@ class _ProfileState extends State<Profile> {
                           ),
                           IconButton(
                             icon: Icon(
-                              widget.mode()
+                              Provider.of<MyThemeProvider>(context).isDarkMode
                                   ? Icons.brightness_6_outlined
                                   : Icons.brightness_6,
                               size: 30.0,
@@ -359,8 +309,9 @@ class _ProfileState extends State<Profile> {
                             onPressed: () {
                               setState(
                                 () {
-                                  widget.toggleTheme();
-                                  widget.profileToggleTheme();
+                                  Provider.of<MyThemeProvider>(context,
+                                          listen: false)
+                                      .switchMode();
                                 },
                               );
                             },

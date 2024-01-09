@@ -1,11 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:mentor_me/services/services.dart';
+import 'package:mentor_me/screens/theme_provider.dart';
+import 'package:provider/provider.dart';
+// import 'package:mentor_me/services/services.dart';
+// import 'package:provider/provider.dart';
+
+class NotificationsThemeLoader extends StatefulWidget {
+  const NotificationsThemeLoader({super.key});
+
+  @override
+  State<NotificationsThemeLoader> createState() =>
+      _NotificationsThemeLoaderState();
+}
+
+class _NotificationsThemeLoaderState extends State<NotificationsThemeLoader> {
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Provider.of<MyThemeProvider>(context).theme;
+    return Theme(data: theme, child: Notifications());
+  }
+}
 
 class Notifications extends StatefulWidget {
-  final Function switchPage;
-  final MyUser user;
-  const Notifications(
-      {required this.switchPage, required this.user, super.key});
+  const Notifications({super.key});
 
   @override
   State<Notifications> createState() => _NotificationsState();
@@ -14,6 +30,7 @@ class Notifications extends StatefulWidget {
 class _NotificationsState extends State<Notifications> {
   @override
   Widget build(BuildContext context) {
+    // final user = Provider.of<MyUser?>(context);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(10),
@@ -33,7 +50,7 @@ class _NotificationsState extends State<Notifications> {
                       onPressed: () => {
                             setState(
                               () {
-                                widget.switchPage(0, widget.user);
+                                Navigator.pop(context);
                               },
                             )
                           },

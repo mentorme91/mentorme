@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
+
+import '../../services/tests.dart';
 
 class ResourcesPage extends StatefulWidget {
   const ResourcesPage({super.key});
@@ -8,99 +11,185 @@ class ResourcesPage extends StatefulWidget {
 }
 
 class _ResourcesPageState extends State<ResourcesPage> {
+  List<Widget> _createCourseTile(List<String> courses) {
+    return courses.map((course) => CourseTile(courseName: course)).toList();
+  }
+
+  List<String> _courses = courses;
+
+  List<String> _filterCourses(String searchVal) {
+    List<String> filter = [];
+    if (searchVal == '') {
+      return courses;
+    }
+    searchVal = searchVal.toUpperCase();
+    for (var element in courses) {
+      if (element.substring(0, searchVal.length) == searchVal) {
+        filter.add(element);
+      }
+    }
+    return filter;
+  }
+
   String searchVal = '';
+
+  @override
+  Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    return Container(
+      child: Column(
+        children: [
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: Text(
+              'Course Resources',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Container(
+            height: 50,
+            padding: const EdgeInsets.only(
+              left: 10,
+            ),
+            margin: const EdgeInsets.symmetric(
+              horizontal: 20,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              // border: Border.all(
+              //   color: Color.fromARGB(255, 56, 107, 246),
+              //   width: 0.3,
+              // ),
+              borderRadius: BorderRadius.circular(25.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 5,
+                  blurRadius: 10,
+                  offset: const Offset(0, 3), // changes position of shadow
+                ),
+              ],
+            ),
+            alignment: AlignmentDirectional.center,
+            child: Row(
+              children: [
+                IconButton(
+                  icon: const Icon(
+                    Icons.search_rounded,
+                    color: Colors.grey,
+                  ),
+                  onPressed: () => {
+                    setState(() {
+                      _courses = _filterCourses(searchVal);
+                    })
+                  },
+                ),
+                Expanded(
+                  child: FractionallySizedBox(
+                    child: TextFormField(
+                      cursorColor: Colors.black,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        decorationColor: Colors.black,
+                      ),
+                      keyboardType: TextInputType.text,
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(
+                            gapPadding: 1,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(0),
+                            ),
+                            borderSide: BorderSide(
+                              color: Colors.black,
+                              width: 0.0,
+                              style: BorderStyle.none,
+                            ),
+                          ),
+                          hintText: 'Search Course',
+                          hintStyle: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 13,
+                          )),
+                      onChanged: (value) {
+                        setState(() {
+                          searchVal = value;
+                          _courses = _filterCourses(searchVal);
+                        });
+                      },
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Container(
+            height: screenHeight - 245,
+            child: GridView.count(
+              crossAxisCount: 3,
+              scrollDirection: Axis.vertical,
+              children: _createCourseTile(_courses),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CourseTile extends StatelessWidget {
+  final String courseName;
+  const CourseTile({required this.courseName, super.key});
+
+  Color _generateRandomColor() {
+    Random random = Random();
+    int r = random.nextInt(256);
+    int g = random.nextInt(256);
+    int b = random.nextInt(256);
+    return Color.fromARGB(255, r, g, b);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(children: [
-        const SizedBox(
-          height: 20,
+      width: 40,
+      height: 40,
+      margin: const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
+      padding: const EdgeInsets.only(bottom: 0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(
+          20,
         ),
-        Center(
-          child: Text(
-            'Course Resources',
-            textAlign: TextAlign.center,
+        border: Border.all(
+          color: Theme.of(context).primaryColor,
+          width: 0.2,
+        ),
+        color: _generateRandomColor(),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            courseName,
             style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimary,
                 fontWeight: FontWeight.bold,
-                fontSize: 30),
+                color: Theme.of(context).colorScheme.onPrimary,
+                fontSize: 15),
           ),
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        Container(
-          height: 50,
-          padding: const EdgeInsets.only(
-            left: 10,
-          ),
-          margin: const EdgeInsets.symmetric(
-            horizontal: 20,
-          ),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            // border: Border.all(
-            //   color: Color.fromARGB(255, 56, 107, 246),
-            //   width: 0.3,
-            // ),
-            borderRadius: BorderRadius.circular(25.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                spreadRadius: 5,
-                blurRadius: 10,
-                offset: const Offset(0, 3), // changes position of shadow
-              ),
-            ],
-          ),
-          alignment: AlignmentDirectional.center,
-          child: Row(
-            children: [
-              IconButton(
-                icon: const Icon(
-                  Icons.search_rounded,
-                  color: Colors.grey,
-                ),
-                onPressed: () => {print('Hello!')},
-              ),
-              Expanded(
-                child: FractionallySizedBox(
-                  child: TextFormField(
-                    cursorColor: Colors.black,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      decorationColor: Colors.black,
-                    ),
-                    keyboardType: TextInputType.text,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(
-                          gapPadding: 1,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(0),
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                            width: 0.0,
-                            style: BorderStyle.none,
-                          ),
-                        ),
-                        hintText: 'Search Course',
-                        hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 13,
-                        )),
-                    onChanged: (value) {
-                      setState(() {
-                        searchVal = value;
-                      });
-                    },
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-      ]),
+        ],
+      ),
     );
   }
 }

@@ -44,6 +44,7 @@ dependencies:
   firebase_storage: ^11.5.6
   table_calendar: ^3.0.9
   flutter_local_notifications: ^16.3.0
+  time_planner: ^0.1.2+1
 
 dev_dependencies:
   flutter_test:
