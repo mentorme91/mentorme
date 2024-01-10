@@ -9,7 +9,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mentor_me/screens/Home_screens/connect_request.dart';
 import 'package:mentor_me/services/helper_methods.dart';
 
 // Custom user class: Contains user information
@@ -27,6 +29,9 @@ class MyUser {
   String? status;
   String? photoURL;
   List<String> connections = [];
+  List<String> cancels = [];
+  List<String> rejects = [];
+  Map<String, Request> requests = {};
 
   // User constructor
   MyUser({
@@ -59,7 +64,11 @@ class MyUser {
       'department': department,
       'status': status,
       'year': year,
-      'photoURL': photoURL
+      'photoURL': photoURL,
+      'connections': connections,
+      'requests': requests,
+      'cancels': cancels,
+      'rejects': rejects,
     };
     return user_dict;
   }
@@ -81,6 +90,36 @@ class MyUser {
     year = user.year;
     photoURL = user.photoURL;
   }
+
+  void updateFromMap(Map studentData) {
+    uid = studentData['uid'];
+    email = studentData['email'];
+    first_name = studentData['first_name'];
+    last_name = studentData['last_name'];
+    school_id = studentData['school_id'];
+    faculty = studentData['faculty'];
+    department = studentData['department'];
+    status = studentData['status'];
+    year = studentData['year'];
+    photoURL = studentData['photoURL'];
+    List<dynamic> conns = studentData['connections'] ?? [];
+    connections = conns.cast<String>();
+    List<dynamic> rejs = studentData['rejects'] ?? [];
+    rejects = rejs.cast<String>();
+    List<dynamic> cns = studentData['cancels'] ?? [];
+    cancels = cns.cast<String>();
+    Map<String, dynamic> reqs = studentData['requests'] ?? {};
+    requests = reqs.map(
+      (key, value) => MapEntry(
+        key,
+        Request(
+          recieverUID: value['reciever'],
+          senderUID: value['sender'],
+          status: Status.values[value['status']],
+        ),
+      ),
+    );
+  }
 }
 
 MyUser newUser() {
@@ -98,7 +137,7 @@ MyUser newUser() {
 }
 
 // this class control our firebase authentication
-class AuthService {
+class AuthService extends ChangeNotifier {
   // This serves as our entry point into firebase authentication
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -159,7 +198,7 @@ class AuthService {
 }
 
 // Database service: controls manipulation of the database
-class DatabaseService {
+class DatabaseService extends ChangeNotifier {
   // string user id
   final String? uid;
 
@@ -183,9 +222,14 @@ class DatabaseService {
   Future UpdateStudentCollection(MyUser? user) async {
     // get dictionary representation of user
     Map<String, dynamic> dic = user?.todict() ?? {};
+    Map<String, Request> requests = dic['requests'];
+    Map newRequests =
+        requests.map((key, value) => MapEntry(key, value.toMap()));
+    dic['requests'] = newRequests;
+    print(dic);
     // update all student collections and student collections in respective schools
     await studentsCollection.doc(user?.uid).set(dic);
-    return await schoolsCollection
+    await schoolsCollection
         .doc(user?.school_id)
         .collection('faculties')
         .doc(user?.faculty)
@@ -196,20 +240,16 @@ class DatabaseService {
         .set(dic);
   }
 
-  // Stream<QuerySnapshot> get students {
-  //   return schoolsCollection
-  //       .doc(sid)
-  //       .collection('faculties')
-  //       .doc(fid)
-  //       .collection('departments')
-  //       .doc(did)
-  //       .collection('students')
-  //       .snapshots();
-  // }
-
   // get user data snapshots
   Stream<DocumentSnapshot> get userData {
     return studentsCollection.doc(uid).snapshots();
+  }
+
+  Future<MyUser> get userInfo async {
+    DocumentSnapshot<Object?> val = await studentsCollection.doc(uid).get();
+    Map data = val.data() as Map<String, dynamic>;
+    MyUser user = MyUser()..updateFromMap(data);
+    return user;
   }
 
   Stream<DocumentSnapshot> get posts {
@@ -227,74 +267,17 @@ class DatabaseService {
     for (var student in studentQuery.docs) {
       Map<String, dynamic> studentData = student.data() as Map<String, dynamic>;
       if ((studentData['school_id'] == user?.school_id) &&
-          (studentData['uid'] != user?.uid)) {
+          (studentData['uid'] != user?.uid) &&
+          !(user?.connections.contains(studentData['uid']) ?? false)) {
         int percent = 20;
         percent += (studentData['faculty'] == user?.faculty) ? 55 : 0;
         percent += (studentData['department'] == user?.department) ? 20 : 0;
         if (studentData['status'] != user?.status) {
-          MyUser match = MyUser(
-              uid: studentData['uid'],
-              email: studentData['email'],
-              first_name: studentData['first_name'],
-              last_name: studentData['last_name'],
-              school_id: studentData['school_id'],
-              faculty: studentData['faculty'],
-              department: studentData['department'],
-              status: studentData['status'],
-              year: studentData['year'],
-              photoURL: studentData['photoURL']);
+          MyUser match = MyUser()..updateFromMap(studentData);
           matches[match] = percent;
         }
       }
     }
-    // QuerySnapshot schoolsQuery = await schoolsCollection.get();
-    //
-
-    // for (var school in schoolsQuery.docs) {
-    //   if (school.id == user?.school_id) {
-    //     int percent = 10;
-    //     QuerySnapshot facultyQuery =
-    //         await school.reference.collection('faculties').get();
-
-    //     for (var faculty in facultyQuery.docs) {
-    //       percent += (faculty.id == user?.faculty) ? 20 : 0;
-    //       QuerySnapshot deptQuery =
-    //           await faculty.reference.collection('departments').get();
-
-    //       for (var dept in deptQuery.docs) {
-    //         percent += (dept.id == user?.department) ? 25 : 0;
-    //         QuerySnapshot studentsQuery =
-    //             await dept.reference.collection('students').get();
-
-    //         for (var student in studentsQuery.docs) {
-    //           percent += 30;
-    //           if (student.id != user?.uid) {
-    //             Map<String, dynamic> studentData =
-    //                 student.data() as Map<String, dynamic>;
-    //             String? status = user?.status;
-    //             if (studentData['status'] != status) {
-    //               MyUser match = MyUser(
-    //                   uid: studentData['uid'],
-    //                   email: studentData['email'],
-    //                   first_name: studentData['first_name'],
-    //                   last_name: studentData['last_name'],
-    //                   school_id: studentData['school_id'],
-    //                   faculty: studentData['faculty'],
-    //                   department: studentData['deprtment'],
-    //                   status: studentData['status'],
-    //                   year: studentData['year'],
-    //                   photoURL: studentData['photoURL']);
-    //               matches[match] == percent;
-    //             }
-    //           }
-    //           percent -= 30;
-    //         }
-    //         percent -= (dept.id == user?.department) ? 25 : 0;
-    //       }
-    //       percent -= (faculty.id == user?.faculty) ? 20 : 0;
-    //     }
-    //   }
-    // }
     return matches;
   }
 }
@@ -319,4 +302,46 @@ Future<String?> captureImage(MyUser user) async {
     }
   }
   return null;
+}
+
+class Message {
+  String message, senderUID, recieverUID;
+  Timestamp time = Timestamp.now();
+
+  Message(
+      {required this.message,
+      required this.senderUID,
+      required this.recieverUID});
+
+  Map<String, dynamic> toMap() {
+    return {
+      'message': message,
+      'senderUID': senderUID,
+      'recieverUID': recieverUID,
+      'time': time,
+    };
+  }
+}
+
+class ChatService extends ChangeNotifier {
+  Future<void> sendMessage(Message message) async {
+    List ids = [message.senderUID, message.recieverUID]..sort();
+    String room = ids.join('_');
+    await DatabaseService(uid: '')
+        .chatCollection
+        .doc(room)
+        .collection('messages')
+        .add(message.toMap());
+  }
+
+  Stream<QuerySnapshot> recieveMessage(String senderUID, String recieverUID) {
+    List ids = [senderUID, recieverUID]..sort();
+    String room = ids.join('_');
+    return DatabaseService(uid: '')
+        .chatCollection
+        .doc(room)
+        .collection('messages')
+        .orderBy('time', descending: false)
+        .snapshots();
+  }
 }

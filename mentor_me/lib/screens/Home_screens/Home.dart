@@ -1,6 +1,7 @@
 // This file contains the user's Home screen
 
 import 'package:flutter/material.dart';
+import 'package:mentor_me/screens/message_screens/chats.dart';
 import 'package:mentor_me/services/services.dart';
 import 'package:provider/provider.dart';
 import 'home_page.dart';
@@ -23,6 +24,7 @@ class _HomeState extends State<Home> {
     OpportunitiesPage(),
   ];
   Map<MyUser, int> matches = {};
+  List<MyUser> connections = [];
   @override
   Widget build(BuildContext context) {
     final MyUser? user = Provider.of<MyUser?>(context);
@@ -37,6 +39,7 @@ class _HomeState extends State<Home> {
             ? ((_pageIndex != 1)
                 ? _pages[_pageIndex - 2]
                 : ConnectionsPage(
+                    connections: connections,
                     matches: matches,
                   ))
             : HomePage(),
@@ -44,7 +47,16 @@ class _HomeState extends State<Home> {
       floatingActionButton: (_pageIndex == 1)
           ? FloatingActionButton(
               backgroundColor: Theme.of(context).primaryColor,
-              onPressed: () {},
+              onPressed: () {
+                setState(() {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (((context) => Chats())),
+                    ),
+                  );
+                });
+              },
               child: Icon(
                 Icons.messenger,
                 color: Colors.white,
@@ -62,7 +74,12 @@ class _HomeState extends State<Home> {
         type: BottomNavigationBarType.fixed,
         currentIndex: _pageIndex,
         onTap: (value) async {
-          ;
+          List<MyUser> dum = [];
+          for (var connectionId in user?.connections ?? []) {
+            MyUser u = await DatabaseService(uid: connectionId).userInfo;
+            dum.add(u);
+          }
+          connections = dum;
           Map<MyUser, int> match = await DatabaseService(uid: '').matches(user);
           setState(() {
             _pageIndex = value;

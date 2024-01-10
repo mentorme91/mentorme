@@ -2,10 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:mentor_me/screens/Home_screens/connect_profile.dart';
+import 'package:mentor_me/screens/Home_screens/connect_request.dart';
 import 'package:mentor_me/services/services.dart';
 import 'dart:core';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 
 // CreatePostTile: Used to create a post tile
 List<Widget> createPostTile(Map<String, Map<String, dynamic>> postInfo) {
@@ -26,8 +28,27 @@ class ConnectTile extends StatefulWidget {
 }
 
 class _ConnectTileState extends State<ConnectTile> {
+  Status _getStatus(MyUser user) {
+    List ids = [user.uid, widget.user.uid]..sort();
+
+    String IDkey = ids.join('_');
+    if (user.connections.contains(widget.user.uid)) {
+      return Status.connected;
+    } else if (user.requests.keys.contains(IDkey)) {
+      sender = (user.requests[IDkey]?.status == Status.pending)
+          ? (user.requests[IDkey]?.senderUID == user.uid)
+          : false;
+      return user.requests[IDkey]?.status ?? Status.none;
+    } else {
+      return Status.none;
+    }
+  }
+
+  bool sender = false;
+
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<MyUser?>(context);
     return Container(
       width: 130,
       height: 150,
@@ -50,23 +71,24 @@ class _ConnectTileState extends State<ConnectTile> {
           TextButton(
             onPressed: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: ((context) => ConnectProfileThemeLoader(
-                            match: widget.user,
-                          ))));
+                context,
+                MaterialPageRoute(
+                  builder: ((context) => ConnectProfileThemeLoader(
+                        sender: sender,
+                        status: _getStatus(user ?? MyUser()),
+                        match: widget.user,
+                      )),
+                ),
+              );
             },
-            child: Hero(
-              tag: 'matchImage',
-              child: CircleAvatar(
-                radius: 28,
-                backgroundImage: (widget.user.photoURL == null)
-                    ? const AssetImage('assets/images/face.png')
-                    : null,
-                foregroundImage: (widget.user.photoURL != null)
-                    ? NetworkImage(widget.user.photoURL ?? '', scale: 1)
-                    : null,
-              ),
+            child: CircleAvatar(
+              radius: 28,
+              backgroundImage: (widget.user.photoURL == null)
+                  ? const AssetImage('assets/images/face.png')
+                  : null,
+              foregroundImage: (widget.user.photoURL != null)
+                  ? NetworkImage(widget.user.photoURL ?? '', scale: 1)
+                  : null,
             ),
           ),
           Text(
@@ -85,14 +107,16 @@ class _ConnectTileState extends State<ConnectTile> {
                   color: Theme.of(context).primaryColor, fontSize: 10),
             ),
           ),
-          (widget.percent != 0)
+          (_getStatus(user ?? MyUser()) == Status.none)
               ? Text(
                   '${widget.percent}% Match',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       color: Theme.of(context).primaryColor, fontSize: 12),
                 )
-              : Text(''),
+              : (_getStatus(user ?? MyUser()) == Status.pending)
+                  ? Text(sender ? '' : 'Reply to request')
+                  : Text(''),
         ],
       ),
     );
@@ -333,21 +357,12 @@ Future<MyUser?> CreateUserFromAuthUser(User? authUser) async {
     }
 
     // create user instance
-    MyUser user = MyUser(
-      uid: authUser.uid,
-      email: authUser.email,
-      first_name: UserData['first_name'],
-      last_name: UserData['last_name'],
-      school_id: UserData['school_id'],
-      department: UserData['department'],
-      faculty: UserData['faculty'],
-      status: UserData['status'],
-      year: UserData['year'],
-      photoURL: UserData['photoURL'],
-    );
+    MyUser user = MyUser()..updateFromMap(UserData);
     return user;
   } catch (e) {
     // else return null
+    print('Something failed here');
+    print(e.toString());
     return null;
   }
 }
