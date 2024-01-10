@@ -4,6 +4,11 @@ import 'package:time_planner/time_planner.dart';
 
 // import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+class Event {
+  TimeOfDay start = TimeOfDay.now(), end = TimeOfDay.now();
+  String information = '', title = '';
+}
+
 class UserCalendar extends StatefulWidget {
   const UserCalendar({super.key});
 
@@ -12,21 +17,157 @@ class UserCalendar extends StatefulWidget {
 }
 
 class _UserCalendarState extends State<UserCalendar> {
+  Map<DateTime, List<Event>> events = {};
+
+  List<Event> _eventsOf(DateTime day) {
+    return events[day] ?? [];
+  }
+
+  void _addEvent(DateTime day) {
+    Event newEvent = Event();
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SingleChildScrollView(
+          child: AlertDialog(
+            title: Text('Add Event'),
+            content: Column(
+              children: [
+                ListTile(
+                  title: Text('Start Time'),
+                  subtitle: Text(newEvent.start.format(context)),
+                  onTap: () async {
+                    TimeOfDay? selectedTime = await showTimePicker(
+                      context: context,
+                      initialTime: newEvent.start,
+                    );
+                    if (selectedTime != null) {
+                      setState(() {
+                        newEvent.start = selectedTime;
+                      });
+                    }
+                  },
+                ),
+                ListTile(
+                  title: Text('End Time'),
+                  subtitle: Text(newEvent.end.format(context)),
+                  onTap: () async {
+                    TimeOfDay? selectedTime = await showTimePicker(
+                      context: context,
+                      initialTime: newEvent.end,
+                    );
+                    if (selectedTime != null) {
+                      setState(() {
+                        newEvent.end = selectedTime;
+                        print(newEvent.end.format(context));
+                      });
+                    }
+                  },
+                ),
+                TextField(
+                  decoration: InputDecoration(labelText: 'Event Information'),
+                  onChanged: (value) {
+                    setState(() {
+                      newEvent.information = value;
+                    });
+                  },
+                ),
+                TextField(
+                  decoration: InputDecoration(labelText: 'Title'),
+                  onChanged: (value) {
+                    setState(() {
+                      newEvent.title = value;
+                    });
+                  },
+                ),
+              ],
+            ),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  if (events[day] == null) {
+                    events[day] = [];
+                  }
+                  events[day]?.add(newEvent);
+                  Navigator.pop(context); // Close the dialog
+                },
+                child: Text('Submit'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget buildEventListTile(Event event) {
+    return ListTile(
+      title: Text(event.title),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Start Time: ${event.start.format(context)}'),
+          Text('End Time: ${event.end.format(context)}'),
+          Text('Information: ${event.information}'),
+        ],
+      ),
+    );
+  }
+
+  int _isEarlier(TimeOfDay time1, TimeOfDay time2) {
+    if (time1.hour < time2.hour) {
+      return 1;
+    } else if (time1.hour == time2.hour) {
+      return time1.minute < time2.minute ? 1 : 0;
+    }
+    return 0;
+  }
+
+  List<Widget> dayEvents = [];
+  void _displayEvents(DateTime day) {
+    if (events[day] == null) {
+      events[day] = [];
+    }
+    events[day]
+        ?.sort((event1, event2) => _isEarlier(event1.start, event2.start));
+    dayEvents =
+        events[day]?.map((event) => buildEventListTile(event)).toList() ?? [];
+  }
+
   DateTime today = DateTime.now();
+  DateTime? focusedDay;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: EdgeInsets.all(20),
-        child: TableCalendar(
-          firstDay: DateTime.utc(2010, 1, 1),
-          lastDay: DateTime.utc(2030, 12, 31),
-          focusedDay: today,
-          onDaySelected: (selectedDay, focusedDay) {
-            setState(() {
-              today = selectedDay;
-            });
-          },
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _addEvent(today),
+        child: Icon(Icons.add),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.all(20),
+              child: TableCalendar(
+                firstDay: DateTime.utc(2010, 1, 1),
+                lastDay: DateTime.utc(2030, 12, 31),
+                focusedDay: focusedDay ?? today,
+                // currentDay: DateTime.now(),
+                // enabledDayPredicate: (day) => day == today,
+                selectedDayPredicate: (day) => day == today,
+                onDaySelected: (selectedDay, focusedDay) {
+                  setState(() {
+                    today = selectedDay;
+                    _displayEvents(today);
+                  });
+                },
+                eventLoader: (day) => _eventsOf(today),
+              ),
+            ),
+            SingleChildScrollView(
+              child: Column(children: dayEvents),
+            )
+          ],
         ),
       ),
     );

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:mentor_me/screens/Home_screens/connect_request.dart';
 import 'package:mentor_me/services/helper_methods.dart';
-import '../../services/tests.dart';
+import 'package:provider/provider.dart';
 import '../../services/services.dart';
 
 class ConnectionsPage extends StatefulWidget {
   final Map<MyUser, int> matches;
-  const ConnectionsPage({required this.matches, super.key});
+  final List<MyUser> connections;
+  const ConnectionsPage(
+      {required this.matches, super.key, required this.connections});
 
   @override
   State<ConnectionsPage> createState() => _ConnectionsPageState();
@@ -16,6 +19,7 @@ class _ConnectionsPageState extends State<ConnectionsPage> {
   List<Map<MyUser, int>> matches = [];
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<MyUser?>(context);
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -108,8 +112,48 @@ class _ConnectionsPageState extends State<ConnectionsPage> {
               ],
             ),
           ),
+          SizedBox(
+            height: 15,
+          ),
+          ListTile(
+            title: Text('See connect requests'),
+            trailing: Icon(Icons.arrow_right_alt),
+            tileColor: Theme.of(context).colorScheme.surface,
+            onTap: () async {
+              List<MyUser> recievedRequests = [];
+              List<MyUser> sentRequests = [];
+              if (user != null) {
+                for (var request in user.requests.values) {
+                  if (request.status == Status.pending) {
+                    if (request.recieverUID == user.uid) {
+                      MyUser requestUser =
+                          await DatabaseService(uid: request.senderUID)
+                              .userInfo;
+                      recievedRequests.add(requestUser);
+                    } else if (request.senderUID == user.uid) {
+                      MyUser requestUser =
+                          await DatabaseService(uid: request.recieverUID)
+                              .userInfo;
+                      sentRequests.add(requestUser);
+                    }
+                  }
+                }
+              }
+              setState(() {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (((context) => RequestsPageThemeLoader(
+                          recievedRequests: recievedRequests,
+                          sentRequests: sentRequests,
+                        ))),
+                  ),
+                );
+              });
+            },
+          ),
           Padding(
-            padding: EdgeInsets.only(left: 20, top: 30),
+            padding: EdgeInsets.only(left: 20, top: 15),
             child: Text(
               'Your Matches',
               style: TextStyle(
@@ -147,7 +191,7 @@ class _ConnectionsPageState extends State<ConnectionsPage> {
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: test_users
+                children: widget.connections
                     .map((user) => ConnectTile(
                           user: user,
                           percent: 0,

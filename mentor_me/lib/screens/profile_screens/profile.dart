@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mentor_me/screens/profile_screens/notifications.dart';
+import 'package:mentor_me/screens/profile_screens/calendar.dart';
 import 'package:mentor_me/screens/profile_screens/personal_info.dart';
 import 'package:mentor_me/screens/theme_provider.dart';
 import '../../services/services.dart';
@@ -118,12 +118,14 @@ class _ProfileState extends State<Profile> {
                       GestureDetector(
                         onTap: () async {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                DetailScreen(image: user?.photoURL),
+                            builder: (context) => DetailScreen(
+                              image: user?.photoURL,
+                              uid: user?.uid,
+                            ),
                           ));
                         },
                         child: Hero(
-                          tag: 'userImage',
+                          tag: 'userImage${user?.uid}',
                           child: CircleAvatar(
                             backgroundImage: NetworkImage(user?.photoURL ??
                                 'https://drive.google.com/uc?export=view&id=1nEoPU2dKhwGuVA9gSXrUcvoYYwFsefzJ'),
@@ -260,7 +262,7 @@ class _ProfileState extends State<Profile> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: ((context) => Notifications())));
+                                  builder: ((context) => UserCalendar())));
                         });
                       },
                       leading: const Icon(
@@ -359,8 +361,9 @@ class _ProfileState extends State<Profile> {
 }
 
 class DetailScreen extends StatelessWidget {
+  final String? uid;
   final String? image;
-  const DetailScreen({required this.image, super.key});
+  const DetailScreen({required this.image, super.key, required this.uid});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -378,7 +381,7 @@ class DetailScreen extends StatelessWidget {
           ),
           Center(
             child: Hero(
-              tag: 'userImage',
+              tag: 'userImage${uid}',
               child: ExpandingAvatar(
                 image: NetworkImage(image ??
                     'https://drive.google.com/uc?export=view&id=1nEoPU2dKhwGuVA9gSXrUcvoYYwFsefzJ'),
