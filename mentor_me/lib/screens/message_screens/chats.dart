@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mentor_me/screens/message_screens/chat_room.dart';
 import 'package:provider/provider.dart';
 
-import '../../services/services.dart';
-import '../profile_screens/profile.dart';
+import '../../models/message.dart';
+import '../../models/user.dart';
+import '../../services/chat_service.dart';
+import '../profile_screens/detailed_image.dart';
 import '../theme_provider.dart';
+import 'chat_room.dart';
 
 class ChatsThemeLoader extends StatefulWidget {
   final List<MyUser> connections;
@@ -205,7 +207,7 @@ class _ChatsState extends State<Chats> {
             height: 20,
           ),
           Column(
-            children: _connectionChatTiles(user) ?? [],
+            children: _connectionChatTiles(user),
           )
         ])),
       ),

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mentor_me/screens/Home_screens/connect_request.dart';
-import 'package:mentor_me/screens/message_screens/chat_room.dart';
-import 'package:mentor_me/screens/profile_screens/profile.dart';
-import 'package:mentor_me/screens/theme_provider.dart';
 import 'package:provider/provider.dart';
-import '../../services/services.dart';
+
+import '../../models/request.dart';
+import '../../models/user.dart';
+import '../../services/database_service.dart';
+import '../message_screens/chat_room.dart';
+import '../profile_screens/detailed_image.dart';
+import '../theme_provider.dart';
 
 class ConnectProfileThemeLoader extends StatefulWidget {
   final MyUser match;
@@ -303,34 +305,6 @@ class _ConnectProfileState extends State<ConnectProfile> {
               children: _getChildren(user),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class CustomButton extends StatelessWidget {
-  final Function func;
-  final String text;
-  final Color color;
-  const CustomButton(
-      {super.key, required this.func, required this.text, required this.color});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      style: const ButtonStyle(
-        backgroundColor:
-            MaterialStatePropertyAll<Color>(Color.fromARGB(255, 241, 64, 51)),
-        padding: MaterialStatePropertyAll<EdgeInsets>(
-            EdgeInsets.symmetric(horizontal: 50)),
-      ),
-      onPressed: () => func(),
-      child: const Text(
-        'Reject',
-        style: TextStyle(
-          fontSize: 17,
-          color: Colors.white,
         ),
       ),
     );

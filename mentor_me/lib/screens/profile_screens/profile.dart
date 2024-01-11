@@ -1,9 +1,17 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:mentor_me/screens/profile_screens/calendar.dart';
-import 'package:mentor_me/screens/profile_screens/personal_info.dart';
-import 'package:mentor_me/screens/theme_provider.dart';
-import '../../services/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+
+import '../../models/user.dart';
+import '../../services/auth_service.dart';
+import '../../services/database_service.dart';
+import '../theme_provider.dart';
+import 'calendar.dart';
+import 'detailed_image.dart';
+import 'personal_info.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
@@ -31,6 +39,29 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  Future<String?> _captureImage(MyUser user) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedFile =
+        await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      final imageFile = File(pickedFile.path);
+      final storage = FirebaseStorage.instance;
+
+      try {
+        await storage.ref('images/photoOf${user.uid}.png').putFile(imageFile);
+        final imageUrl =
+            await storage.ref('images/photoOf${user.uid}.png').getDownloadURL();
+
+        return imageUrl;
+      } on FirebaseException catch (e) {
+        print('Error uploading image: $e');
+        return null;
+      }
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<MyUser?>(context);
@@ -136,7 +167,7 @@ class _ProfileState extends State<Profile> {
                       GestureDetector(
                         onTap: () async {
                           String? imageURL =
-                              await captureImage(user ?? MyUser());
+                              await _captureImage(user ?? MyUser());
                           if (imageURL == null) {
                             print('Failed!');
                             return;
@@ -355,72 +386,6 @@ class _ProfileState extends State<Profile> {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class DetailScreen extends StatelessWidget {
-  final String? uid;
-  final String? image;
-  const DetailScreen({required this.image, super.key, required this.uid});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Stack(
-        children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: Container(
-              color:
-                  Colors.black.withOpacity(0.5), // Transparent black background
-            ),
-          ),
-          Center(
-            child: Hero(
-              tag: 'userImage${uid}',
-              child: ExpandingAvatar(
-                image: NetworkImage(image ??
-                    'https://drive.google.com/uc?export=view&id=1nEoPU2dKhwGuVA9gSXrUcvoYYwFsefzJ'),
-                radius: 300.0, // Expanded radius in the detail screen
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class ExpandingAvatar extends StatelessWidget {
-  final ImageProvider image;
-  final double radius;
-
-  ExpandingAvatar({required this.image, required this.radius});
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipOval(
-      child: TweenAnimationBuilder<double>(
-        tween: Tween(begin: 60.0, end: radius),
-        duration: Duration(milliseconds: 500),
-        builder: (context, value, child) {
-          return Container(
-            width: value,
-            height: value,
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              shape: BoxShape.circle,
-              image: DecorationImage(
-                image: image,
-                fit: BoxFit.cover,
-              ),
-            ),
-          );
-        },
       ),
     );
   }

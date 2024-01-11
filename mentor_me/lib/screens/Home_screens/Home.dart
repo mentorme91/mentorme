@@ -1,9 +1,11 @@
 // This file contains the user's Home screen
 
 import 'package:flutter/material.dart';
-import 'package:mentor_me/screens/message_screens/chats.dart';
-import 'package:mentor_me/services/services.dart';
 import 'package:provider/provider.dart';
+
+import '../../models/user.dart';
+import '../../services/database_service.dart';
+import '../message_screens/chats.dart';
 import 'home_page.dart';
 import 'connections_page.dart';
 import 'resources_page.dart';

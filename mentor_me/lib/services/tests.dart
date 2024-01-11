@@ -1,5 +1,6 @@
-import 'package:mentor_me/services/services.dart';
 import 'dart:core';
+
+import '../models/user.dart';
 
 List<String> courses = [
   'EECE 101',
