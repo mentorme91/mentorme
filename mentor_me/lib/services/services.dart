@@ -344,4 +344,16 @@ class ChatService extends ChangeNotifier {
         .orderBy('time', descending: false)
         .snapshots();
   }
+
+  Stream<QuerySnapshot> getLastMessageOf(String senderUID, String recieverUID) {
+    List ids = [senderUID, recieverUID]..sort();
+    String room = ids.join('_');
+    return DatabaseService(uid: '')
+        .chatCollection
+        .doc(room)
+        .collection('messages')
+        .orderBy('time', descending: true)
+        .limit(1)
+        .snapshots();
+  }
 }

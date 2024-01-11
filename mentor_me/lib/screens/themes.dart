@@ -14,7 +14,7 @@ final ThemeData lightTheme = ThemeData(
 );
 
 final ThemeData darkTheme = ThemeData(
-  shadowColor: Colors.grey.withOpacity(0.1),
+  shadowColor: Colors.grey.withOpacity(0),
   primaryColor: Color.fromARGB(251, 57, 126, 255),
   colorScheme: const ColorScheme.dark(
     primary: Color.fromARGB(255, 56, 107, 246),
