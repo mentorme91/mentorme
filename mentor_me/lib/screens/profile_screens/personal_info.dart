@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mentor_me/screens/theme_provider.dart';
-import 'package:mentor_me/services/helper_methods.dart';
-import 'package:mentor_me/services/services.dart';
 import 'package:provider/provider.dart';
+
 import '../../../services/schools_info.dart';
+import '../../models/user.dart';
+import '../../services/database_service.dart';
+import '../../services/input_verification.dart';
+import '../drop_down.dart';
+import '../theme_provider.dart';
 
 class PersonalInfoThemeLoader extends StatefulWidget {
   const PersonalInfoThemeLoader({super.key});

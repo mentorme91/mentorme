@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../services/services.dart';
+
+import '../../models/user.dart';
+import '../../services/auth_service.dart';
+import '../../services/input_verification.dart';
+import '../drop_down.dart';
 import '../loading.dart';
-import '../../services/helper_methods.dart';
 import '../../services/schools_info.dart';
 
 class Register extends StatefulWidget {
@@ -14,17 +17,7 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
-  MyUser user = MyUser(
-    uid: '',
-    email: '',
-    first_name: '',
-    last_name: '',
-    school_id: '',
-    faculty: '',
-    department: '',
-    status: '',
-    year: 0,
-  );
+  MyUser user = newUser();
   final double _formheight = 60;
   bool obscure = false, reobscure = false;
   final _formkey = GlobalKey<FormState>();

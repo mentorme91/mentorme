@@ -1,9 +1,11 @@
 // This file contains the user's Home screen
 
 import 'package:flutter/material.dart';
-import 'package:mentor_me/screens/message_screens/chats.dart';
-import 'package:mentor_me/services/services.dart';
 import 'package:provider/provider.dart';
+
+import '../../models/user.dart';
+import '../../services/database_service.dart';
+import '../message_screens/chats.dart';
 import 'home_page.dart';
 import 'connections_page.dart';
 import 'resources_page.dart';
@@ -17,6 +19,25 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  void _getConnections(MyUser? user) async {
+    List<MyUser> dum = [];
+    for (var connectionId in user?.connections ?? []) {
+      MyUser u = await DatabaseService(uid: connectionId).userInfo;
+      dum.add(u);
+    }
+    setState(() {
+      connections = dum;
+    });
+  }
+
+  void _getConnectionsandmatches(MyUser? user) async {
+    _getConnections(user);
+    Map<MyUser, int> match = await DatabaseService(uid: '').matches(user);
+    setState(() {
+      matches = match;
+    });
+  }
+
   final double radius = 50;
   int _pageIndex = 0;
   final List<Widget> _pages = [
@@ -47,12 +68,15 @@ class _HomeState extends State<Home> {
       floatingActionButton: (_pageIndex == 1)
           ? FloatingActionButton(
               backgroundColor: Theme.of(context).primaryColor,
-              onPressed: () {
+              onPressed: () async {
+                _getConnections(user);
                 setState(() {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (((context) => Chats())),
+                      builder: (((context) => ChatsThemeLoader(
+                            connections: connections,
+                          ))),
                     ),
                   );
                 });
@@ -74,18 +98,15 @@ class _HomeState extends State<Home> {
         type: BottomNavigationBarType.fixed,
         currentIndex: _pageIndex,
         onTap: (value) async {
-          List<MyUser> dum = [];
-          for (var connectionId in user?.connections ?? []) {
-            MyUser u = await DatabaseService(uid: connectionId).userInfo;
-            dum.add(u);
+          if (value != 1) {
+            setState(() {
+              _pageIndex = value;
+            });
+            return;
           }
-          connections = dum;
-          Map<MyUser, int> match = await DatabaseService(uid: '').matches(user);
+          _getConnectionsandmatches(user);
           setState(() {
             _pageIndex = value;
-            if (value == 1) {
-              matches = match;
-            }
           });
         },
         items: const [

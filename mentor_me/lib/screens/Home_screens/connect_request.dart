@@ -1,33 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mentor_me/screens/theme_provider.dart';
-import 'package:mentor_me/services/helper_methods.dart';
-import 'package:mentor_me/services/services.dart';
 import 'package:provider/provider.dart';
 
-enum Status {
-  pending,
-  connected,
-  rejected,
-  canceled,
-  none,
-}
-
-class Request {
-  String? senderUID, recieverUID;
-  Status status;
-  Request(
-      {required this.recieverUID,
-      required this.senderUID,
-      required this.status});
-
-  Map<String, dynamic> toMap() {
-    return {
-      'sender': senderUID,
-      'reciever': recieverUID,
-      'status': status.index,
-    };
-  }
-}
+import '../../models/user.dart';
+import '../connect_tile.dart';
+import '../theme_provider.dart';
 
 class RequestsPageThemeLoader extends StatefulWidget {
   final List<MyUser> recievedRequests;

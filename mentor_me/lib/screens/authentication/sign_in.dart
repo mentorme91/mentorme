@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mentor_me/screens/loading.dart';
-import '../../services/services.dart';
-import '../../services/helper_methods.dart';
+
+import '../../services/auth_service.dart';
+import '../../services/input_verification.dart';
+import '../loading.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleAuth;
@@ -31,9 +32,9 @@ class _SignInState extends State<SignIn> {
               elevation: 0.0,
               backgroundColor: Colors.white,
               leading: IconButton(
-                icon: BackButtonIcon(),
+                icon: const BackButtonIcon(),
                 onPressed: () => widget.toggleAuth(0),
-                style: ButtonStyle(
+                style: const ButtonStyle(
                   elevation: MaterialStatePropertyAll(200),
                   iconColor: MaterialStatePropertyAll(
                       Color.fromARGB(255, 56, 107, 246)),
@@ -43,16 +44,16 @@ class _SignInState extends State<SignIn> {
             body: Container(
               color: Colors.white,
               height: double.infinity,
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 horizontal: 20,
               ),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
-                    Center(
+                    const Center(
                       child: Text(
                         'Log In',
                         textAlign: TextAlign.center,
@@ -62,19 +63,19 @@ class _SignInState extends State<SignIn> {
                             fontSize: 30),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Center(
                       child: Text(
                         '$wrongCredentials',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.red,
                           fontSize: 17,
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Form(
@@ -82,28 +83,28 @@ class _SignInState extends State<SignIn> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Email',
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 15,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Container(
                             height: 60,
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                               left: 10,
                             ),
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                               horizontal: 5,
                             ),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               border: Border.all(
-                                color: Color.fromARGB(255, 56, 107, 246),
+                                color: const Color.fromARGB(255, 56, 107, 246),
                                 width: 0.3,
                               ),
                               borderRadius: BorderRadius.circular(25.0),
@@ -112,7 +113,7 @@ class _SignInState extends State<SignIn> {
                                   color: Colors.grey.withOpacity(0.2),
                                   spreadRadius: 5,
                                   blurRadius: 10,
-                                  offset: Offset(
+                                  offset: const Offset(
                                       0, 3), // changes position of shadow
                                 ),
                               ],
@@ -154,7 +155,7 @@ class _SignInState extends State<SignIn> {
                                 ),
                                 IconButton(
                                   onPressed: () => {},
-                                  icon: Icon(
+                                  icon: const Icon(
                                     Icons.email,
                                     color: Colors.black,
                                   ),
@@ -162,10 +163,10 @@ class _SignInState extends State<SignIn> {
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 40,
                           ),
-                          Text(
+                          const Text(
                             'Password',
                             style: TextStyle(
                               color: Colors.black,
@@ -174,16 +175,16 @@ class _SignInState extends State<SignIn> {
                           ),
                           Container(
                             height: 60,
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                               left: 10,
                             ),
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                               horizontal: 5,
                             ),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               border: Border.all(
-                                color: Color.fromARGB(255, 56, 107, 246),
+                                color: const Color.fromARGB(255, 56, 107, 246),
                                 width: 0.3,
                               ),
                               borderRadius: BorderRadius.circular(25.0),
@@ -192,7 +193,7 @@ class _SignInState extends State<SignIn> {
                                   color: Colors.grey.withOpacity(0.2),
                                   spreadRadius: 5,
                                   blurRadius: 10,
-                                  offset: Offset(
+                                  offset: const Offset(
                                       0, 3), // changes position of shadow
                                 ),
                               ],
@@ -260,7 +261,7 @@ class _SignInState extends State<SignIn> {
                               children: [
                                 TextButton(
                                   onPressed: () => widget.toggleAuth(3),
-                                  child: Text(
+                                  child: const Text(
                                     'Forgot Password?',
                                     style: TextStyle(
                                       color: Color.fromARGB(255, 56, 107, 246),
@@ -273,17 +274,17 @@ class _SignInState extends State<SignIn> {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 40,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         TextButton(
-                          style: ButtonStyle(
+                          style: const ButtonStyle(
                             backgroundColor: MaterialStatePropertyAll<Color>(
                                 Color.fromARGB(255, 56, 107, 246)),
-                            padding: MaterialStatePropertyAll<EdgeInsets>(
+                            padding: const MaterialStatePropertyAll<EdgeInsets>(
                                 EdgeInsets.symmetric(horizontal: 100)),
                           ),
                           onPressed: () async {
@@ -308,7 +309,7 @@ class _SignInState extends State<SignIn> {
                               print(_formkey.currentState?.validate());
                             }
                           },
-                          child: Text(
+                          child: const Text(
                             'Log In',
                             style: TextStyle(
                               fontSize: 17,
@@ -318,13 +319,13 @@ class _SignInState extends State<SignIn> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
+                        const Text(
                           'Don\'t have an account yet?',
                           style: TextStyle(
                             color: Colors.black,
@@ -332,7 +333,7 @@ class _SignInState extends State<SignIn> {
                         ),
                         TextButton(
                           onPressed: () => widget.toggleAuth(2),
-                          child: Text(
+                          child: const Text(
                             'Create Account',
                             style: TextStyle(
                                 color: Color.fromARGB(255, 56, 107, 246)),

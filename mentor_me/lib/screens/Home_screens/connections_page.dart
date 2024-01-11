@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mentor_me/screens/Home_screens/connect_request.dart';
-import 'package:mentor_me/services/helper_methods.dart';
 import 'package:provider/provider.dart';
-import '../../services/services.dart';
+
+import '../../models/request.dart';
+import '../../models/user.dart';
+import '../../services/database_service.dart';
+import '../connect_tile.dart';
+import 'connect_request.dart';
 
 class ConnectionsPage extends StatefulWidget {
   final Map<MyUser, int> matches;

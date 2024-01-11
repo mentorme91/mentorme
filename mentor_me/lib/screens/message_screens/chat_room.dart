@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:mentor_me/screens/Home_screens/connect_profile.dart';
-import 'package:mentor_me/screens/Home_screens/connect_request.dart';
-import 'package:mentor_me/services/services.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/message.dart';
+import '../../models/request.dart';
+import '../../models/user.dart';
+import '../../services/chat_service.dart';
+import '../Home_screens/connect_profile.dart';
 import '../theme_provider.dart';
 
 class ChatRoomThemeLoader extends StatefulWidget {

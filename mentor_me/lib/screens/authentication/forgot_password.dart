@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mentor_me/screens/loading.dart';
-import '../../services/services.dart';
-import '../../services/helper_methods.dart';
+
+import '../../services/auth_service.dart';
+import '../../services/input_verification.dart';
+import '../loading.dart';
 
 class ForgotPassword extends StatefulWidget {
   final Function toggleAuth;
@@ -29,9 +30,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               elevation: 0.0,
               backgroundColor: Colors.white,
               leading: IconButton(
-                icon: BackButtonIcon(),
+                icon: const BackButtonIcon(),
                 onPressed: () => widget.toggleAuth(1),
-                style: ButtonStyle(
+                style: const ButtonStyle(
                   elevation: MaterialStatePropertyAll(200),
                   iconColor: MaterialStatePropertyAll(
                       Color.fromARGB(255, 56, 107, 246)),
@@ -41,16 +42,16 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             body: Container(
               height: double.infinity,
               color: Colors.white,
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 horizontal: 20,
               ),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
-                    Center(
+                    const Center(
                       child: Text(
                         'Forgot Passowrd',
                         textAlign: TextAlign.center,
@@ -60,29 +61,29 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             fontSize: 30),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
-                    Center(
+                    const Center(
                       child: Text(
                         'Enter your account email, we will send you a verification code',
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.black, fontSize: 15),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Center(
                       child: Text(
                         '$wrongCredentials',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.red,
                           fontSize: 17,
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Form(
@@ -90,28 +91,28 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Email',
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 15,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Container(
                             height: 55,
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                               left: 10,
                             ),
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                               horizontal: 5,
                             ),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               border: Border.all(
-                                color: Color.fromARGB(255, 56, 107, 246),
+                                color: const Color.fromARGB(255, 56, 107, 246),
                                 width: 0.3,
                               ),
                               borderRadius: BorderRadius.circular(25.0),
@@ -120,7 +121,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                   color: Colors.grey.withOpacity(0.2),
                                   spreadRadius: 5,
                                   blurRadius: 10,
-                                  offset: Offset(
+                                  offset: const Offset(
                                       0, 3), // changes position of shadow
                                 ),
                               ],
@@ -165,7 +166,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                 ),
                                 IconButton(
                                   onPressed: () => {},
-                                  icon: Icon(
+                                  icon: const Icon(
                                     Icons.email,
                                     color: Colors.black,
                                   ),
@@ -173,20 +174,20 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 40,
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         TextButton(
-                          style: ButtonStyle(
+                          style: const ButtonStyle(
                             backgroundColor: MaterialStatePropertyAll<Color>(
                                 Color.fromARGB(255, 56, 107, 246)),
                             padding: MaterialStatePropertyAll<EdgeInsets>(
@@ -218,7 +219,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                               print(_formkey.currentState?.validate());
                             }
                           },
-                          child: Text(
+                          child: const Text(
                             'Verify Email',
                             style: TextStyle(
                               fontSize: 17,
@@ -228,13 +229,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
+                        const Text(
                           'Don\'t have an account yet?',
                           style: TextStyle(
                             color: Colors.black,
@@ -242,7 +243,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         ),
                         TextButton(
                           onPressed: () => widget.toggleAuth(2),
-                          child: Text(
+                          child: const Text(
                             'Create Account',
                             style: TextStyle(
                               color: Color.fromARGB(255, 56, 107, 246),
