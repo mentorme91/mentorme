@@ -7,8 +7,8 @@ import '../loading.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleAuth;
-  String message;
-  SignIn({required this.toggleAuth, this.message = ''});
+  final String message;
+  const SignIn({required this.toggleAuth, this.message = '', super.key});
 
   @override
   State<SignIn> createState() => _SignInState();
@@ -20,7 +20,7 @@ class _SignInState extends State<SignIn> {
   String email = '', password = '';
   final _formkey = GlobalKey<FormState>(); // used to validate inputs
   bool loading = false; // used to display loading screen
-  String wrongCredentials = ''; // display error of wrong credentials
+  String? wrongCredentials; // display error of wrong credentials
   bool obscure = false;
   double radius = 25;
 
@@ -35,7 +35,9 @@ class _SignInState extends State<SignIn> {
           setState(() {
             loading = false;
           });
-          widget.message = 'Incorrect credentials';
+          setState(() {
+            wrongCredentials = 'Incorrect credentials';
+          });
           print('Failed to sign in');
         } else {
           print('Success');
@@ -48,7 +50,7 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    wrongCredentials = widget.message;
+    wrongCredentials ??= widget.message;
     return loading
         ? LoadingScreen() //loading screen
         : Scaffold(
