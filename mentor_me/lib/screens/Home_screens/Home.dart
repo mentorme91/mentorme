@@ -1,10 +1,7 @@
 // This file contains the user's Home screen
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../../models/user.dart';
-import '../../services/database_service.dart';
 import '../message_screens/chats.dart';
 import 'home_page.dart';
 import 'connections_page.dart';
@@ -19,36 +16,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  void _getConnections(MyUser? user) async {
-    List<MyUser> dum = [];
-    for (var connectionId in user?.connections ?? []) {
-      MyUser u = await DatabaseService(uid: connectionId).userInfo;
-      dum.add(u);
-    }
-    setState(() {
-      connections = dum;
-    });
-  }
-
-  void _getConnectionsandmatches(MyUser? user) async {
-    _getConnections(user);
-    Map<MyUser, int> match = await DatabaseService(uid: '').matches(user);
-    setState(() {
-      matches = match;
-    });
-  }
-
   final double radius = 50;
   int _pageIndex = 0;
   final List<Widget> _pages = [
     ResourcesPage(),
     OpportunitiesPage(),
   ];
-  Map<MyUser, int> matches = {};
-  List<MyUser> connections = [];
   @override
   Widget build(BuildContext context) {
-    final MyUser? user = Provider.of<MyUser?>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: PreferredSize(
@@ -57,26 +32,18 @@ class _HomeState extends State<Home> {
       ),
       body: SingleChildScrollView(
         child: (_pageIndex != 0)
-            ? ((_pageIndex != 1)
-                ? _pages[_pageIndex - 2]
-                : ConnectionsPage(
-                    connections: connections,
-                    matches: matches,
-                  ))
+            ? ((_pageIndex != 1) ? _pages[_pageIndex - 2] : ConnectionsPage())
             : HomePage(),
       ),
       floatingActionButton: (_pageIndex == 1)
           ? FloatingActionButton(
               backgroundColor: Theme.of(context).primaryColor,
               onPressed: () async {
-                _getConnections(user);
                 setState(() {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (((context) => ChatsThemeLoader(
-                            connections: connections,
-                          ))),
+                      builder: (((context) => ChatsThemeLoader())),
                     ),
                   );
                 });
@@ -98,13 +65,6 @@ class _HomeState extends State<Home> {
         type: BottomNavigationBarType.fixed,
         currentIndex: _pageIndex,
         onTap: (value) async {
-          if (value != 1) {
-            setState(() {
-              _pageIndex = value;
-            });
-            return;
-          }
-          _getConnectionsandmatches(user);
           setState(() {
             _pageIndex = value;
           });

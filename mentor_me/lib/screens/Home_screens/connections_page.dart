@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,16 +9,85 @@ import '../connect_tile.dart';
 import 'connect_request.dart';
 
 class ConnectionsPage extends StatefulWidget {
-  final Map<MyUser, int> matches;
-  final List<MyUser> connections;
-  const ConnectionsPage(
-      {required this.matches, super.key, required this.connections});
+  const ConnectionsPage({super.key});
 
   @override
   State<ConnectionsPage> createState() => _ConnectionsPageState();
 }
 
 class _ConnectionsPageState extends State<ConnectionsPage> {
+  Widget _loadMatch(DocumentSnapshot snapshot, MyUser? user) {
+    Map<String, dynamic> studentData = snapshot.data() as Map<String, dynamic>;
+    if ((studentData['school_id'] == user?.school_id) &&
+        (studentData['uid'] != user?.uid) &&
+        !(user?.connections.contains(studentData['uid']) ?? false)) {
+      int percent = 20;
+      percent += (studentData['faculty'] == user?.faculty) ? 55 : 0;
+      percent += (studentData['department'] == user?.department) ? 20 : 0;
+      MyUser match = MyUser()..updateFromMap(studentData);
+      return ConnectTile(user: match, percent: percent);
+    }
+    return SizedBox();
+  }
+
+  Widget _loadMatches(MyUser? user) {
+    return StreamBuilder(
+        stream: DatabaseService(uid: '').userMatches(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text('Error occured!');
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Text('Loading...');
+          }
+          return Row(
+            children: snapshot.data!.docs
+                .map((document) => _loadMatch(document, user))
+                .toList(),
+          );
+        });
+  }
+
+  Future<List<MyUser>> _getConnections(MyUser? user) async {
+    List<MyUser> connections = [];
+    for (var connectionId in user?.connections ?? []) {
+      MyUser u = await DatabaseService(uid: connectionId).userInfo;
+      connections.add(u);
+    }
+    return connections;
+  }
+
+  void _loadConnectRequestsPage(MyUser? user) async {
+    List<MyUser> recievedRequests = [];
+    List<MyUser> sentRequests = [];
+    if (user != null) {
+      for (var request in user.requests.values) {
+        if (request.status == Status.pending) {
+          if (request.recieverUID == user.uid) {
+            MyUser requestUser =
+                await DatabaseService(uid: request.senderUID).userInfo;
+            recievedRequests.add(requestUser);
+          } else if (request.senderUID == user.uid) {
+            MyUser requestUser =
+                await DatabaseService(uid: request.recieverUID).userInfo;
+            sentRequests.add(requestUser);
+          }
+        }
+      }
+    }
+    setState(() {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (((context) => RequestsPageThemeLoader(
+                recievedRequests: recievedRequests,
+                sentRequests: sentRequests,
+              ))),
+        ),
+      );
+    });
+  }
+
   String searchVal = '';
   List<Map<MyUser, int>> matches = [];
   @override
@@ -120,38 +190,7 @@ class _ConnectionsPageState extends State<ConnectionsPage> {
             title: Text('See connect requests'),
             trailing: Icon(Icons.arrow_right_alt),
             tileColor: Theme.of(context).colorScheme.surface,
-            onTap: () async {
-              List<MyUser> recievedRequests = [];
-              List<MyUser> sentRequests = [];
-              if (user != null) {
-                for (var request in user.requests.values) {
-                  if (request.status == Status.pending) {
-                    if (request.recieverUID == user.uid) {
-                      MyUser requestUser =
-                          await DatabaseService(uid: request.senderUID)
-                              .userInfo;
-                      recievedRequests.add(requestUser);
-                    } else if (request.senderUID == user.uid) {
-                      MyUser requestUser =
-                          await DatabaseService(uid: request.recieverUID)
-                              .userInfo;
-                      sentRequests.add(requestUser);
-                    }
-                  }
-                }
-              }
-              setState(() {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (((context) => RequestsPageThemeLoader(
-                          recievedRequests: recievedRequests,
-                          sentRequests: sentRequests,
-                        ))),
-                  ),
-                );
-              });
-            },
+            onTap: () => _loadConnectRequestsPage(user),
           ),
           Padding(
             padding: EdgeInsets.only(left: 20, top: 15),
@@ -167,14 +206,7 @@ class _ConnectionsPageState extends State<ConnectionsPage> {
             padding: const EdgeInsets.all(8.0),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: Row(
-                children: widget.matches.keys
-                    .map((user) => ConnectTile(
-                          user: user,
-                          percent: widget.matches[user] ?? 0,
-                        ))
-                    .toList(),
-              ),
+              child: _loadMatches(user),
             ),
           ),
           Padding(
@@ -191,13 +223,25 @@ class _ConnectionsPageState extends State<ConnectionsPage> {
             margin: EdgeInsets.only(left: 8, right: 8, top: 8),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: Row(
-                children: widget.connections
-                    .map((user) => ConnectTile(
-                          user: user,
-                          percent: 0,
-                        ))
-                    .toList(),
+              child: FutureBuilder<List<MyUser>>(
+                future: _getConnections(user),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Text('Loading...');
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    List<MyUser> connections = snapshot.data ?? [];
+                    return Row(
+                      children: connections
+                          .map((user) => ConnectTile(
+                                user: user,
+                                percent: 0,
+                              ))
+                          .toList(),
+                    );
+                  }
+                },
               ),
             ),
           ),

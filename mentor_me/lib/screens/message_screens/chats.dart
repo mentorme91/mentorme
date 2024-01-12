@@ -4,13 +4,13 @@ import 'package:provider/provider.dart';
 import '../../models/message.dart';
 import '../../models/user.dart';
 import '../../services/chat_service.dart';
+import '../../services/database_service.dart';
 import '../profile_screens/detailed_image.dart';
 import '../theme_provider.dart';
 import 'chat_room.dart';
 
 class ChatsThemeLoader extends StatefulWidget {
-  final List<MyUser> connections;
-  const ChatsThemeLoader({super.key, required this.connections});
+  const ChatsThemeLoader({super.key});
 
   @override
   State<ChatsThemeLoader> createState() => _ChatsThemeLoaderState();
@@ -22,16 +22,13 @@ class _ChatsThemeLoaderState extends State<ChatsThemeLoader> {
     final ThemeData theme = Provider.of<MyThemeProvider>(context).theme;
     return Theme(
       data: theme,
-      child: Chats(
-        connections: widget.connections,
-      ),
+      child: Chats(),
     );
   }
 }
 
 class Chats extends StatefulWidget {
-  final List<MyUser> connections;
-  const Chats({super.key, required this.connections});
+  const Chats({super.key});
 
   @override
   State<Chats> createState() => _ChatsState();
@@ -82,10 +79,11 @@ class _ChatsState extends State<Chats> {
     );
   }
 
-  List<Widget> _connectionChatTiles(MyUser? user, ThemeData theme) {
+  List<Widget> _connectionChatTiles(
+      MyUser? user, ThemeData theme, List<MyUser> connections) {
     List<Widget> tiles = [];
 
-    for (var connection in widget.connections) {
+    for (var connection in connections) {
       tiles.add(StreamBuilder(
           stream: ChatService()
               .getLastMessageOf(user?.uid ?? '', connection.uid ?? ''),
@@ -113,6 +111,15 @@ class _ChatsState extends State<Chats> {
           }));
     }
     return tiles;
+  }
+
+  Future<List<MyUser>> _getConnections(MyUser? user) async {
+    List<MyUser> connections = [];
+    for (var connectionId in user?.connections ?? []) {
+      MyUser u = await DatabaseService(uid: connectionId).userInfo;
+      connections.add(u);
+    }
+    return connections;
   }
 
   String searchVal = '';
@@ -209,9 +216,22 @@ class _ChatsState extends State<Chats> {
           SizedBox(
             height: 20,
           ),
-          Column(
-            children: _connectionChatTiles(user, Theme.of(context)),
-          )
+          FutureBuilder<List<MyUser>>(
+            future: _getConnections(user),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Text('Loading...');
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else {
+                List<MyUser> connections = snapshot.data ?? [];
+                return Column(
+                  children: _connectionChatTiles(
+                      user, Theme.of(context), connections),
+                );
+              }
+            },
+          ),
         ])),
       ),
     );
