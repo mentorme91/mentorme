@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mentor_me/screens/themes.dart';
 
 import '../../services/auth_service.dart';
 import '../../services/input_verification.dart';
@@ -21,6 +22,29 @@ class _SignInState extends State<SignIn> {
   bool loading = false; // used to display loading screen
   String wrongCredentials = ''; // display error of wrong credentials
   bool obscure = false;
+  double radius = 25;
+
+  void _signIn() async {
+    if (_formkey.currentState != null) {
+      if (_formkey.currentState?.validate() ?? false) {
+        setState(() {
+          loading = true;
+        });
+        dynamic authUser = await _auth.SignInUser(email, password);
+        if (authUser == null) {
+          setState(() {
+            loading = false;
+          });
+          widget.message = 'Incorrect credentials';
+          print('Failed to sign in');
+        } else {
+          print('Success');
+        }
+      }
+    } else {
+      print(_formkey.currentState?.validate());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +54,10 @@ class _SignInState extends State<SignIn> {
         : Scaffold(
             appBar: AppBar(
               elevation: 0.0,
-              backgroundColor: Colors.white,
+              backgroundColor: Theme.of(context).colorScheme.background,
               leading: IconButton(
                 icon: const BackButtonIcon(),
-                onPressed: () => widget.toggleAuth(0),
+                onPressed: () => widget.toggleAuth(0, back: true),
                 style: const ButtonStyle(
                   elevation: MaterialStatePropertyAll(200),
                   iconColor: MaterialStatePropertyAll(
@@ -42,7 +66,6 @@ class _SignInState extends State<SignIn> {
               ),
             ),
             body: Container(
-              color: Colors.white,
               height: double.infinity,
               padding: const EdgeInsets.symmetric(
                 horizontal: 20,
@@ -58,9 +81,7 @@ class _SignInState extends State<SignIn> {
                         'Log In',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30),
+                            fontWeight: FontWeight.bold, fontSize: 30),
                       ),
                     ),
                     const SizedBox(
@@ -86,7 +107,6 @@ class _SignInState extends State<SignIn> {
                           const Text(
                             'Email',
                             style: TextStyle(
-                              color: Colors.black,
                               fontSize: 15,
                             ),
                           ),
@@ -101,48 +121,18 @@ class _SignInState extends State<SignIn> {
                             margin: const EdgeInsets.symmetric(
                               horizontal: 5,
                             ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                color: const Color.fromARGB(255, 56, 107, 246),
-                                width: 0.3,
-                              ),
-                              borderRadius: BorderRadius.circular(25.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.2),
-                                  spreadRadius: 5,
-                                  blurRadius: 10,
-                                  offset: const Offset(
-                                      0, 3), // changes position of shadow
-                                ),
-                              ],
-                            ),
+                            decoration:
+                                boxDecoration(Theme.of(context), radius),
                             alignment: AlignmentDirectional.center,
                             child: Row(
                               children: [
                                 Expanded(
                                   child: FractionallySizedBox(
                                     child: TextFormField(
-                                      cursorColor: Colors.black,
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        decorationColor: Colors.black,
-                                      ),
                                       autofocus: true,
                                       keyboardType: TextInputType.emailAddress,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(
-                                            gapPadding: 1,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(0),
-                                            ),
-                                            borderSide: BorderSide(
-                                              color: Colors.black,
-                                              width: 0.0,
-                                              style: BorderStyle.none,
-                                            )),
-                                      ),
+                                      decoration: inputDecoration(
+                                          Theme.of(context), radius, null),
                                       onChanged: (value) {
                                         setState(() {
                                           email = value;
@@ -157,7 +147,6 @@ class _SignInState extends State<SignIn> {
                                   onPressed: () => {},
                                   icon: const Icon(
                                     Icons.email,
-                                    color: Colors.black,
                                   ),
                                 ),
                               ],
@@ -169,7 +158,6 @@ class _SignInState extends State<SignIn> {
                           const Text(
                             'Password',
                             style: TextStyle(
-                              color: Colors.black,
                               fontSize: 15,
                             ),
                           ),
@@ -181,23 +169,8 @@ class _SignInState extends State<SignIn> {
                             margin: const EdgeInsets.symmetric(
                               horizontal: 5,
                             ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                color: const Color.fromARGB(255, 56, 107, 246),
-                                width: 0.3,
-                              ),
-                              borderRadius: BorderRadius.circular(25.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.2),
-                                  spreadRadius: 5,
-                                  blurRadius: 10,
-                                  offset: const Offset(
-                                      0, 3), // changes position of shadow
-                                ),
-                              ],
-                            ),
+                            decoration:
+                                boxDecoration(Theme.of(context), radius),
                             alignment: AlignmentDirectional.center,
                             child: Row(
                               children: [
@@ -205,28 +178,10 @@ class _SignInState extends State<SignIn> {
                                   child: FractionallySizedBox(
                                     child: TextFormField(
                                       obscureText: !obscure,
-                                      cursorColor: Colors.black,
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        decorationColor: Colors.black,
-                                      ),
                                       keyboardType:
                                           TextInputType.visiblePassword,
-                                      decoration: const InputDecoration(
-                                        // iconColor: Colors.blue,
-                                        // suffix: Icon(Icons.remove_red_eye),
-                                        // suffixIconColor: Colors.black,
-                                        border: OutlineInputBorder(
-                                            gapPadding: 1,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(0),
-                                            ),
-                                            borderSide: BorderSide(
-                                              color: Colors.black,
-                                              width: 0.0,
-                                              style: BorderStyle.none,
-                                            )),
-                                      ),
+                                      decoration: inputDecoration(
+                                          Theme.of(context), radius, null),
                                       onChanged: (value) {
                                         setState(() {
                                           password = value;
@@ -249,7 +204,6 @@ class _SignInState extends State<SignIn> {
                                     obscure
                                         ? Icons.remove_red_eye
                                         : Icons.visibility_off,
-                                    color: Colors.black,
                                   ),
                                 ),
                               ],
@@ -287,33 +241,12 @@ class _SignInState extends State<SignIn> {
                             padding: const MaterialStatePropertyAll<EdgeInsets>(
                                 EdgeInsets.symmetric(horizontal: 100)),
                           ),
-                          onPressed: () async {
-                            if (_formkey.currentState != null) {
-                              if (_formkey.currentState?.validate() ?? false) {
-                                setState(() {
-                                  loading = true;
-                                });
-                                dynamic auth_user =
-                                    await _auth.SignInUser(email, password);
-                                if (auth_user == null) {
-                                  setState(() {
-                                    loading = false;
-                                  });
-                                  widget.message = 'Incorrect credentials';
-                                  print('Failed to sign in');
-                                } else {
-                                  print('Success');
-                                }
-                              }
-                            } else {
-                              print(_formkey.currentState?.validate());
-                            }
-                          },
+                          onPressed: _signIn,
                           child: const Text(
                             'Log In',
                             style: TextStyle(
-                              fontSize: 17,
                               color: Colors.white,
+                              fontSize: 17,
                             ),
                           ),
                         ),
@@ -327,9 +260,6 @@ class _SignInState extends State<SignIn> {
                       children: [
                         const Text(
                           'Don\'t have an account yet?',
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
                         ),
                         TextButton(
                           onPressed: () => widget.toggleAuth(2),

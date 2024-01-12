@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 final ThemeData lightTheme = ThemeData(
+  appBarTheme: AppBarTheme(
+    backgroundColor: Colors.white,
+  ),
   shadowColor: Colors.grey.withOpacity(0.2),
   primaryColor: const Color.fromARGB(255, 56, 107, 246),
   colorScheme: const ColorScheme.light(
@@ -14,6 +17,9 @@ final ThemeData lightTheme = ThemeData(
 );
 
 final ThemeData darkTheme = ThemeData(
+  appBarTheme: AppBarTheme(
+    backgroundColor: Color(0xFF121212),
+  ),
   shadowColor: Colors.grey.withOpacity(0),
   primaryColor: Color.fromARGB(251, 57, 126, 255),
   colorScheme: const ColorScheme.dark(
@@ -26,3 +32,61 @@ final ThemeData darkTheme = ThemeData(
     secondary: Color.fromARGB(255, 48, 48, 48),
   ),
 );
+
+BoxDecoration boxDecoration(ThemeData theme, double radius) => BoxDecoration(
+      color: theme.colorScheme.tertiaryContainer,
+      borderRadius: BorderRadius.circular(radius),
+      boxShadow: [
+        BoxShadow(
+          color: theme.shadowColor,
+          spreadRadius: 5,
+          blurRadius: 10,
+          offset: const Offset(0, 3), // changes position of shadow
+        ),
+      ],
+    );
+
+InputDecoration inputDecoration(
+        ThemeData theme, double radius, String? hintText) =>
+    InputDecoration(
+      hintText: hintText,
+      hintStyle: TextStyle(
+        color: Colors.grey,
+        fontSize: 13,
+      ),
+      // contentPadding: const EdgeInsets.all(16.0),
+      filled: true,
+      fillColor: theme.colorScheme.tertiaryContainer,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(radius),
+        borderSide: BorderSide.none,
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(radius),
+        borderSide: BorderSide(
+          color: Colors.transparent,
+        ),
+      ),
+    );
+InputDecoration inputDropDownDecoration(
+        ThemeData theme, double radius, String? hintText) =>
+    InputDecoration(
+      hintText: hintText,
+      hintStyle: TextStyle(
+        color: Colors.grey,
+        fontSize: 13,
+      ),
+      // contentPadding: const EdgeInsets.all(16.0),
+      filled: true,
+      fillColor: theme.colorScheme.tertiaryContainer,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(radius),
+        borderSide: BorderSide(color: Colors.grey),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(radius),
+        borderSide: BorderSide(
+          color: Colors.grey,
+        ),
+      ),
+    );

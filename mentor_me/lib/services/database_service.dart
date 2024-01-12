@@ -33,7 +33,6 @@ class DatabaseService extends ChangeNotifier {
     Map newRequests =
         requests.map((key, value) => MapEntry(key, value.toMap()));
     dic['requests'] = newRequests;
-    print(dic);
     // update all student collections and student collections in respective schools
     await studentsCollection.doc(user?.uid).set(dic);
     await schoolsCollection
@@ -79,10 +78,8 @@ class DatabaseService extends ChangeNotifier {
         int percent = 20;
         percent += (studentData['faculty'] == user?.faculty) ? 55 : 0;
         percent += (studentData['department'] == user?.department) ? 20 : 0;
-        if (studentData['status'] != user?.status) {
-          MyUser match = MyUser()..updateFromMap(studentData);
-          matches[match] = percent;
-        }
+        MyUser match = MyUser()..updateFromMap(studentData);
+        matches[match] = percent;
       }
     }
     return matches;

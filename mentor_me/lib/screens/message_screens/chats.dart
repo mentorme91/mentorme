@@ -39,8 +39,9 @@ class Chats extends StatefulWidget {
 
 class _ChatsState extends State<Chats> {
   StatelessWidget _connectChatTile(
-      MyUser connection, Message lastMessage, MyUser? user) {
+      MyUser connection, Message lastMessage, MyUser? user, ThemeData theme) {
     return ListTile(
+      // tileColor: theme.colorScheme.surface,
       onTap: () {
         List ids = [user?.uid, connection.uid]..sort();
         setState(() {
@@ -81,7 +82,7 @@ class _ChatsState extends State<Chats> {
     );
   }
 
-  List<Widget> _connectionChatTiles(MyUser? user) {
+  List<Widget> _connectionChatTiles(MyUser? user, ThemeData theme) {
     List<Widget> tiles = [];
 
     for (var connection in widget.connections) {
@@ -106,7 +107,7 @@ class _ChatsState extends State<Chats> {
                 recieverUID: message['recieverUID'],
               );
               lastMessage.time = message['time'];
-              return _connectChatTile(connection, lastMessage, user);
+              return _connectChatTile(connection, lastMessage, user, theme);
             }
             return Text('');
           }));
@@ -146,7 +147,7 @@ class _ChatsState extends State<Chats> {
             ),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.tertiaryContainer,
-              borderRadius: BorderRadius.circular(25.0),
+              borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
                   color: Theme.of(context).shadowColor,
@@ -169,29 +170,31 @@ class _ChatsState extends State<Chats> {
                 Expanded(
                   child: FractionallySizedBox(
                     child: TextFormField(
-                      cursorColor: Colors.black,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        decorationColor: Colors.black,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.tertiary,
                       ),
                       keyboardType: TextInputType.text,
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(
-                            gapPadding: 1,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(0),
-                            ),
-                            borderSide: BorderSide(
-                              color: Colors.black,
-                              width: 0.0,
-                              style: BorderStyle.none,
-                            ),
+                      decoration: InputDecoration(
+                        hintText: 'Search Chats',
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 13,
+                        ),
+                        contentPadding: const EdgeInsets.all(16.0),
+                        filled: true,
+                        fillColor:
+                            Theme.of(context).colorScheme.tertiaryContainer,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(
+                            color: Colors.transparent,
                           ),
-                          hintText: 'Search Chats',
-                          hintStyle: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 13,
-                          )),
+                        ),
+                      ),
                       onChanged: (value) {
                         setState(() {
                           searchVal = value;
@@ -207,7 +210,7 @@ class _ChatsState extends State<Chats> {
             height: 20,
           ),
           Column(
-            children: _connectionChatTiles(user),
+            children: _connectionChatTiles(user, Theme.of(context)),
           )
         ])),
       ),

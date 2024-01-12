@@ -124,6 +124,7 @@ class _ConnectProfileState extends State<ConnectProfile> {
     await DatabaseService(uid: '').UpdateStudentCollection(widget.match);
     setState(() {
       show = null;
+      status = Status.pending;
     });
   }
 
@@ -219,7 +220,7 @@ class _ConnectProfileState extends State<ConnectProfile> {
           ),
         );
       }
-    } else {
+    } else if (status == Status.none) {
       children.add(
         TextButton(
           style: ButtonStyle(
@@ -240,12 +241,15 @@ class _ConnectProfileState extends State<ConnectProfile> {
           ),
         ),
       );
+    } else {
+      children.add(Text('Request sent successfully!'));
     }
 
     return children;
   }
 
   String? show;
+  Status status = Status.none;
 
   @override
   Widget build(BuildContext context) {

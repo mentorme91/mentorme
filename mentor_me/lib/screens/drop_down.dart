@@ -7,10 +7,6 @@ List<DropdownMenuItem> createDropDown(List<String> items) {
             value: item,
             child: Text(
               item,
-              style: const TextStyle(
-                color: Colors.black,
-                backgroundColor: Colors.white,
-              ),
             ),
           ))
       .toList();

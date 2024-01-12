@@ -24,7 +24,7 @@ class _IntroState extends State<Intro>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 1),
     )..repeat();
 
     _controller.addListener(() {
@@ -44,7 +44,9 @@ class _IntroState extends State<Intro>
       builder: (context, child) {
         return (currentIndex == 1)
             ? LoadingScreen()
-            : Onboarding(toggleAuth: widget.toggleAuth);
+            : Onboarding(
+                toggleAuth: widget.toggleAuth,
+              );
       },
     );
   }
@@ -73,7 +75,6 @@ class _OnboardingState extends State<Onboarding> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Colors.white,
         actions: [
           TextButton(
             // used to toggle to the signIn page
@@ -90,7 +91,6 @@ class _OnboardingState extends State<Onboarding> {
       ),
       body: Container(
         height: double.infinity,
-        color: Colors.white,
         child: SingleChildScrollView(
           // allows user to scroll down and up on the page
           child: Column(
@@ -112,10 +112,7 @@ class _OnboardingState extends State<Onboarding> {
                 child: const Text(
                   'Enhance Learning and Knowledge Sharing',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
               ),
               const SizedBox(
@@ -127,7 +124,6 @@ class _OnboardingState extends State<Onboarding> {
                   'MentorMe aims at lorem ipsum dolor sit amet consectetur. Diam integer felis etiam neque id viv.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.black,
                     fontSize: 15,
                   ),
                 ),
@@ -155,9 +151,9 @@ class _OnboardingState extends State<Onboarding> {
                 height: 7,
               ),
               TextButton(
-                style: const ButtonStyle(
-                  backgroundColor:
-                      const MaterialStatePropertyAll<Color>(Colors.white),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll<Color>(
+                      Theme.of(context).colorScheme.background),
                   padding: MaterialStatePropertyAll<EdgeInsets>(
                       EdgeInsets.symmetric(horizontal: 80)),
                   side: MaterialStatePropertyAll<BorderSide>(
