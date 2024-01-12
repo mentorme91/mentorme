@@ -66,6 +66,10 @@ class DatabaseService extends ChangeNotifier {
     return postsCollection.doc(roomID).snapshots();
   }
 
+  Stream<QuerySnapshot> userMatches() {
+    return studentsCollection.snapshots();
+  }
+
   Future<Map<MyUser, int>> matches(MyUser? user) async {
     Map<MyUser, int> matches = {};
 
