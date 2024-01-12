@@ -23,16 +23,23 @@ class _AuhenticateState extends State<Auhenticate> {
       0; // 0 - Intro, 1 - SignIn, 2 - Register, 3 - Forgot Password, 4 - New password
 
   // used to toggle between pages
-  void ToggleAuth(int pageN, {String message = ''}) {
+  void ToggleAuth(int pageN, {bool back = false, String message = ''}) {
+    if (back) {
+      stack.removeAt(stack.length - 1);
+    } else {
+      stack.add(pageN);
+    }
     setState(() {
-      pageNum = pageN;
+      pageNum = stack.last;
       this.message = message;
     });
   }
 
+  List<int> stack = [4];
+
   @override
   Widget build(BuildContext context) {
-    final List<Widget> _auth_pages = [
+    final List<Widget> authPages = [
       Intro(
         toggleAuth: ToggleAuth,
       ),
@@ -40,9 +47,16 @@ class _AuhenticateState extends State<Auhenticate> {
         toggleAuth: ToggleAuth,
         message: message,
       ),
-      Register(toggleAuth: ToggleAuth),
-      ForgotPassword(toggleAuth: ToggleAuth),
+      Register(
+        toggleAuth: ToggleAuth,
+      ),
+      ForgotPassword(
+        toggleAuth: ToggleAuth,
+      ),
+      Onboarding(
+        toggleAuth: ToggleAuth,
+      )
     ];
-    return _auth_pages[pageNum];
+    return authPages[pageNum];
   }
 }

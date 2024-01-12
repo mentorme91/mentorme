@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mentor_me/screens/themes.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/message.dart';
@@ -44,7 +45,16 @@ class ChatRoom extends StatefulWidget {
 
 class _ChatRoomState extends State<ChatRoom> {
   final TextEditingController _messageController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
   final ChatService _chatService = ChatService();
+
+  void _scrollToBottom() {
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: Duration(milliseconds: 200),
+      curve: Curves.easeOut,
+    );
+  }
 
   void sendMessage(MyUser? user) async {
     if (_messageController.text.isNotEmpty) {
@@ -68,7 +78,11 @@ class _ChatRoomState extends State<ChatRoom> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Text('Loading...');
           }
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _scrollToBottom();
+          });
           return ListView(
+            controller: _scrollController,
             children: snapshot.data!.docs
                 .map((document) => _buildMessageItem(document, user))
                 .toList(),
@@ -76,68 +90,130 @@ class _ChatRoomState extends State<ChatRoom> {
         });
   }
 
+  String getDate(String date) {
+    List<String> dateVals = date.split('/');
+    if ((dateVals[0] == today.month.toString()) &&
+        (dateVals[2] == today.year.toString())) {
+      if (dateVals[1] == today.day.toString()) {
+        return 'Today';
+      } else if (dateVals[1] == '${today.day - 1}') {
+        return 'Yesterday';
+      } else {
+        return date;
+      }
+    } else {
+      return date;
+    }
+  }
+
   Widget _buildMessageItem(DocumentSnapshot snapshot, MyUser? user) {
+    double screenWidth = MediaQuery.of(context).size.width;
     Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
 
     var isSender = (data['recieverUID'] == widget.reciever.uid);
-    return Row(
+    String date =
+        '${data['time'].toDate().month}/${data['time'].toDate().day}/${data['time'].toDate().year}';
+    bool dateChange = false;
+    if ((day == null) || (day != date)) {
+      day = date;
+      dateChange = true;
+    }
+    return Column(
       children: [
-        (!isSender)
-            ? CircleAvatar(
-                backgroundImage: NetworkImage(widget.reciever.photoURL ??
-                    'https://drive.google.com/uc?export=view&id=1nEoPU2dKhwGuVA9gSXrUcvoYYwFsefzJ'),
-                radius: 20.0,
-              )
-            : SizedBox(
-                width: 30,
-              ),
-        SizedBox(
-          width: 5,
-        ),
-        Expanded(
-          child: Container(
-            margin: EdgeInsets.only(top: 10),
-            padding: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
-            decoration: BoxDecoration(
-              color: isSender
-                  ? Theme.of(context).primaryColor
-                  : Theme.of(context).colorScheme.secondary,
-              borderRadius: BorderRadius.circular(
-                20,
-              ),
-            ),
-            alignment: isSender ? Alignment.centerRight : Alignment.centerLeft,
-            child: Column(
-              children: [
-                Text(
-                  data['message'],
-                  style: TextStyle(color: Colors.white),
-                  textAlign: isSender ? TextAlign.end : TextAlign.start,
-                ),
-                Text(
-                  '${data['time'].toDate().month}/${data['time'].toDate().day}/${data['time'].toDate().year} at ${data['time'].toDate().hour}:${data['time'].toDate().minute}',
-                  textAlign: isSender ? TextAlign.end : TextAlign.start,
+        (dateChange)
+            ? Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: Center(
+                    child: Text(
+                  getDate(date),
                   style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 8,
+                    fontWeight: FontWeight.bold,
                   ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        SizedBox(
-          width: 5,
-        ),
-        (isSender)
-            ? CircleAvatar(
-                backgroundImage: NetworkImage(user?.photoURL ??
-                    'https://drive.google.com/uc?export=view&id=1nEoPU2dKhwGuVA9gSXrUcvoYYwFsefzJ'),
-                radius: 20.0,
+                )),
               )
-            : SizedBox(
-                width: 30,
+            : const SizedBox(),
+        Row(
+          children: [
+            SizedBox(
+              width: isSender ? 30 : 0,
+            ),
+            (!isSender)
+                ? CircleAvatar(
+                    backgroundImage: NetworkImage(widget.reciever.photoURL ??
+                        'https://drive.google.com/uc?export=view&id=1nEoPU2dKhwGuVA9gSXrUcvoYYwFsefzJ'),
+                    radius: 20.0,
+                  )
+                : Expanded(
+                    child: SizedBox(
+                      width: 30,
+                    ),
+                  ),
+            SizedBox(
+              width: 5,
+            ),
+            Container(
+              width: data['message'].length > (screenWidth / 10)
+                  ? ((2 * screenWidth) / 3)
+                  : null,
+              margin: EdgeInsets.only(top: 10),
+              padding: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+              decoration: BoxDecoration(
+                color: isSender
+                    ? Theme.of(context).primaryColor
+                    : Theme.of(context).colorScheme.secondary,
+                borderRadius: BorderRadius.circular(
+                  20,
+                ),
               ),
+              alignment:
+                  isSender ? Alignment.centerRight : Alignment.centerLeft,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    alignment: Alignment.topLeft,
+                    // color: Colors.red,
+                    child: Text(
+                      data['message'],
+                      style: TextStyle(color: Colors.white, fontSize: 12),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.bottomRight,
+                    // color: Colors.green,
+                    child: Text(
+                      '${data['time'].toDate().hour}:${data['time'].toDate().minute.toString().padLeft(2, '0')}',
+                      textAlign: TextAlign.end,
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 6,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            (isSender)
+                ? CircleAvatar(
+                    backgroundImage: NetworkImage(user?.photoURL ??
+                        'https://drive.google.com/uc?export=view&id=1nEoPU2dKhwGuVA9gSXrUcvoYYwFsefzJ'),
+                    radius: 20.0,
+                  )
+                : Expanded(
+                    child: SizedBox(
+                      width: 30,
+                    ),
+                  ),
+            SizedBox(
+              width: !isSender ? 30 : 0,
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -147,42 +223,15 @@ class _ChatRoomState extends State<ChatRoom> {
       children: [
         Expanded(
           child: Container(
-            height: 50,
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.tertiaryContainer,
-              borderRadius: BorderRadius.circular(15.0),
-              boxShadow: [
-                BoxShadow(
-                  color: Theme.of(context).shadowColor,
-                  spreadRadius: 5,
-                  blurRadius: 10,
-                  offset: const Offset(0, 3), // changes position of shadow
-                ),
-              ],
-            ),
+            decoration: boxDecoration(Theme.of(context), _borderRadius),
             child: TextFormField(
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.tertiary,
-              ),
-              controller: _messageController,
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(
-                    gapPadding: 1,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(0),
-                    ),
-                    borderSide: BorderSide(
-                      color: Colors.black,
-                      width: 0.0,
-                      style: BorderStyle.none,
-                    ),
-                  ),
-                  hintText: 'Message here...',
-                  hintStyle: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 13,
-                  )),
-            ),
+                maxLines: null,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.tertiary,
+                ),
+                controller: _messageController,
+                decoration: inputDecoration(
+                    Theme.of(context), _borderRadius, 'Message here...')),
           ),
         ),
         IconButton(
@@ -191,6 +240,10 @@ class _ChatRoomState extends State<ChatRoom> {
       ],
     );
   }
+
+  String? day;
+  DateTime today = DateTime.now();
+  final double _borderRadius = 40;
 
   @override
   Widget build(BuildContext context) {
@@ -259,12 +312,54 @@ class _ChatRoomState extends State<ChatRoom> {
         ),
       ),
       body: Container(
-        margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+        margin: EdgeInsets.only(left: 5, right: 5, bottom: 5),
         child: Column(children: [
           Expanded(child: _buildMessageList(user)),
+          SizedBox(
+            height: 10,
+          ),
           _buildMessageBox(user),
         ]),
       ),
     );
+  }
+}
+
+class ChatBubbleClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    final radius = 16.0;
+    final arrowWidth = 10.0;
+    final arrowHeight = 10.0;
+
+    path.moveTo(radius, 0);
+    path.lineTo(size.width - radius, 0);
+    path.quadraticBezierTo(
+        size.width, 0, size.width, radius); // Top right corner
+
+    path.lineTo(size.width, size.height - radius);
+    path.quadraticBezierTo(size.width, size.height, size.width - radius,
+        size.height); // Bottom right corner
+
+    // Draw arrow
+    path.lineTo(size.width / 2 + arrowWidth / 2, size.height);
+    path.lineTo(size.width / 2, size.height + arrowHeight);
+    path.lineTo(size.width / 2 - arrowWidth / 2, size.height);
+
+    path.lineTo(radius, size.height);
+
+    path.quadraticBezierTo(
+        0, size.height, 0, size.height - radius); // Bottom left corner
+
+    path.lineTo(0, radius);
+    path.quadraticBezierTo(0, 0, radius, 0); // Top left corner
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return false;
   }
 }

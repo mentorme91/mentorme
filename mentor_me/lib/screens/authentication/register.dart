@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mentor_me/screens/themes.dart';
 
 import '../../models/user.dart';
 import '../../services/auth_service.dart';
@@ -23,21 +24,42 @@ class _RegisterState extends State<Register> {
   final _formkey = GlobalKey<FormState>();
   bool loading = false;
   String retypePassword = '';
+  double radius = 25;
+
+  void _createAccount() async {
+    if (_formkey.currentState != null) {
+      if (_formkey.currentState?.validate() ?? false) {
+        setState(() {
+          loading = true;
+        });
+        dynamic auth_user = await _auth.Register(user);
+        if (auth_user == null) {
+          setState(() {
+            loading = false;
+          });
+          print('Failed to register');
+        } else {
+          print('Success');
+        }
+      }
+    } else {
+      print(_formkey.currentState?.validate());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Color primaryColor = Theme.of(context).colorScheme.primary;
+    // Color primaryColor = Theme.of(context).colorScheme.primary;S
     // Color secondaryColor = Theme.of(context).colorScheme.secondary;
     return loading
         ? LoadingScreen()
         : Scaffold(
             resizeToAvoidBottomInset: true,
             appBar: AppBar(
-              backgroundColor: Colors.white,
               elevation: 0.0,
               leading: IconButton(
                 icon: const BackButtonIcon(),
-                onPressed: () => widget.toggleAuth(0),
+                onPressed: () => widget.toggleAuth(0, back: true),
                 style: ButtonStyle(
                   elevation: const MaterialStatePropertyAll(200),
                   iconColor: MaterialStatePropertyAll(
@@ -46,7 +68,6 @@ class _RegisterState extends State<Register> {
               ),
             ),
             body: Container(
-              color: Colors.white,
               padding: const EdgeInsets.symmetric(
                 horizontal: 20,
               ),
@@ -58,9 +79,7 @@ class _RegisterState extends State<Register> {
                         'Create Account',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30),
+                            fontWeight: FontWeight.bold, fontSize: 30),
                       ),
                     ),
                     const SizedBox(
@@ -74,7 +93,6 @@ class _RegisterState extends State<Register> {
                           const Text(
                             'First Name',
                             style: TextStyle(
-                              color: Colors.black,
                               fontSize: 15,
                             ),
                           ),
@@ -89,46 +107,14 @@ class _RegisterState extends State<Register> {
                             margin: const EdgeInsets.symmetric(
                               horizontal: 5,
                             ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                color: Color.fromARGB(255, 56, 107, 246),
-                                width: 0.3,
-                              ),
-                              borderRadius: BorderRadius.circular(25.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.2),
-                                  spreadRadius: 5,
-                                  blurRadius: 10,
-                                  offset: const Offset(
-                                      0, 3), // changes position of shadow
-                                ),
-                              ],
-                            ),
+                            decoration:
+                                boxDecoration(Theme.of(context), radius),
                             alignment: AlignmentDirectional.center,
                             child: TextFormField(
-                              cursorColor: Colors.black,
-                              style: const TextStyle(
-                                color: Colors.black,
-                                decorationColor: Colors.black,
-                              ),
+                              style: const TextStyle(),
                               keyboardType: TextInputType.name,
-                              decoration: const InputDecoration(
-                                // iconColor: Colors.blue,
-                                // suffix: Icon(Icons.remove_red_eye),
-                                // suffixIconColor: Colors.black,
-                                border: OutlineInputBorder(
-                                    gapPadding: 1,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(0),
-                                    ),
-                                    borderSide: BorderSide(
-                                      color: Colors.black,
-                                      width: 0.0,
-                                      style: BorderStyle.none,
-                                    )),
-                              ),
+                              decoration: inputDecoration(
+                                  Theme.of(context), radius, null),
                               onChanged: (value) {
                                 setState(() {
                                   user.first_name = value;
@@ -144,7 +130,6 @@ class _RegisterState extends State<Register> {
                           const Text(
                             'Last Name',
                             style: TextStyle(
-                              color: Colors.black,
                               fontSize: 15,
                             ),
                           ),
@@ -159,47 +144,14 @@ class _RegisterState extends State<Register> {
                             margin: const EdgeInsets.symmetric(
                               horizontal: 5,
                             ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                color: Color.fromARGB(255, 56, 107, 246),
-                                width: 0.3,
-                              ),
-                              borderRadius: BorderRadius.circular(25.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.2),
-                                  spreadRadius: 5,
-                                  blurRadius: 10,
-                                  offset: const Offset(
-                                      0, 3), // changes position of shadow
-                                ),
-                              ],
-                            ),
+                            decoration:
+                                boxDecoration(Theme.of(context), radius),
                             alignment: AlignmentDirectional.center,
                             child: TextFormField(
                               keyboardType: TextInputType.name,
-                              cursorColor: Colors.black,
-                              style: const TextStyle(
-                                color: Colors.black,
-                                decorationColor: Colors.black,
-                              ),
-                              decoration: const InputDecoration(
-                                // iconColor: Colors.blue,
-                                // suffix: Icon(Icons.remove_red_eye),
-                                // suffixIconColor: Colors.black,
-                                border: OutlineInputBorder(
-                                  gapPadding: 1,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(0),
-                                  ),
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 0.0,
-                                    style: BorderStyle.none,
-                                  ),
-                                ),
-                              ),
+                              style: const TextStyle(),
+                              decoration: inputDecoration(
+                                  Theme.of(context), radius, null),
                               onChanged: (value) {
                                 setState(() {
                                   user.last_name = value;
@@ -215,7 +167,6 @@ class _RegisterState extends State<Register> {
                           const Text(
                             'Email',
                             style: TextStyle(
-                              color: Colors.black,
                               fontSize: 15,
                             ),
                           ),
@@ -230,51 +181,18 @@ class _RegisterState extends State<Register> {
                             margin: const EdgeInsets.symmetric(
                               horizontal: 5,
                             ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                color: Color.fromARGB(255, 56, 107, 246),
-                                width: 0.3,
-                              ),
-                              borderRadius: BorderRadius.circular(25.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.2),
-                                  spreadRadius: 5,
-                                  blurRadius: 10,
-                                  offset: const Offset(
-                                      0, 3), // changes position of shadow
-                                ),
-                              ],
-                            ),
+                            decoration:
+                                boxDecoration(Theme.of(context), radius),
                             alignment: AlignmentDirectional.center,
                             child: Row(
                               children: [
                                 Expanded(
                                   child: FractionallySizedBox(
                                     child: TextFormField(
-                                      cursorColor: Colors.black,
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        decorationColor: Colors.black,
-                                      ),
+                                      style: const TextStyle(),
                                       keyboardType: TextInputType.emailAddress,
-                                      decoration: const InputDecoration(
-                                        // iconColor: Colors.blue,
-                                        // suffix: Icon(Icons.remove_red_eye),
-                                        // suffixIconColor: Colors.black,
-                                        border: OutlineInputBorder(
-                                          gapPadding: 1,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(0),
-                                          ),
-                                          borderSide: BorderSide(
-                                            color: Colors.black,
-                                            width: 0.0,
-                                            style: BorderStyle.none,
-                                          ),
-                                        ),
-                                      ),
+                                      decoration: inputDecoration(
+                                          Theme.of(context), radius, null),
                                       onChanged: (value) {
                                         setState(() {
                                           user.email = value;
@@ -289,7 +207,6 @@ class _RegisterState extends State<Register> {
                                   onPressed: () => {},
                                   icon: const Icon(
                                     Icons.email,
-                                    color: Colors.black,
                                   ),
                                 ),
                               ],
@@ -301,69 +218,29 @@ class _RegisterState extends State<Register> {
                           const Text(
                             'School',
                             style: TextStyle(
-                              color: Colors.black,
                               fontSize: 15,
                             ),
                           ),
-                          Container(
-                            height: _formheight,
-                            padding: const EdgeInsets.only(
-                              left: 10,
+                          DropdownButtonFormField(
+                            dropdownColor:
+                                Theme.of(context).colorScheme.tertiaryContainer,
+                            style: TextStyle(
+                              backgroundColor: Theme.of(context)
+                                  .colorScheme
+                                  .tertiaryContainer,
+                              color: Theme.of(context).colorScheme.onPrimary,
                             ),
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 5,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                color: Color.fromARGB(255, 56, 107, 246),
-                                width: 0.3,
-                              ),
-                              borderRadius: BorderRadius.circular(25.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.2),
-                                  spreadRadius: 5,
-                                  blurRadius: 10,
-                                  offset: const Offset(
-                                      0, 3), // changes position of shadow
-                                ),
-                              ],
-                            ),
-                            alignment: AlignmentDirectional.center,
-                            child: DropdownButtonFormField(
-                              dropdownColor: Colors.white,
-                              style: const TextStyle(
-                                color: Colors.black,
-                                backgroundColor: Colors.white,
-                                decorationColor: Colors.black,
-                              ),
-                              validator: (value) =>
-                                  validateText(user.school_id, 'Enter school'),
-                              decoration: const InputDecoration(
-                                // iconColor: Colors.blue,
-                                // suffix: Icon(Icons.remove_red_eye),
-                                // suffixIconColor: Colors.black,
-                                border: OutlineInputBorder(
-                                  gapPadding: 1,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(0),
-                                  ),
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 0.0,
-                                    style: BorderStyle.none,
-                                  ),
-                                ),
-                              ),
-                              items: createDropDown(
-                                  produceList(schools_faculties)),
-                              onChanged: (val) {
-                                setState(() {
-                                  user.school_id = val ?? '';
-                                });
-                              },
-                            ),
+                            validator: (value) =>
+                                validateText(user.school_id, 'Enter school'),
+                            decoration: inputDropDownDecoration(
+                                Theme.of(context), radius, null),
+                            items:
+                                createDropDown(produceList(schools_faculties)),
+                            onChanged: (val) {
+                              setState(() {
+                                user.school_id = val ?? '';
+                              });
+                            },
                           ),
                           const SizedBox(
                             height: 20,
@@ -371,69 +248,29 @@ class _RegisterState extends State<Register> {
                           const Text(
                             'Faculty',
                             style: TextStyle(
-                              color: Colors.black,
                               fontSize: 15,
                             ),
                           ),
-                          Container(
-                            height: _formheight,
-                            padding: const EdgeInsets.only(
-                              left: 10,
+                          DropdownButtonFormField(
+                            dropdownColor:
+                                Theme.of(context).colorScheme.tertiaryContainer,
+                            style: TextStyle(
+                              backgroundColor: Theme.of(context)
+                                  .colorScheme
+                                  .tertiaryContainer,
+                              color: Theme.of(context).colorScheme.onPrimary,
                             ),
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 5,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                color: Color.fromARGB(255, 56, 107, 246),
-                                width: 0.3,
-                              ),
-                              borderRadius: BorderRadius.circular(25.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.2),
-                                  spreadRadius: 5,
-                                  blurRadius: 10,
-                                  offset: const Offset(
-                                      0, 3), // changes position of shadow
-                                ),
-                              ],
-                            ),
-                            alignment: AlignmentDirectional.center,
-                            child: DropdownButtonFormField(
-                              dropdownColor: Colors.white,
-                              style: const TextStyle(
-                                color: Colors.black,
-                                backgroundColor: Colors.white,
-                                decorationColor: Colors.black,
-                              ),
-                              validator: (value) =>
-                                  validateText(user.faculty, 'Enter faculty'),
-                              decoration: const InputDecoration(
-                                // iconColor: Colors.blue,
-                                // suffix: Icon(Icons.remove_red_eye),
-                                // suffixIconColor: Colors.black,
-                                border: OutlineInputBorder(
-                                  gapPadding: 1,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(0),
-                                  ),
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 0.0,
-                                    style: BorderStyle.none,
-                                  ),
-                                ),
-                              ),
-                              items: createDropDown(
-                                  schools_faculties[user.school_id] ?? []),
-                              onChanged: (val) {
-                                setState(() {
-                                  user.faculty = val ?? '';
-                                });
-                              },
-                            ),
+                            validator: (value) =>
+                                validateText(user.faculty, 'Enter faculty'),
+                            decoration: inputDropDownDecoration(
+                                Theme.of(context), radius, null),
+                            items: createDropDown(
+                                schools_faculties[user.school_id] ?? []),
+                            onChanged: (val) {
+                              setState(() {
+                                user.faculty = val ?? '';
+                              });
+                            },
                           ),
                           const SizedBox(
                             height: 20,
@@ -441,69 +278,29 @@ class _RegisterState extends State<Register> {
                           const Text(
                             'Department',
                             style: TextStyle(
-                              color: Colors.black,
                               fontSize: 15,
                             ),
                           ),
-                          Container(
-                            height: _formheight,
-                            padding: const EdgeInsets.only(
-                              left: 10,
+                          DropdownButtonFormField(
+                            dropdownColor:
+                                Theme.of(context).colorScheme.tertiaryContainer,
+                            style: TextStyle(
+                              backgroundColor: Theme.of(context)
+                                  .colorScheme
+                                  .tertiaryContainer,
+                              color: Theme.of(context).colorScheme.onPrimary,
                             ),
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 5,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                color: Color.fromARGB(255, 56, 107, 246),
-                                width: 0.3,
-                              ),
-                              borderRadius: BorderRadius.circular(25.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.2),
-                                  spreadRadius: 5,
-                                  blurRadius: 10,
-                                  offset: const Offset(
-                                      0, 3), // changes position of shadow
-                                ),
-                              ],
-                            ),
-                            alignment: AlignmentDirectional.center,
-                            child: DropdownButtonFormField(
-                              dropdownColor: Colors.white,
-                              style: const TextStyle(
-                                color: Colors.black,
-                                backgroundColor: Colors.white,
-                                decorationColor: Colors.black,
-                              ),
-                              validator: (value) => validateText(
-                                  user.department, 'Enter department'),
-                              decoration: const InputDecoration(
-                                // iconColor: Colors.blue,
-                                // suffix: Icon(Icons.remove_red_eye),
-                                // suffixIconColor: Colors.black,
-                                border: OutlineInputBorder(
-                                  gapPadding: 1,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(0),
-                                  ),
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 0.0,
-                                    style: BorderStyle.none,
-                                  ),
-                                ),
-                              ),
-                              items: createDropDown(
-                                  faculties_dept[user.faculty] ?? []),
-                              onChanged: (val) {
-                                setState(() {
-                                  user.department = val ?? '';
-                                });
-                              },
-                            ),
+                            validator: (value) => validateText(
+                                user.department, 'Enter department'),
+                            decoration: inputDropDownDecoration(
+                                Theme.of(context), radius, null),
+                            items: createDropDown(
+                                faculties_dept[user.faculty] ?? []),
+                            onChanged: (val) {
+                              setState(() {
+                                user.department = val ?? '';
+                              });
+                            },
                           ),
                           const SizedBox(
                             height: 20,
@@ -511,69 +308,29 @@ class _RegisterState extends State<Register> {
                           const Text(
                             'Year in School',
                             style: TextStyle(
-                              color: Colors.black,
                               fontSize: 15,
                             ),
                           ),
-                          Container(
-                            height: _formheight,
-                            padding: const EdgeInsets.only(
-                              left: 10,
+                          DropdownButtonFormField(
+                            dropdownColor:
+                                Theme.of(context).colorScheme.tertiaryContainer,
+                            style: TextStyle(
+                              backgroundColor: Theme.of(context)
+                                  .colorScheme
+                                  .tertiaryContainer,
+                              color: Theme.of(context).colorScheme.onPrimary,
                             ),
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 5,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                color: Color.fromARGB(255, 56, 107, 246),
-                                width: 0.3,
-                              ),
-                              borderRadius: BorderRadius.circular(25.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.2),
-                                  spreadRadius: 5,
-                                  blurRadius: 10,
-                                  offset: const Offset(
-                                      0, 3), // changes position of shadow
-                                ),
-                              ],
-                            ),
-                            alignment: AlignmentDirectional.center,
-                            child: DropdownButtonFormField(
-                              dropdownColor: Colors.white,
-                              style: const TextStyle(
-                                color: Colors.black,
-                                backgroundColor: Colors.white,
-                                decorationColor: Colors.black,
-                              ),
-                              validator: (value) => validateText(
-                                  (user.year == 0) ? '' : 'not zero',
-                                  'Enter school year'),
-                              decoration: const InputDecoration(
-                                // iconColor: Colors.blue,
-                                // suffix: Icon(Icons.remove_red_eye),
-                                // suffixIconColor: Colors.black,
-                                border: OutlineInputBorder(
-                                  gapPadding: 1,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(0),
-                                  ),
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 0.0,
-                                    style: BorderStyle.none,
-                                  ),
-                                ),
-                              ),
-                              items: createDropDown(['1', '2', '3', '4']),
-                              onChanged: (val) {
-                                setState(() {
-                                  user.year = int.tryParse(val) ?? 1;
-                                });
-                              },
-                            ),
+                            validator: (value) => validateText(
+                                (user.year == 0) ? '' : 'not zero',
+                                'Enter school year'),
+                            decoration: inputDropDownDecoration(
+                                Theme.of(context), radius, null),
+                            items: createDropDown(['1', '2', '3', '4']),
+                            onChanged: (val) {
+                              setState(() {
+                                user.year = int.tryParse(val) ?? 1;
+                              });
+                            },
                           ),
                           const SizedBox(
                             height: 20,
@@ -581,70 +338,29 @@ class _RegisterState extends State<Register> {
                           const Text(
                             'Satus (Mentor/Mentee)',
                             style: TextStyle(
-                              color: Colors.black,
                               fontSize: 15,
                             ),
                           ),
-                          Container(
-                            height: _formheight,
-                            padding: const EdgeInsets.only(
-                              left: 10,
+                          DropdownButtonFormField(
+                            dropdownColor:
+                                Theme.of(context).colorScheme.tertiaryContainer,
+                            style: TextStyle(
+                              backgroundColor: Theme.of(context)
+                                  .colorScheme
+                                  .tertiaryContainer,
+                              color: Theme.of(context).colorScheme.onPrimary,
                             ),
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 5,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                color: Color.fromARGB(255, 56, 107, 246),
-                                width: 0.3,
-                              ),
-                              borderRadius: BorderRadius.circular(25.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.2),
-                                  spreadRadius: 5,
-                                  blurRadius: 10,
-                                  offset: const Offset(
-                                      0, 3), // changes position of shadow
-                                ),
-                              ],
-                            ),
-                            alignment: AlignmentDirectional.center,
-                            child: DropdownButtonFormField(
-                              dropdownColor: Colors.white,
-                              style: const TextStyle(
-                                color: Colors.black,
-                                backgroundColor: Colors.white,
-                                decorationColor: Colors.black,
-                              ),
-                              validator: (value) =>
-                                  validateText(user.status, 'Enter status'),
-                              decoration: const InputDecoration(
-                                fillColor: Colors.white,
-                                // iconColor: Colors.blue,
-                                // suffix: Icon(Icons.remove_red_eye),
-                                // suffixIconColor: Colors.black,
-                                border: OutlineInputBorder(
-                                  gapPadding: 1,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(0),
-                                  ),
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 0.0,
-                                    style: BorderStyle.none,
-                                  ),
-                                ),
-                              ),
-                              items: createDropDown(
-                                  ['Mentor', 'Mentee', 'Visitor']),
-                              onChanged: (val) {
-                                setState(() {
-                                  user.status = val;
-                                });
-                              },
-                            ),
+                            validator: (value) =>
+                                validateText(user.status, 'Enter status'),
+                            decoration: inputDropDownDecoration(
+                                Theme.of(context), radius, null),
+                            items: createDropDown(
+                                ['Mentor', 'Mentee', 'Visitor', 'Both']),
+                            onChanged: (val) {
+                              setState(() {
+                                user.status = val;
+                              });
+                            },
                           ),
                           const SizedBox(
                             height: 20,
@@ -652,7 +368,6 @@ class _RegisterState extends State<Register> {
                           const Text(
                             'Password',
                             style: TextStyle(
-                              color: Colors.black,
                               fontSize: 15,
                             ),
                           ),
@@ -664,53 +379,20 @@ class _RegisterState extends State<Register> {
                             margin: const EdgeInsets.symmetric(
                               horizontal: 5,
                             ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                color: Color.fromARGB(255, 56, 107, 246),
-                                width: 0.3,
-                              ),
-                              borderRadius: BorderRadius.circular(25.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.2),
-                                  spreadRadius: 5,
-                                  blurRadius: 10,
-                                  offset: const Offset(
-                                      0, 3), // changes position of shadow
-                                ),
-                              ],
-                            ),
+                            decoration:
+                                boxDecoration(Theme.of(context), radius),
                             alignment: AlignmentDirectional.center,
                             child: Row(
                               children: [
                                 Expanded(
                                   child: FractionallySizedBox(
                                     child: TextFormField(
-                                      cursorColor: Colors.black,
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        decorationColor: Colors.black,
-                                      ),
+                                      style: const TextStyle(),
                                       obscureText: !obscure,
                                       keyboardType:
                                           TextInputType.visiblePassword,
-                                      decoration: const InputDecoration(
-                                        // iconColor: Colors.blue,
-                                        // suffix: Icon(Icons.remove_red_eye),
-                                        // suffixIconColor: Colors.black,
-                                        border: OutlineInputBorder(
-                                          gapPadding: 1,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(0),
-                                          ),
-                                          borderSide: BorderSide(
-                                            color: Colors.black,
-                                            width: 0.0,
-                                            style: BorderStyle.none,
-                                          ),
-                                        ),
-                                      ),
+                                      decoration: inputDecoration(
+                                          Theme.of(context), radius, null),
                                       onChanged: (value) {
                                         setState(() {
                                           user.SetPassword(value);
@@ -733,7 +415,6 @@ class _RegisterState extends State<Register> {
                                     obscure
                                         ? Icons.remove_red_eye
                                         : Icons.visibility_off,
-                                    color: Colors.black,
                                   ),
                                 ),
                               ],
@@ -745,7 +426,6 @@ class _RegisterState extends State<Register> {
                           const Text(
                             'Retype password',
                             style: TextStyle(
-                              color: Colors.black,
                               fontSize: 15,
                             ),
                           ),
@@ -757,54 +437,20 @@ class _RegisterState extends State<Register> {
                             margin: const EdgeInsets.symmetric(
                               horizontal: 5,
                             ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                color: Color.fromARGB(255, 56, 107, 246),
-                                width: 0.3,
-                              ),
-                              borderRadius: BorderRadius.circular(25.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.2),
-                                  spreadRadius: 5,
-                                  blurRadius: 10,
-                                  offset: const Offset(
-                                      0, 3), // changes position of shadow
-                                ),
-                              ],
-                            ),
+                            decoration:
+                                boxDecoration(Theme.of(context), radius),
                             alignment: AlignmentDirectional.center,
                             child: Row(
                               children: [
                                 Expanded(
                                   child: FractionallySizedBox(
                                     child: TextFormField(
-                                      cursorColor: Colors.black,
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        decorationColor: Colors.black,
-                                      ),
+                                      style: const TextStyle(),
                                       obscureText: !reobscure,
                                       keyboardType:
                                           TextInputType.visiblePassword,
-                                      decoration: const InputDecoration(
-                                        fillColor: Colors.black,
-                                        // iconColor: Colors.blue,
-                                        // suffix: Icon(Icons.remove_red_eye),
-                                        // suffixIconColor: Colors.black,
-                                        border: OutlineInputBorder(
-                                          gapPadding: 1,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(0),
-                                          ),
-                                          borderSide: BorderSide(
-                                            color: Colors.black,
-                                            width: 0.0,
-                                            style: BorderStyle.none,
-                                          ),
-                                        ),
-                                      ),
+                                      decoration: inputDecoration(
+                                          Theme.of(context), radius, null),
                                       onChanged: (value) {
                                         setState(() {
                                           retypePassword = value;
@@ -829,7 +475,6 @@ class _RegisterState extends State<Register> {
                                     reobscure
                                         ? Icons.remove_red_eye
                                         : Icons.visibility_off,
-                                    color: Colors.black,
                                   ),
                                 ),
                               ],
@@ -851,26 +496,7 @@ class _RegisterState extends State<Register> {
                             padding: const MaterialStatePropertyAll<EdgeInsets>(
                                 EdgeInsets.symmetric(horizontal: 40)),
                           ),
-                          onPressed: () async {
-                            if (_formkey.currentState != null) {
-                              if (_formkey.currentState?.validate() ?? false) {
-                                setState(() {
-                                  loading = true;
-                                });
-                                dynamic auth_user = await _auth.Register(user);
-                                if (auth_user == null) {
-                                  setState(() {
-                                    loading = false;
-                                  });
-                                  print('Failed to register');
-                                } else {
-                                  print('Success');
-                                }
-                              }
-                            } else {
-                              print(_formkey.currentState?.validate());
-                            }
-                          },
+                          onPressed: _createAccount,
                           child: Text(
                             'Create An Account',
                             style: TextStyle(
@@ -889,10 +515,7 @@ class _RegisterState extends State<Register> {
                       children: [
                         const Text(
                           'Already have an Account?',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.black,
-                          ),
+                          style: TextStyle(fontSize: 15),
                         ),
                         TextButton(
                           onPressed: () => widget.toggleAuth(1),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mentor_me/screens/themes.dart';
 
 import '../../services/auth_service.dart';
 import '../../services/input_verification.dart';
@@ -20,6 +21,30 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   bool loading = false; // used to display loading screen
   String wrongCredentials = ''; // display error of wrong credentials
   bool obscure = false;
+  double radius = 25;
+  void _sendResetPasswordEmail() async {
+    if (_formkey.currentState != null) {
+      if (_formkey.currentState?.validate() ?? false) {
+        setState(() {
+          loading = true;
+        });
+        String? res = await _auth.resetPassword(email);
+        if (res != null) {
+          setState(() {
+            loading = false;
+            widget.toggleAuth(1, message: 'Recovery email sent successfully!');
+          });
+        } else {
+          setState(() {
+            loading = false;
+            wrongCredentials = 'This email is not in our database';
+          });
+        }
+      }
+    } else {
+      print(_formkey.currentState?.validate());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +53,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         : Scaffold(
             appBar: AppBar(
               elevation: 0.0,
-              backgroundColor: Colors.white,
               leading: IconButton(
                 icon: const BackButtonIcon(),
-                onPressed: () => widget.toggleAuth(1),
+                onPressed: () => widget.toggleAuth(1, back: true),
                 style: const ButtonStyle(
                   elevation: MaterialStatePropertyAll(200),
                   iconColor: MaterialStatePropertyAll(
@@ -41,7 +65,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             ),
             body: Container(
               height: double.infinity,
-              color: Colors.white,
               padding: const EdgeInsets.symmetric(
                 horizontal: 20,
               ),
@@ -56,9 +79,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         'Forgot Passowrd',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30),
+                            fontWeight: FontWeight.bold, fontSize: 30),
                       ),
                     ),
                     const SizedBox(
@@ -66,9 +87,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     ),
                     const Center(
                       child: Text(
-                        'Enter your account email, we will send you a verification code',
+                        'Enter your account email, we will send you a link to change your password',
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.black, fontSize: 15),
+                        style: TextStyle(fontSize: 15),
                       ),
                     ),
                     const SizedBox(
@@ -94,7 +115,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           const Text(
                             'Email',
                             style: TextStyle(
-                              color: Colors.black,
                               fontSize: 15,
                             ),
                           ),
@@ -109,23 +129,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             margin: const EdgeInsets.symmetric(
                               horizontal: 5,
                             ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                color: const Color.fromARGB(255, 56, 107, 246),
-                                width: 0.3,
-                              ),
-                              borderRadius: BorderRadius.circular(25.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.2),
-                                  spreadRadius: 5,
-                                  blurRadius: 10,
-                                  offset: const Offset(
-                                      0, 3), // changes position of shadow
-                                ),
-                              ],
-                            ),
+                            decoration:
+                                boxDecoration(Theme.of(context), radius),
                             alignment: AlignmentDirectional.center,
                             child: Row(
                               children: [
@@ -139,21 +144,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                       ),
                                       autofocus: true,
                                       keyboardType: TextInputType.emailAddress,
-                                      decoration: const InputDecoration(
-                                        // iconColor: Colors.blue,
-                                        // suffix: Icon(Icons.email),
-                                        // suffixIconColor: Colors.black,
-                                        border: OutlineInputBorder(
-                                            gapPadding: 1,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(0),
-                                            ),
-                                            borderSide: BorderSide(
-                                              color: Colors.black,
-                                              width: 0.0,
-                                              style: BorderStyle.none,
-                                            )),
-                                      ),
+                                      decoration: inputDecoration(
+                                          Theme.of(context), radius, null),
                                       onChanged: (value) {
                                         setState(() {
                                           email = value;
@@ -168,7 +160,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                   onPressed: () => {},
                                   icon: const Icon(
                                     Icons.email,
-                                    color: Colors.black,
                                   ),
                                 ),
                               ],
@@ -193,34 +184,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             padding: MaterialStatePropertyAll<EdgeInsets>(
                                 EdgeInsets.symmetric(horizontal: 100)),
                           ),
-                          onPressed: () async {
-                            if (_formkey.currentState != null) {
-                              if (_formkey.currentState?.validate() ?? false) {
-                                setState(() {
-                                  loading = true;
-                                });
-                                String? res = await _auth.resetPassword(email);
-                                if (res != null) {
-                                  setState(() {
-                                    loading = false;
-                                    widget.toggleAuth(1,
-                                        message:
-                                            'Recovery email sent successfully!');
-                                  });
-                                } else {
-                                  setState(() {
-                                    loading = false;
-                                    wrongCredentials =
-                                        'This email is not in our database';
-                                  });
-                                }
-                              }
-                            } else {
-                              print(_formkey.currentState?.validate());
-                            }
-                          },
+                          onPressed: _sendResetPasswordEmail,
                           child: const Text(
-                            'Verify Email',
+                            'Send Email',
                             style: TextStyle(
                               fontSize: 17,
                               color: Colors.white,

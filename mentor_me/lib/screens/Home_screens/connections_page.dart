@@ -53,15 +53,11 @@ class _ConnectionsPageState extends State<ConnectionsPage> {
               horizontal: 20,
             ),
             decoration: BoxDecoration(
-              color: Colors.white,
-              // border: Border.all(
-              //   color: Color.fromARGB(255, 56, 107, 246),
-              //   width: 0.3,
-              // ),
-              borderRadius: BorderRadius.circular(25.0),
+              color: Theme.of(context).colorScheme.tertiaryContainer,
+              borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
+                  color: Theme.of(context).shadowColor,
                   spreadRadius: 5,
                   blurRadius: 10,
                   offset: const Offset(0, 3), // changes position of shadow
@@ -81,29 +77,31 @@ class _ConnectionsPageState extends State<ConnectionsPage> {
                 Expanded(
                   child: FractionallySizedBox(
                     child: TextFormField(
-                      cursorColor: Colors.black,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        decorationColor: Colors.black,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.tertiary,
                       ),
                       keyboardType: TextInputType.text,
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(
-                            gapPadding: 1,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(0),
-                            ),
-                            borderSide: BorderSide(
-                              color: Colors.black,
-                              width: 0.0,
-                              style: BorderStyle.none,
-                            ),
+                      decoration: InputDecoration(
+                        hintText: 'Search Connections',
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 13,
+                        ),
+                        contentPadding: const EdgeInsets.all(16.0),
+                        filled: true,
+                        fillColor:
+                            Theme.of(context).colorScheme.tertiaryContainer,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide(
+                            color: Colors.transparent,
                           ),
-                          hintText: 'Search Connections',
-                          hintStyle: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 13,
-                          )),
+                        ),
+                      ),
                       onChanged: (value) {
                         setState(() {
                           searchVal = value;
