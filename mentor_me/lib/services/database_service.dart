@@ -26,7 +26,7 @@ class DatabaseService extends ChangeNotifier {
   final CollectionReference chatCollection =
       FirebaseFirestore.instance.collection('chat_rooms');
   final CollectionReference documentCollection =
-      FirebaseFirestore.instance.collection('chat_rooms');
+      FirebaseFirestore.instance.collection('resource_documents');
 
   // update all student collections and student collections in respective schools
   Future UpdateStudentCollection(MyUser? user) async {
