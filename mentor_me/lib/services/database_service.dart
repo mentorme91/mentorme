@@ -19,11 +19,13 @@ class DatabaseService extends ChangeNotifier {
   final CollectionReference studentsCollection =
       FirebaseFirestore.instance.collection('all_students');
   // get the collection of all schools in the database
-  final CollectionReference schoolsCollection =
-      FirebaseFirestore.instance.collection('schools');
+  // final CollectionReference schoolsCollection =
+  //     FirebaseFirestore.instance.collection('schools');
   final CollectionReference postsCollection =
       FirebaseFirestore.instance.collection('all_posts');
   final CollectionReference chatCollection =
+      FirebaseFirestore.instance.collection('chat_rooms');
+  final CollectionReference documentCollection =
       FirebaseFirestore.instance.collection('chat_rooms');
 
   // update all student collections and student collections in respective schools
@@ -36,15 +38,15 @@ class DatabaseService extends ChangeNotifier {
     dic['requests'] = newRequests;
     // update all student collections and student collections in respective schools
     await studentsCollection.doc(user?.uid).set(dic);
-    await schoolsCollection
-        .doc(user?.school_id)
-        .collection('faculties')
-        .doc(user?.faculty)
-        .collection('departments')
-        .doc(user?.department)
-        .collection('students')
-        .doc(user?.uid)
-        .set(dic);
+    // await schoolsCollection
+    //     .doc(user?.school_id)
+    //     .collection('faculties')
+    //     .doc(user?.faculty)
+    //     .collection('departments')
+    //     .doc(user?.department)
+    //     .collection('students')
+    //     .doc(user?.uid)
+    //     .set(dic);
     notifyListeners();
   }
 
@@ -86,6 +88,10 @@ class DatabaseService extends ChangeNotifier {
 
   Stream<DocumentSnapshot> chatRoom(String roomID) {
     return postsCollection.doc(roomID).snapshots();
+  }
+
+  Stream<QuerySnapshot> getDocuments(String school, String courseCode) {
+    return documentCollection.doc(school).collection(courseCode).snapshots();
   }
 
   Stream<QuerySnapshot> userMatches() {
