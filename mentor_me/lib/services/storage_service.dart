@@ -4,11 +4,29 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../models/user.dart';
 
 class StorageService {
   final storageRef = FirebaseStorage.instance.ref();
+
+  Future<File?> loadFirebaseFile(String url, String title) async {
+    try {
+      final PDF = storageRef.child(url);
+      final List<int> bytes = await PDF.getData() as List<int>;
+      return _storeFile(url, bytes, title);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<File> _storeFile(String url, List<int> bytes, String title) async {
+    final dir = await getApplicationDocumentsDirectory();
+    final file = File('${dir.path}/$title');
+    await file.writeAsBytes(bytes, flush: true);
+    return file;
+  }
 
   Future<File?> pickFile() async {
     FilePickerResult? result =
@@ -40,6 +58,7 @@ class StorageService {
         'title': title,
         'type': type,
         'url': downloadUrl,
+        'path': 'documents/${file.path}',
         'time': Timestamp.now(),
       });
       return true;
