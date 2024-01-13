@@ -28,7 +28,6 @@ class _DocumentResourcesState extends State<DocumentResources> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator();
           }
-
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           }
@@ -49,12 +48,13 @@ class _DocumentResourcesState extends State<DocumentResources> {
                       subtitle: Text('Tap to view file'),
                       trailing: IconButton(
                         onPressed: () async {
-                          bool pass = await StorageService().downloadFile(url);
+                          bool pass =
+                              await StorageService().downloadFile(url, title);
                           if (pass) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                   content: Text(
-                                    'File $url successfully downloaded!',
+                                    'File $title successfully downloaded in downloads folder!',
                                   ),
                                   behavior: SnackBarBehavior.floating,
                                   shape: RoundedRectangleBorder(
@@ -65,7 +65,7 @@ class _DocumentResourcesState extends State<DocumentResources> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                   content: Text(
-                                    'File $url failed to download!',
+                                    'File $title failed to download!',
                                   ),
                                   behavior: SnackBarBehavior.floating,
                                   shape: RoundedRectangleBorder(

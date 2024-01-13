@@ -32,10 +32,7 @@ class _NotificationsState extends State<Notifications> {
   Widget build(BuildContext context) {
     // final user = Provider.of<MyUser?>(context);
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(10),
-        child: AppBar(),
-      ),
+      appBar: AppBar(),
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Container(
         height: double.infinity,
@@ -43,36 +40,15 @@ class _NotificationsState extends State<Notifications> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Row(
-                children: [
-                  IconButton(
+              Center(
+                child: Text(
+                  'Notifications',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
                       color: Theme.of(context).colorScheme.onPrimary,
-                      onPressed: () => {
-                            setState(
-                              () {
-                                Navigator.pop(context);
-                              },
-                            )
-                          },
-                      icon: const BackButtonIcon()),
-                  Expanded(
-                    child: FractionallySizedBox(
-                      child: Center(
-                        child: Text(
-                          'Notifications',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.onPrimary,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 50,
-                  ),
-                ],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30),
+                ),
               ),
             ],
           ),
