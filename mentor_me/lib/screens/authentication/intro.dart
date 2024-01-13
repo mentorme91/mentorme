@@ -101,7 +101,7 @@ class _OnboardingState extends State<Onboarding> {
               ),
               const Center(
                 child: Image(
-                  image: AssetImage('assets/images/logo.png'),
+                  image: AssetImage('assets/images/onboarding.png'),
                 ),
               ),
               const SizedBox(
