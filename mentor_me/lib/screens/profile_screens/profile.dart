@@ -1,13 +1,10 @@
-import 'dart:io';
-
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/user.dart';
 import '../../services/auth_service.dart';
 import '../../services/database_service.dart';
+import '../../services/storage_service.dart';
 import '../theme_provider.dart';
 import 'calendar.dart';
 import 'detailed_image.dart';
@@ -39,29 +36,6 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  Future<String?> _captureImage(MyUser user) async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? pickedFile =
-        await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      final imageFile = File(pickedFile.path);
-      final storage = FirebaseStorage.instance;
-
-      try {
-        await storage.ref('images/photoOf${user.uid}.png').putFile(imageFile);
-        final imageUrl =
-            await storage.ref('images/photoOf${user.uid}.png').getDownloadURL();
-
-        return imageUrl;
-      } on FirebaseException catch (e) {
-        print('Error uploading image: $e');
-        return null;
-      }
-    }
-    return null;
-  }
-
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<MyUser?>(context);
@@ -166,8 +140,8 @@ class _ProfileState extends State<Profile> {
                       ),
                       GestureDetector(
                         onTap: () async {
-                          String? imageURL =
-                              await _captureImage(user ?? MyUser());
+                          String? imageURL = await StorageService()
+                              .captureImage(user ?? MyUser());
                           if (imageURL == null) {
                             print('Failed!');
                             return;

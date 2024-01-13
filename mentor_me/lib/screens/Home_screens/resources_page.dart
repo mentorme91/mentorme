@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 
 import '../../services/tests.dart';
+import 'resource_pages/course_resource.dart';
 
 class ResourcesPage extends StatefulWidget {
   const ResourcesPage({super.key});
@@ -12,7 +13,7 @@ class ResourcesPage extends StatefulWidget {
 
 class _ResourcesPageState extends State<ResourcesPage> {
   List<Widget> _createCourseTile(List<String> courses) {
-    return courses.map((course) => CourseTile(courseName: course)).toList();
+    return courses.map((course) => CourseTile(courseCode: course)).toList();
   }
 
   List<String> _courses = courses;
@@ -142,8 +143,8 @@ class _ResourcesPageState extends State<ResourcesPage> {
 }
 
 class CourseTile extends StatelessWidget {
-  final String courseName;
-  const CourseTile({required this.courseName, super.key});
+  final String courseCode;
+  const CourseTile({required this.courseCode, super.key});
 
   Color _generateRandomColor() {
     Random random = Random();
@@ -155,33 +156,42 @@ class CourseTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 40,
-      height: 40,
-      margin: const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
-      padding: const EdgeInsets.only(bottom: 0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-          20,
-        ),
-        border: Border.all(
-          color: Theme.of(context).primaryColor,
-          width: 0.2,
-        ),
-        color: _generateRandomColor(),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            courseName,
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.onPrimary,
-                fontSize: 15),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    CourseResourcePage(courseCode: courseCode)));
+      },
+      child: Container(
+        width: 40,
+        height: 40,
+        margin: const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
+        padding: const EdgeInsets.only(bottom: 0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(
+            20,
           ),
-        ],
+          border: Border.all(
+            color: Theme.of(context).primaryColor,
+            width: 0.2,
+          ),
+          color: _generateRandomColor(),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              courseCode,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontSize: 15),
+            ),
+          ],
+        ),
       ),
     );
   }
