@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../models/user.dart';
@@ -88,5 +89,21 @@ class StorageService {
       }
     }
     return null;
+  }
+
+  Future<bool> downloadFile(String path) async {
+    final ref = storageRef.child(path);
+
+    final Directory appDocDir = await getApplicationDocumentsDirectory();
+    final File tempFile = File(appDocDir.path + '/' + 'mentormefile.pdf');
+    try {
+      await ref.writeToFile(tempFile);
+      await tempFile.create();
+      await OpenFile.open(tempFile.path);
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
   }
 }
