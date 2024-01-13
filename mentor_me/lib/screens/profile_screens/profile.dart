@@ -8,6 +8,7 @@ import '../../services/storage_service.dart';
 import '../theme_provider.dart';
 import 'calendar.dart';
 import 'detailed_image.dart';
+import 'notifications.dart';
 import 'personal_info.dart';
 
 class UserProfile extends StatefulWidget {
@@ -264,10 +265,9 @@ class _ProfileState extends State<Profile> {
                     ListTile(
                       onTap: () {
                         setState(() {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: ((context) => UserCalendar())));
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: ((context) =>
+                                  NotificationsThemeLoader())));
                         });
                       },
                       leading: const Icon(
@@ -276,6 +276,71 @@ class _ProfileState extends State<Profile> {
                       ),
                       title: const Text(
                         'Notifications',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 17,
+                        ),
+                      ),
+                      trailing: const Icon(
+                        Icons.arrow_right,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Divider(
+                        color: Colors.white, // Set the color to white
+                        height: 1, // Set the height of the divider
+                      ),
+                    ),
+                    ListTile(
+                      onTap: () {
+                        setState(() {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) =>
+                                      UserCalendarThemeLoader())));
+                        });
+                      },
+                      leading: const Icon(
+                        Icons.calendar_month,
+                        color: Colors.white,
+                      ),
+                      title: const Text(
+                        'My Calendar',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 17,
+                        ),
+                      ),
+                      trailing: const Icon(
+                        Icons.arrow_right,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Divider(
+                        color: Colors.white, // Set the color to white
+                        height: 1, // Set the height of the divider
+                      ),
+                    ),
+                    ListTile(
+                      onTap: () {
+                        setState(() {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) => CoursePlanner())));
+                        });
+                      },
+                      leading: const Icon(
+                        Icons.schedule,
+                        color: Colors.white,
+                      ),
+                      title: const Text(
+                        'My Schedule',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 17,

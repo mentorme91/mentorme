@@ -92,11 +92,11 @@ class StorageService {
     return null;
   }
 
-  Future<bool> downloadFile(String path) async {
+  Future<bool> downloadFile(String path, String name) async {
     final ref = storageRef.child(path);
     final downloadPath = await getPathToDownload();
 
-    final File tempFile = File(downloadPath + '/' + 'mentormefile.pdf');
+    final File tempFile = File(downloadPath + '/' + '$name.pdf');
     try {
       await ref.writeToFile(tempFile);
       await tempFile.create();
