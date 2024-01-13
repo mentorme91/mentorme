@@ -2,9 +2,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mentor_me/services/database_service.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:flutter/src/gestures/tap.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../models/user.dart';
+
+class LinkTextSpan extends TextSpan {
+  LinkTextSpan(
+      {required TextStyle style, required String url, required String text})
+      : super(
+            style: style,
+            text: text,
+            recognizer: new TapGestureRecognizer()
+              ..onTap = () {
+                launchUrl(Uri(path: url));
+              });
+}
 
 class DocumentResources extends StatefulWidget {
   final String courseCode;
@@ -43,8 +56,9 @@ class _DocumentResourcesState extends State<DocumentResources> {
                 print(url);
                 return ListTile(
                   title: Text(title),
-                  subtitle: PDFView(
-                    filePath: url,
+                  subtitle: RichText(
+                    text: LinkTextSpan(
+                        url: url, text: 'Display file', style: TextStyle()),
                   ),
                   onTap: () {},
                 );
