@@ -1,23 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:mentor_me/services/database_service.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/src/gestures/tap.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../models/user.dart';
-
-class LinkTextSpan extends TextSpan {
-  LinkTextSpan(
-      {required TextStyle style, required String url, required String text})
-      : super(
-            style: style,
-            text: text,
-            recognizer: new TapGestureRecognizer()
-              ..onTap = () {
-                launchUrl(Uri(path: url));
-              });
-}
+import '../../../services/database_service.dart';
+import '../../../services/storage_service.dart';
+import 'pdf_viewer.dart';
 
 class DocumentResources extends StatefulWidget {
   final String courseCode;
@@ -44,7 +32,6 @@ class _DocumentResourcesState extends State<DocumentResources> {
             return Text('Error: ${snapshot.error}');
           }
           final documents = snapshot.data?.docs ?? [];
-          print(snapshot.data?.docs);
           return Container(
             height: MediaQuery.of(context).size.height - 260,
             child: ListView.builder(
@@ -52,16 +39,22 @@ class _DocumentResourcesState extends State<DocumentResources> {
               itemBuilder: (context, index) {
                 final document = documents[index];
                 final title = document['title'] as String;
-                final url = document['url'] as String;
-                print(url);
+                final url = document['path'] as String;
                 return ListTile(
-                  title: Text(title),
-                  subtitle: RichText(
-                    text: LinkTextSpan(
-                        url: url, text: 'Display file', style: TextStyle()),
-                  ),
-                  onTap: () {},
-                );
+                    title: Text(title),
+                    subtitle: Text('Tap to Display file'),
+                    onTap: () async {
+                      final file =
+                          await StorageService().loadFirebaseFile(url, title);
+                      if (file == null) return;
+                      setState(() {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => PDFViewerPage(
+                                  file: file,
+                                  title: title,
+                                )));
+                      });
+                    });
               },
             ),
           );
