@@ -79,6 +79,7 @@ class _CourseResourceState extends State<CourseResource> {
     );
     StorageService().uploadDocument(
         file, title, 'pdf', user?.school_id ?? '', widget.courseCode);
+    setState(() {});
   }
 
   void _uploadLink() {}

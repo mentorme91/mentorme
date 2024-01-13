@@ -30,9 +30,8 @@ class _DocumentResourcesState extends State<DocumentResources> {
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           }
-
           final documents = snapshot.data?.docs ?? [];
-
+          print(snapshot.data?.docs);
           return Container(
             height: MediaQuery.of(context).size.height - 260,
             child: ListView.builder(
@@ -41,7 +40,7 @@ class _DocumentResourcesState extends State<DocumentResources> {
                 final document = documents[index];
                 final title = document['title'] as String;
                 final url = document['url'] as String;
-
+                print(url);
                 return ListTile(
                   title: Text(title),
                   subtitle: PDFView(
