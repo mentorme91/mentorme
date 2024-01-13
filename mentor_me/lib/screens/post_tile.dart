@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-List<Widget> createPostTile(Map<String, Map<String, dynamic>> postInfo) {
-  List<Widget> postTiles = [];
-  postInfo.forEach((key, value) {
-    postTiles.add(PostTile(postInfo: value));
-  });
-  return postTiles;
-}
+import '../models/post.dart';
 
 class PostTile extends StatefulWidget {
-  final Map<String, dynamic> postInfo;
+  final Post post;
 
-  const PostTile({required this.postInfo});
+  const PostTile({required this.post});
 
   @override
   State<PostTile> createState() => _PostTileState();
@@ -62,16 +57,13 @@ class _PostTileState extends State<PostTile> {
                           onPressed: () => {},
                           child: CircleAvatar(
                             radius: 25,
-                            backgroundImage:
-                                (widget.postInfo['photoURL'] == null)
-                                    ? const AssetImage('assets/images/face.png')
-                                    : null,
-                            foregroundImage:
-                                (widget.postInfo['photoURL'] != null)
-                                    ? NetworkImage(
-                                        widget.postInfo['photoURL'] ?? '',
-                                        scale: 1)
-                                    : null,
+                            backgroundImage: (widget.post.userPhotoURL == null)
+                                ? const AssetImage('assets/images/face.png')
+                                : null,
+                            foregroundImage: (widget.post.userPhotoURL != null)
+                                ? NetworkImage(widget.post.userPhotoURL ?? '',
+                                    scale: 1)
+                                : null,
                           ),
                         ),
                         Column(
@@ -79,14 +71,16 @@ class _PostTileState extends State<PostTile> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              widget.postInfo['userName'] ?? 'User',
+                              widget.post.userName ?? 'User',
                               style: TextStyle(
                                 color: Theme.of(context).colorScheme.onPrimary,
                                 fontSize: 18,
                               ),
                             ),
                             Text(
-                              widget.postInfo['time'],
+                              DateFormat('yyyy-MM-dd HH:mm')
+                                  .format(widget.post.time.toDate())
+                                  .toString(),
                               style: const TextStyle(
                                 color: Color.fromARGB(255, 87, 87, 87),
                                 fontSize: 12,
@@ -105,7 +99,7 @@ class _PostTileState extends State<PostTile> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Text(
-              widget.postInfo['content'],
+              widget.post.content ?? '',
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onPrimary,
                 fontSize: 13,
@@ -124,7 +118,7 @@ class _PostTileState extends State<PostTile> {
                       child: Row(
                         children: [
                           Text(
-                            widget.postInfo['likes'].toString(),
+                            widget.post.likes.toString(),
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.onPrimary,
                               fontSize: 13,
@@ -134,7 +128,7 @@ class _PostTileState extends State<PostTile> {
                             onPressed: () => {
                               setState(() {
                                 likeTapped = !likeTapped;
-                                widget.postInfo['likes'] += likeTapped ? 1 : -1;
+                                widget.post.likes += likeTapped ? 1 : -1;
                               })
                             },
                             icon: Icon(
@@ -145,7 +139,7 @@ class _PostTileState extends State<PostTile> {
                             ),
                           ),
                           Text(
-                            widget.postInfo['comments'].toString(),
+                            widget.post.comments.length.toString(),
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.onPrimary,
                               fontSize: 13,

@@ -4,9 +4,9 @@ import 'package:mentor_me/screens/themes.dart';
 import '../../models/user.dart';
 import '../../services/auth_service.dart';
 import '../../services/input_verification.dart';
+import '../../services/json_decoder.dart';
 import '../drop_down.dart';
 import '../loading.dart';
-import '../../services/schools_info.dart';
 
 class Register extends StatefulWidget {
   final Function toggleAuth;
@@ -17,6 +17,14 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  late Map<String, dynamic> schoolsData; // Your User class
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData(); // Fetch data when the page is initialized
+  }
+
   final AuthService _auth = AuthService();
   MyUser user = newUser();
   final double _formheight = 60;
@@ -25,6 +33,18 @@ class _RegisterState extends State<Register> {
   bool loading = false;
   String retypePassword = '';
   double radius = 25;
+
+  Future<void> fetchData() async {
+    try {
+      Map<String, dynamic> jsonMap = await loadJsonData('schools_info.json');
+      setState(() {
+        schoolsData = jsonMap;
+      });
+    } catch (error) {
+      // Handle errors
+      print('Error fetching data: $error');
+    }
+  }
 
   void _createAccount() async {
     if (_formkey.currentState != null) {
@@ -51,7 +71,7 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     // Color primaryColor = Theme.of(context).colorScheme.primary;S
     // Color secondaryColor = Theme.of(context).colorScheme.secondary;
-    return loading
+    return (loading)
         ? LoadingScreen()
         : Scaffold(
             resizeToAvoidBottomInset: true,
@@ -234,8 +254,7 @@ class _RegisterState extends State<Register> {
                                 validateText(user.school_id, 'Enter school'),
                             decoration: inputDropDownDecoration(
                                 Theme.of(context), radius, null),
-                            items:
-                                createDropDown(produceList(schools_faculties)),
+                            items: createDropDown(schoolsData.keys.toList()),
                             onChanged: (val) {
                               setState(() {
                                 user.school_id = val ?? '';
@@ -265,7 +284,7 @@ class _RegisterState extends State<Register> {
                             decoration: inputDropDownDecoration(
                                 Theme.of(context), radius, null),
                             items: createDropDown(
-                                schools_faculties[user.school_id] ?? []),
+                                schoolsData[user.school_id]!.keys.toList()),
                             onChanged: (val) {
                               setState(() {
                                 user.faculty = val ?? '';
@@ -295,7 +314,10 @@ class _RegisterState extends State<Register> {
                             decoration: inputDropDownDecoration(
                                 Theme.of(context), radius, null),
                             items: createDropDown(
-                                faculties_dept[user.faculty] ?? []),
+                                schoolsData[user.school_id]![user.faculty]
+                                        .keys
+                                        .toList() ??
+                                    []),
                             onChanged: (val) {
                               setState(() {
                                 user.department = val ?? '';

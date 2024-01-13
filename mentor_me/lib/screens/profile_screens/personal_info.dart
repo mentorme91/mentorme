@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../services/schools_info.dart';
 import '../../models/user.dart';
 import '../../services/database_service.dart';
 import '../../services/input_verification.dart';
+import '../../services/json_decoder.dart';
 import '../drop_down.dart';
 import '../theme_provider.dart';
 
@@ -45,7 +45,27 @@ class _PersonalInfoState extends State<PersonalInfo> {
   };
   bool loading = false;
   bool obscure = false;
+  late Map<String, dynamic> schoolsData;
   MyUser dummy = newUser();
+
+  Future<void> fetchData() async {
+    try {
+      Map<String, dynamic> jsonMap = await loadJsonData('schools_info.json');
+      setState(() {
+        schoolsData = jsonMap;
+      });
+    } catch (error) {
+      // Handle errors
+      print('Error fetching data: $error');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData(); // Fetch data when the page is initialized
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<MyUser?>(context);
@@ -225,7 +245,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                       ),
                       DropdownButtonFormField(
                         items: (enablers['school'] ?? false)
-                            ? createDropDown(produceList(schools_faculties))
+                            ? createDropDown(schoolsData.keys.toList())
                             : null,
                         value: dummy.school_id,
                         onChanged: (value) {
@@ -267,7 +287,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                       DropdownButtonFormField(
                         items: (enablers['faculty'] ?? false)
                             ? createDropDown(
-                                schools_faculties[dummy.school_id] ?? [])
+                                schoolsData[dummy.school_id]!.keys.toList())
                             : null,
                         value: dummy.faculty,
                         onChanged: (value) {
@@ -310,7 +330,10 @@ class _PersonalInfoState extends State<PersonalInfo> {
                       DropdownButtonFormField(
                         items: (enablers['department'] ?? false)
                             ? createDropDown(
-                                faculties_dept[dummy.faculty] ?? [])
+                                schoolsData[dummy.school_id]![dummy.faculty]
+                                        .keys
+                                        .toList() ??
+                                    [])
                             : null,
                         value: dummy.department,
                         onChanged: (value) {

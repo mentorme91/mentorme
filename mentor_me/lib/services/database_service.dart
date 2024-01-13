@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../models/post.dart';
 import '../models/request.dart';
 import '../models/user.dart';
 
@@ -21,7 +22,7 @@ class DatabaseService extends ChangeNotifier {
   final CollectionReference schoolsCollection =
       FirebaseFirestore.instance.collection('schools');
   final CollectionReference postsCollection =
-      FirebaseFirestore.instance.collection('posts');
+      FirebaseFirestore.instance.collection('all_posts');
   final CollectionReference chatCollection =
       FirebaseFirestore.instance.collection('chat_rooms');
 
@@ -44,6 +45,12 @@ class DatabaseService extends ChangeNotifier {
         .collection('students')
         .doc(user?.uid)
         .set(dic);
+    notifyListeners();
+  }
+
+  void postNewPost(Post post, String postName) {
+    postsCollection.doc(postName).collection('posts').add(post.toMap());
+    notifyListeners();
   }
 
   // get user data snapshots
@@ -60,6 +67,18 @@ class DatabaseService extends ChangeNotifier {
 
   Stream<DocumentSnapshot> get posts {
     return postsCollection.doc('posts').snapshots();
+  }
+
+  Future<List<Post>> allPosts(String postName) async {
+    List<Post> allPosts = [];
+    QuerySnapshot<Object?> posts =
+        await postsCollection.doc(postName).collection('posts').get();
+    for (var post in posts.docs) {
+      Map<String, dynamic> postData = post.data() as Map<String, dynamic>;
+      Post thisPost = Post()..updateFromMap(postData);
+      allPosts.add(thisPost);
+    }
+    return allPosts;
   }
 
   Stream<DocumentSnapshot> chatRoom(String roomID) {
