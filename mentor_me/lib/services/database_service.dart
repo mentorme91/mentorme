@@ -71,8 +71,11 @@ class DatabaseService extends ChangeNotifier {
 
   Future<List<Post>> allPosts(String postName) async {
     List<Post> allPosts = [];
-    QuerySnapshot<Object?> posts =
-        await postsCollection.doc(postName).collection('posts').get();
+    QuerySnapshot<Object?> posts = await postsCollection
+        .doc(postName)
+        .collection('posts')
+        .orderBy('time', descending: false)
+        .get();
     for (var post in posts.docs) {
       Map<String, dynamic> postData = post.data() as Map<String, dynamic>;
       Post thisPost = Post()..updateFromMap(postData);
