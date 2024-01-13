@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:external_path/external_path.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
@@ -93,9 +94,9 @@ class StorageService {
 
   Future<bool> downloadFile(String path) async {
     final ref = storageRef.child(path);
+    final downloadPath = await getPathToDownload();
 
-    final Directory appDocDir = await getApplicationDocumentsDirectory();
-    final File tempFile = File(appDocDir.path + '/' + 'mentormefile.pdf');
+    final File tempFile = File(downloadPath + '/' + 'mentormefile.pdf');
     try {
       await ref.writeToFile(tempFile);
       await tempFile.create();
@@ -105,5 +106,10 @@ class StorageService {
       print(e.toString());
       return false;
     }
+  }
+
+  Future<String> getPathToDownload() async {
+    return await ExternalPath.getExternalStoragePublicDirectory(
+        ExternalPath.DIRECTORY_DOWNLOADS);
   }
 }
