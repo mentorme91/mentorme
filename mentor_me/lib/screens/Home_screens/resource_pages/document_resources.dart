@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../models/user.dart';
 import '../../../services/database_service.dart';
 import '../../../services/storage_service.dart';
+import '../../themes.dart';
 import 'pdf_viewer.dart';
 
 class DocumentResources extends StatefulWidget {
@@ -40,21 +41,54 @@ class _DocumentResourcesState extends State<DocumentResources> {
                 final document = documents[index];
                 final title = document['title'] as String;
                 final url = document['path'] as String;
-                return ListTile(
-                    title: Text(title),
-                    subtitle: Text('Tap to Display file'),
-                    onTap: () async {
-                      final file =
-                          await StorageService().loadFirebaseFile(url, title);
-                      if (file == null) return;
-                      setState(() {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => PDFViewerPage(
-                                  file: file,
-                                  title: title,
-                                )));
-                      });
-                    });
+                return Container(
+                  margin: EdgeInsets.all(10),
+                  decoration: boxDecoration(Theme.of(context), 20),
+                  child: ListTile(
+                      title: Text(title),
+                      subtitle: Text('Tap to view file'),
+                      trailing: IconButton(
+                        onPressed: () async {
+                          bool pass = await StorageService().downloadFile(url);
+                          if (pass) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content: Text(
+                                    'File $url successfully downloaded!',
+                                  ),
+                                  behavior: SnackBarBehavior.floating,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(30.0))),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content: Text(
+                                    'File $url failed to download!',
+                                  ),
+                                  behavior: SnackBarBehavior.floating,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(30.0))),
+                            );
+                          }
+                        },
+                        icon: Icon(Icons.download),
+                      ),
+                      onTap: () async {
+                        final file =
+                            await StorageService().loadFirebaseFile(url, title);
+                        if (file == null) return;
+                        setState(() {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => PDFViewerPage(
+                                    file: file,
+                                    title: title,
+                                  )));
+                        });
+                      }),
+                );
               },
             ),
           );
