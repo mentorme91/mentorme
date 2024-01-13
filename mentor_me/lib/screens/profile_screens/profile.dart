@@ -10,6 +10,7 @@ import 'calendar.dart';
 import 'detailed_image.dart';
 import 'notifications.dart';
 import 'personal_info.dart';
+import 'time_planner.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
@@ -300,7 +301,9 @@ class _ProfileState extends State<Profile> {
                               context,
                               MaterialPageRoute(
                                   builder: ((context) =>
-                                      UserCalendarThemeLoader())));
+                                      UserCalendarThemeLoader(
+                                        user: user ?? MyUser(),
+                                      ))));
                         });
                       },
                       leading: const Icon(
@@ -332,7 +335,8 @@ class _ProfileState extends State<Profile> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: ((context) => CoursePlanner())));
+                                  builder: ((context) =>
+                                      CoursePlannerThemeLoader())));
                         });
                       },
                       leading: const Icon(

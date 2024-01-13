@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+// import '../models/event.dart';
+import '../models/event.dart';
 import '../models/post.dart';
 import '../models/request.dart';
 import '../models/user.dart';
@@ -116,4 +118,46 @@ class DatabaseService extends ChangeNotifier {
     }
     return matches;
   }
+
+  //add event
+  Future<void> addEvent(Map<String, dynamic> map) async {
+    print(map);
+    await studentsCollection
+        .doc(uid)
+        .collection('calendar_events')
+        .doc('document')
+        .set(map);
+
+    notifyListeners();
+  }
+  // recieve events
+
+  Future<Map<String, List<Event>>> getEvents() async {
+    DocumentSnapshot<Map<String, dynamic>> document = await studentsCollection
+        .doc(uid)
+        .collection('calendar_events')
+        .doc('document')
+        .get();
+    Map<String, dynamic> documentData = document.data() ?? {};
+    try {
+      Map<String, List<Event>> events = documentData.map(
+        (key, value) => MapEntry(
+          key,
+          toEvents(value as List),
+        ),
+      );
+      return events;
+    } catch (e) {
+      return {};
+    }
+  }
+}
+
+List<Event> toEvents(List l) {
+  return l
+      .map(
+        (event) => Event(information: '', title: '')
+          ..updateFromMap(event as Map<String, dynamic>),
+      )
+      .toList();
 }
