@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // CreateDropDown: Used to create a custom dropdown from a list of items
-List<DropdownMenuItem> createDropDown(List<String> items) {
+List<DropdownMenuItem> createDropDown(List<dynamic> items) {
   return items
       .map((item) => DropdownMenuItem(
             value: item,
