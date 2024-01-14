@@ -7,6 +7,7 @@ import '../../models/event.dart';
 import '../../models/user.dart';
 import '../../services/database_service.dart';
 import '../theme_provider.dart';
+import '../themes.dart';
 
 // import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -57,7 +58,48 @@ class _UserCalendarState extends State<UserCalendar> {
     daysEvents = _eventsOf(day);
   }
 
-  Future _addEvent(DateTime day) async {
+  void _deleteEvent(Event eventToDelete) {
+    for (var day in events.keys) {
+      if (day == DateFormat('yyyy-MM-dd').format(today)) {
+        events[day]?.removeWhere((element) => element == eventToDelete);
+      }
+    }
+  }
+
+  Future _saveEvents() async {
+    await DatabaseService(uid: widget.user.uid).addEvent(
+      events.map(
+        (key, value) => MapEntry(
+          key,
+          value.map(
+            (event) => event.toMap(),
+          ),
+        ),
+      ),
+    );
+
+    setState(() {});
+  }
+
+  Future _editEvent(Event eventToEdit) async {
+    _deleteEvent(eventToEdit);
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+          return CustomBottomSheetContent(
+            event: eventToEdit,
+            day: today,
+            events: events,
+            isEdit: true,
+          );
+        });
+      },
+    );
+  }
+
+  Future<Event> _addEvent() async {
     Event newEvent = Event(
         title: '',
         information: '',
@@ -69,24 +111,52 @@ class _UserCalendarState extends State<UserCalendar> {
         return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
           return CustomBottomSheetContent(
-              event: newEvent, day: day, events: events);
+            event: newEvent,
+            day: today,
+            events: events,
+            isEdit: false,
+          );
         });
       },
     );
+
+    return newEvent;
   }
 
   Widget buildEventListTile(Event event) {
-    return ListTile(
-      title: Text(event.title),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-              'Start Time: ${event.start?.format(context) ?? TimeOfDay.now().format(context)}'),
-          Text(
-              'End Time: ${event.end?.format(context) ?? TimeOfDay.now().format(context)}'),
-          Text('Information: ${event.information}'),
-        ],
+    return Container(
+      margin: EdgeInsets.all(10),
+      decoration: boxDecoration(Theme.of(context), 20),
+      child: ListTile(
+        title: Center(child: Text(event.title)),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+                'Start Time: ${event.start?.format(context) ?? TimeOfDay.now().format(context)}'),
+            Text(
+                'End Time: ${event.end?.format(context) ?? TimeOfDay.now().format(context)}'),
+            Text('Information: ${event.information}'),
+          ],
+        ),
+        leading: IconButton(
+          onPressed: () async {
+            await _editEvent(event);
+            await _saveEvents();
+          },
+          icon: Icon(Icons.edit, size: 20),
+        ),
+        trailing: IconButton(
+          onPressed: () async {
+            _deleteEvent(event);
+            await _saveEvents();
+          },
+          icon: Icon(
+            Icons.delete,
+            size: 20,
+            color: Colors.red,
+          ),
+        ),
       ),
     );
   }
@@ -146,7 +216,7 @@ class _UserCalendarState extends State<UserCalendar> {
   }
 
   DateTime today = DateTime.now();
-  DateTime? focusedDay;
+  DateTime? focusedDay = DateTime.now();
   CalendarFormat format = CalendarFormat.month;
   @override
   Widget build(BuildContext context) {
@@ -155,21 +225,8 @@ class _UserCalendarState extends State<UserCalendar> {
       appBar: AppBar(),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await _addEvent(today);
-          print('here');
-          print(events);
-          setState(() {
-            DatabaseService(uid: widget.user.uid).addEvent(
-              events.map(
-                (key, value) => MapEntry(
-                  key,
-                  value.map(
-                    (event) => event.toMap(),
-                  ),
-                ),
-              ),
-            );
-          });
+          await _addEvent();
+          await _saveEvents();
         },
         child: Icon(Icons.add),
       ),
@@ -225,6 +282,7 @@ class _UserCalendarState extends State<UserCalendar> {
 }
 
 class CustomBottomSheetContent extends StatefulWidget {
+  final bool isEdit;
   final Event event;
   final DateTime day;
   final Map<String, List<Event>> events;
@@ -232,7 +290,8 @@ class CustomBottomSheetContent extends StatefulWidget {
       {super.key,
       required this.event,
       required this.day,
-      required this.events});
+      required this.events,
+      required this.isEdit});
 
   @override
   State<CustomBottomSheetContent> createState() =>
@@ -240,6 +299,15 @@ class CustomBottomSheetContent extends StatefulWidget {
 }
 
 class _CustomBottomSheetContentState extends State<CustomBottomSheetContent> {
+  late TextEditingController _titleController;
+  late TextEditingController _infoController;
+  @override
+  void initState() {
+    super.initState();
+    _titleController = TextEditingController(text: widget.event.title);
+    _infoController = TextEditingController(text: widget.event.information);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -300,18 +368,20 @@ class _CustomBottomSheetContentState extends State<CustomBottomSheetContent> {
               },
             ),
             TextField(
-              decoration: InputDecoration(labelText: 'Event Information'),
-              onChanged: (value) {
-                setState(() {
-                  widget.event.information = value;
-                });
-              },
-            ),
-            TextField(
+              controller: _titleController,
               decoration: InputDecoration(labelText: 'Title'),
               onChanged: (value) {
                 setState(() {
                   widget.event.title = value;
+                });
+              },
+            ),
+            TextField(
+              controller: _infoController,
+              decoration: InputDecoration(labelText: 'Event Informations'),
+              onChanged: (value) {
+                setState(() {
+                  widget.event.information = value;
                 });
               },
             ),
@@ -335,7 +405,16 @@ class _CustomBottomSheetContentState extends State<CustomBottomSheetContent> {
           ),
           ElevatedButton(
             onPressed: () {
-              print(widget.event.start);
+              if (widget.isEdit) {
+                if (widget
+                        .events[DateFormat('yyyy-MM-dd').format(widget.day)] ==
+                    null) {
+                  widget.events[DateFormat('yyyy-MM-dd').format(widget.day)] =
+                      [];
+                }
+                widget.events[DateFormat('yyyy-MM-dd').format(widget.day)]!
+                    .add(widget.event);
+              }
               Navigator.pop(context); // Close the dialog
             },
             child: Text('Cancel'),
