@@ -119,9 +119,32 @@ class DatabaseService extends ChangeNotifier {
     return matches;
   }
 
+  Future<void> setTasks(Map<String, dynamic> map) async {
+    await studentsCollection
+        .doc(uid)
+        .collection('schedule_tasks')
+        .doc('document')
+        .set(map);
+  }
+
+  Future<List<dynamic>> getTasks() async {
+    DocumentSnapshot<Map<String, dynamic>> document = await studentsCollection
+        .doc(uid)
+        .collection('schedule_tasks')
+        .doc('document')
+        .get();
+    Map<String, dynamic> documentData = document.data() ?? {};
+    try {
+      List<dynamic> tasks = documentData['tasks'];
+      return tasks;
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
+
   //add event
   Future<void> addEvent(Map<String, dynamic> map) async {
-    print(map);
     await studentsCollection
         .doc(uid)
         .collection('calendar_events')

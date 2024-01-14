@@ -336,7 +336,9 @@ class _ProfileState extends State<Profile> {
                               context,
                               MaterialPageRoute(
                                   builder: ((context) =>
-                                      CoursePlannerThemeLoader())));
+                                      CoursePlannerThemeLoader(
+                                        user: user ?? MyUser(),
+                                      ))));
                         });
                       },
                       leading: const Icon(
