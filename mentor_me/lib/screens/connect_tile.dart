@@ -19,7 +19,7 @@ class _ConnectTileState extends State<ConnectTile> {
     List ids = [user.uid, widget.user.uid]..sort();
 
     String IDkey = ids.join('_');
-    if (user.connections.contains(widget.user.uid)) {
+    if (user.connections.keys.contains(widget.user.uid)) {
       return Status.connected;
     } else if (user.requests.keys.contains(IDkey)) {
       sender = (user.requests[IDkey]?.status == Status.pending)
