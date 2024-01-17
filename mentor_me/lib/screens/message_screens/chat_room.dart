@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:mentor_me/screens/themes.dart';
 import 'package:provider/provider.dart';
 
@@ -7,6 +8,7 @@ import '../../models/message.dart';
 import '../../models/request.dart';
 import '../../models/user.dart';
 import '../../services/chat_service.dart';
+import '../../services/database_service.dart';
 import '../Home_screens/connect_profile.dart';
 import '../theme_provider.dart';
 
@@ -62,6 +64,11 @@ class _ChatRoomState extends State<ChatRoom> {
           message: _messageController.text,
           senderUID: user?.uid ?? '',
           recieverUID: widget.reciever.uid ?? '');
+      user?.connections[widget.reciever.uid ?? ''] = message.time;
+      widget.reciever.connections[user?.uid ?? ''] = message.time;
+      await DatabaseService(uid: user?.uid).UpdateStudentCollection(user);
+      await DatabaseService(uid: widget.reciever.uid)
+          .UpdateStudentCollection(widget.reciever);
       await _chatService.sendMessage(message);
       _messageController.clear();
     }
@@ -91,19 +98,14 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   String getDate(String date) {
-    List<String> dateVals = date.split('/');
-    if ((dateVals[0] == today.month.toString()) &&
-        (dateVals[2] == today.year.toString())) {
-      if (dateVals[1] == today.day.toString()) {
-        return 'Today';
-      } else if (dateVals[1] == '${today.day - 1}') {
-        return 'Yesterday';
-      } else {
-        return date;
-      }
-    } else {
-      return date;
+    if (date == DateFormat('yyyy-MM-dd').format(today)) {
+      return 'Today';
     }
+    DateTime yesterday = today.subtract(const Duration(days: 1));
+    if (date == DateFormat('yyyy-MM-dd').format(yesterday)) {
+      return 'Yesterday';
+    }
+    return date;
   }
 
   Widget _buildMessageItem(DocumentSnapshot snapshot, MyUser? user) {
@@ -111,8 +113,7 @@ class _ChatRoomState extends State<ChatRoom> {
     Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
 
     var isSender = (data['recieverUID'] == widget.reciever.uid);
-    String date =
-        '${data['time'].toDate().month}/${data['time'].toDate().day}/${data['time'].toDate().year}';
+    String date = DateFormat('yyyy-MM-dd').format(data['time'].toDate());
     bool dateChange = false;
     if ((day == null) || (day != date)) {
       day = date;
@@ -184,7 +185,7 @@ class _ChatRoomState extends State<ChatRoom> {
                     alignment: Alignment.bottomRight,
                     // color: Colors.green,
                     child: Text(
-                      '${data['time'].toDate().hour}:${data['time'].toDate().minute.toString().padLeft(2, '0')}',
+                      '${data['time'].toDate().hour.toString().padLeft(2, '0')}:${data['time'].toDate().minute.toString().padLeft(2, '0')}',
                       textAlign: TextAlign.end,
                       style: TextStyle(
                         color: Colors.grey,

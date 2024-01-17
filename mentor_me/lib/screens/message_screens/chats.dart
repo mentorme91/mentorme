@@ -1,13 +1,37 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:mentor_me/models/notification.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/message.dart';
 import '../../models/user.dart';
 import '../../services/chat_service.dart';
 import '../../services/database_service.dart';
+import '../../services/notification_service.dart';
 import '../profile_screens/detailed_image.dart';
 import '../theme_provider.dart';
 import 'chat_room.dart';
+
+List<String> _getSortedKeysWithTimestamp(Map<String, Timestamp?> connections) {
+  List<String> keysWithTimestamp = [];
+
+  // Filter keys with non-null timestamp
+  connections.forEach((key, timestamp) {
+    if (timestamp != null) {
+      keysWithTimestamp.add(key);
+    }
+  });
+
+  // Sort keys based on timestamp
+  keysWithTimestamp.sort((a, b) {
+    Timestamp timestampA = connections[a]!;
+    Timestamp timestampB = connections[b]!;
+    return timestampB.compareTo(timestampA);
+  });
+
+  return keysWithTimestamp;
+}
 
 class ChatsThemeLoader extends StatefulWidget {
   const ChatsThemeLoader({super.key});
@@ -74,14 +98,27 @@ class _ChatsState extends State<Chats> {
       subtitle: Text((lastMessage.message.length < 25)
           ? lastMessage.message
           : '${lastMessage.message.substring(0, 25)}...'),
-      trailing: Text(
-          '${lastMessage.time.toDate().hour}:${lastMessage.time.toDate().minute}'),
+      trailing: Text(getTime(lastMessage.time.toDate())),
     );
+  }
+
+  String getTime(DateTime day) {
+    DateTime today = DateTime.now();
+    String date = DateFormat('yyyy-MM-dd').format(day);
+    if (date == DateFormat('yyyy-MM-dd').format(today)) {
+      return '${day.hour.toString().padLeft(2, '0')}:${day.minute.toString().padLeft(2, '0')}';
+    }
+    DateTime yesterday = today.subtract(const Duration(days: 1));
+    if (date == DateFormat('yyyy-MM-dd').format(yesterday)) {
+      return 'Yesterday';
+    }
+    return date;
   }
 
   List<Widget> _connectionChatTiles(
       MyUser? user, ThemeData theme, List<MyUser> connections) {
     List<Widget> tiles = [];
+    List<Timestamp> times = [];
 
     for (var connection in connections) {
       tiles.add(StreamBuilder(
@@ -105,6 +142,11 @@ class _ChatsState extends State<Chats> {
                 recieverUID: message['recieverUID'],
               );
               lastMessage.time = message['time'];
+              MyNotification notification = MyNotification(
+                  title: 'Message from ${connection.first_name}',
+                  body: lastMessage.message);
+              NotificationService().showNotification(notification);
+              times.add(lastMessage.time);
               return _connectChatTile(connection, lastMessage, user, theme);
             }
             return Text('');
@@ -114,8 +156,9 @@ class _ChatsState extends State<Chats> {
   }
 
   Future<List<MyUser>> _getConnections(MyUser? user) async {
+    List<String> ids = _getSortedKeysWithTimestamp(user?.connections ?? {});
     List<MyUser> connections = [];
-    for (var connectionId in user?.connections ?? []) {
+    for (var connectionId in ids) {
       MyUser u = await DatabaseService(uid: connectionId).userInfo;
       connections.add(u);
     }

@@ -17,7 +17,7 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  late Map<String, dynamic> schoolsData; // Your User class
+  Map<String, dynamic> schoolsData = {}; // Your User class
 
   @override
   void initState() {
@@ -284,7 +284,8 @@ class _RegisterState extends State<Register> {
                             decoration: inputDropDownDecoration(
                                 Theme.of(context), radius, null),
                             items: createDropDown(
-                                schoolsData[user.school_id]!.keys.toList()),
+                                schoolsData[user.school_id]?.keys.toList() ??
+                                    []),
                             onChanged: (val) {
                               setState(() {
                                 user.faculty = val ?? '';
@@ -313,11 +314,11 @@ class _RegisterState extends State<Register> {
                                 user.department, 'Enter department'),
                             decoration: inputDropDownDecoration(
                                 Theme.of(context), radius, null),
-                            items: createDropDown(
-                                schoolsData[user.school_id]![user.faculty]
-                                        .keys
-                                        .toList() ??
-                                    []),
+                            items: createDropDown(schoolsData[user.school_id]
+                                        ?[user.faculty]
+                                    ?.keys
+                                    .toList() ??
+                                []),
                             onChanged: (val) {
                               setState(() {
                                 user.department = val ?? '';

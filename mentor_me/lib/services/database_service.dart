@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // import '../models/event.dart';
 import '../models/event.dart';
+import '../models/link.dart';
 import '../models/post.dart';
 import '../models/request.dart';
 import '../models/user.dart';
@@ -29,6 +30,8 @@ class DatabaseService extends ChangeNotifier {
       FirebaseFirestore.instance.collection('chat_rooms');
   final CollectionReference documentCollection =
       FirebaseFirestore.instance.collection('resource_documents');
+  final CollectionReference linkCollection =
+      FirebaseFirestore.instance.collection('links');
 
   // update all student collections and student collections in respective schools
   Future UpdateStudentCollection(MyUser? user) async {
@@ -96,6 +99,10 @@ class DatabaseService extends ChangeNotifier {
     return documentCollection.doc(school).collection(courseCode).snapshots();
   }
 
+  Stream<QuerySnapshot> getLinks(String school, String courseCode) {
+    return linkCollection.doc(school).collection(courseCode).snapshots();
+  }
+
   Stream<QuerySnapshot> userMatches() {
     return studentsCollection.snapshots();
   }
@@ -108,7 +115,7 @@ class DatabaseService extends ChangeNotifier {
       Map<String, dynamic> studentData = student.data() as Map<String, dynamic>;
       if ((studentData['school_id'] == user?.school_id) &&
           (studentData['uid'] != user?.uid) &&
-          !(user?.connections.contains(studentData['uid']) ?? false)) {
+          !(user?.connections.keys.contains(studentData['uid']) ?? false)) {
         int percent = 20;
         percent += (studentData['faculty'] == user?.faculty) ? 55 : 0;
         percent += (studentData['department'] == user?.department) ? 20 : 0;
@@ -141,6 +148,13 @@ class DatabaseService extends ChangeNotifier {
       print(e);
       return [];
     }
+  }
+
+  Future<void> addLink(String school, String courseCode, MyLink link) async {
+    await linkCollection
+        .doc(school)
+        .collection(courseCode)
+        .add(link.toMap()..addAll({'time': Timestamp.now()}));
   }
 
   //add event
