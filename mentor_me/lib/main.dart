@@ -8,9 +8,11 @@ import 'services/auth_service.dart';
 import 'screens/wrapper.dart';
 import 'firebase_options.dart';
 import 'screens/themes.dart';
+import 'services/notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService().initNotifications();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

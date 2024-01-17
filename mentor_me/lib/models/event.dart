@@ -15,6 +15,20 @@ class Event {
     };
   }
 
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Event &&
+          runtimeType == other.runtimeType &&
+          start == other.start &&
+          end == other.end &&
+          information == other.information &&
+          title == other.title;
+
+  @override
+  int get hashCode =>
+      start.hashCode ^ end.hashCode ^ information.hashCode ^ title.hashCode;
+
   void updateFromMap(Map<String, dynamic> map) {
     start = convertFromIntToTimeOfDay(map['start']);
     end = convertFromIntToTimeOfDay(map['end']);

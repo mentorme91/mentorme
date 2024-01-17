@@ -73,8 +73,8 @@ class _ConnectProfileState extends State<ConnectProfile> {
     List ids = [user?.uid, widget.match.uid]..sort();
     user?.requests.remove(ids.join('_'));
     widget.match.requests.remove(ids.join('_'));
-    user?.connections.add(widget.match.uid ?? '');
-    widget.match.connections.add(user?.uid ?? '');
+    user?.connections.addAll({widget.match.uid ?? '': null});
+    widget.match.connections.addAll({user?.uid ?? '': null});
     await DatabaseService(uid: '').UpdateStudentCollection(user);
     await DatabaseService(uid: '').UpdateStudentCollection(widget.match);
     setState(() {
@@ -130,7 +130,7 @@ class _ConnectProfileState extends State<ConnectProfile> {
 
   List<Widget> _getChildren(MyUser? user) {
     List<Widget> children = [];
-    if (user?.connections.contains(widget.match.uid) ?? false) {
+    if (user?.connections.keys.contains(widget.match.uid) ?? false) {
       children.add(
         TextButton(
           style: ButtonStyle(
