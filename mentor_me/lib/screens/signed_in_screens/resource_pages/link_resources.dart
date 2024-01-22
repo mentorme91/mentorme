@@ -8,7 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../models/link.dart';
 import '../../../models/user.dart';
 import '../../../services/database_service.dart';
-import '../../themes.dart';
+import '../../../themes.dart';
 
 class LinkResources extends StatefulWidget {
   final String courseCode;

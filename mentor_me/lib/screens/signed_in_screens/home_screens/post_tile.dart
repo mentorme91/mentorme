@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../models/post.dart';
+import '../../../models/post.dart';
 
 class PostTile extends StatefulWidget {
   final Post post;

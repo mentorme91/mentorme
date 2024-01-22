@@ -7,7 +7,7 @@ import '../../../models/link.dart';
 import '../../../models/user.dart';
 import '../../../services/database_service.dart';
 import '../../../services/storage_service.dart';
-import '../../theme_provider.dart';
+import '../../../theme_provider.dart';
 import 'document_resources.dart';
 import 'link_resources.dart';
 

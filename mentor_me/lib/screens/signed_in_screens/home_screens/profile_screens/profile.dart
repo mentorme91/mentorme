@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/user.dart';
-import '../../services/auth_service.dart';
-import '../../services/database_service.dart';
-import '../../services/storage_service.dart';
-import '../theme_provider.dart';
+import '../../../../models/user.dart';
+import '../../../../services/auth_service.dart';
+import '../../../../services/database_service.dart';
+import '../../../../services/storage_service.dart';
+import '../../../../theme_provider.dart';
 import 'calendar.dart';
 import 'detailed_image.dart';
 import 'notifications.dart';

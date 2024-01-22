@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/request.dart';
-import '../../models/user.dart';
-import '../../services/database_service.dart';
-import '../message_screens/chat_room.dart';
-import '../profile_screens/detailed_image.dart';
-import '../theme_provider.dart';
+import '../../../models/request.dart';
+import '../../../models/user.dart';
+import '../../../services/database_service.dart';
+import 'message_screens/chat_room.dart';
+import '../home_screens/profile_screens/detailed_image.dart';
+import '../../../theme_provider.dart';
 
 class ConnectProfileThemeLoader extends StatefulWidget {
   final MyUser match;

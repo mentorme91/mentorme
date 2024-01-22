@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/request.dart';
-import '../../models/user.dart';
-import '../../services/database_service.dart';
-import '../connect_tile.dart';
+import '../../../models/request.dart';
+import '../../../models/user.dart';
+import '../../../services/database_service.dart';
+import 'connect_tile.dart';
 import 'connect_request.dart';
 
 class ConnectionsPage extends StatefulWidget {

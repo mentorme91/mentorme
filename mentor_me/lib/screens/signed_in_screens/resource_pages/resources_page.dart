@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-import '../../services/json_decoder.dart';
-import 'resource_pages/course_resource.dart';
+import '../../../services/json_decoder.dart';
+import 'course_resource.dart';
 
 class ResourcesPage extends StatefulWidget {
   const ResourcesPage({super.key});

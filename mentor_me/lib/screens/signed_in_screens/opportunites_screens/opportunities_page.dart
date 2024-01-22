@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../themes.dart';
-import 'opportunites_screens/grad_school.dart';
-import 'opportunites_screens/new_grad.dart';
-import 'opportunites_screens/others.dart';
-import 'opportunites_screens/scholarships.dart';
-import 'opportunites_screens/internships.dart';
+import '../../../themes.dart';
+import 'grad_school.dart';
+import 'new_grad.dart';
+import 'others.dart';
+import 'scholarships.dart';
+import 'internships.dart';
 
 class OpportunitiesPage extends StatefulWidget {
   const OpportunitiesPage({super.key});

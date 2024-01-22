@@ -7,8 +7,8 @@ import 'package:provider/provider.dart';
 
 import '../models/user.dart';
 import 'authentication/authenticate.dart';
-import 'Home_screens/Home.dart';
-import 'theme_provider.dart';
+import 'signed_in_screens/Home.dart';
+import '../theme_provider.dart';
 
 class Wrapper extends StatefulWidget {
   const Wrapper({super.key});

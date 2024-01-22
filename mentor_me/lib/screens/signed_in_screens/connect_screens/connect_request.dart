@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/user.dart';
-import '../connect_tile.dart';
-import '../theme_provider.dart';
+import '../../../models/user.dart';
+import 'connect_tile.dart';
+import '../../../theme_provider.dart';
 
 class RequestsPageThemeLoader extends StatefulWidget {
   final List<MyUser> recievedRequests;

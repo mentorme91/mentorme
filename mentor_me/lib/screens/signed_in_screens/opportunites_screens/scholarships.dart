@@ -1,39 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:mentor_me/screens/post_form.dart';
-import 'package:mentor_me/screens/post_tile.dart';
+import 'package:mentor_me/screens/signed_in_screens/home_screens/post_form.dart';
+import 'package:mentor_me/screens/signed_in_screens/home_screens/post_tile.dart';
 import 'package:mentor_me/services/database_service.dart';
 import 'package:provider/provider.dart';
 
 import '../../../models/post.dart';
 import '../../../models/user.dart';
-import '../../theme_provider.dart';
+import '../../../theme_provider.dart';
 
-class NewGradRolesPage extends StatefulWidget {
-  const NewGradRolesPage({super.key});
+class ScholarshipsPage extends StatefulWidget {
+  const ScholarshipsPage({super.key});
 
   @override
-  State<NewGradRolesPage> createState() => _NewGradRolesPageState();
+  State<ScholarshipsPage> createState() => _ScholarshipsPageState();
 }
 
-class _NewGradRolesPageState extends State<NewGradRolesPage> {
+class _ScholarshipsPageState extends State<ScholarshipsPage> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Provider.of<MyThemeProvider>(context).theme;
     return Theme(
       data: theme,
-      child: NewGradRoles(),
+      child: Scholarships(),
     );
   }
 }
 
-class NewGradRoles extends StatefulWidget {
-  const NewGradRoles({super.key});
+class Scholarships extends StatefulWidget {
+  const Scholarships({super.key});
 
   @override
-  State<NewGradRoles> createState() => _NewGradRolesState();
+  State<Scholarships> createState() => _ScholarshipsState();
 }
 
-class _NewGradRolesState extends State<NewGradRoles> {
+class _ScholarshipsState extends State<Scholarships> {
   String searchVal = '';
 
   void _postContent(MyUser? user, String postType) async {
@@ -57,7 +57,7 @@ class _NewGradRolesState extends State<NewGradRoles> {
           children: [
             Center(
               child: Text(
-                'New grad roles posts',
+                'Scholarship posts',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: Theme.of(context).colorScheme.onPrimary,
@@ -106,7 +106,7 @@ class _NewGradRolesState extends State<NewGradRoles> {
                         ),
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
-                          hintText: 'Search for a new grad role',
+                          hintText: 'Search for a scholarship',
                           hintStyle: TextStyle(
                             color: Colors.grey,
                             fontSize: 13,
@@ -138,7 +138,7 @@ class _NewGradRolesState extends State<NewGradRoles> {
               ),
             ),
             FutureBuilder<List<Post>>(
-              future: DatabaseService(uid: '').allPosts('new_gard_posts'),
+              future: DatabaseService(uid: '').allPosts('scholarship_posts'),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Text('Loading...');
@@ -157,7 +157,7 @@ class _NewGradRolesState extends State<NewGradRoles> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _postContent(user, 'new_grad_posts'),
+        onPressed: () => _postContent(user, 'scholarship_posts'),
         child: Icon(
           Icons.add,
           color: Colors.white,

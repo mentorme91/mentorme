@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 
-import '../message_screens/chats.dart';
-import 'home_page.dart';
-import 'connections_page.dart';
-import 'resources_page.dart';
-import 'opportunities_page.dart';
+import 'connect_screens/message_screens/chats.dart';
+import 'home_screens/home_page.dart';
+import 'connect_screens/connections_page.dart';
+import 'resource_pages/resources_page.dart';
+import 'opportunites_screens/opportunities_page.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});

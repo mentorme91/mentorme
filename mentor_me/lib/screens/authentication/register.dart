@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mentor_me/screens/themes.dart';
+import 'package:mentor_me/themes.dart';
 
 import '../../models/user.dart';
 import '../../services/auth_service.dart';

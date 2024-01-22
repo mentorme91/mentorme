@@ -5,9 +5,9 @@ import 'package:mentor_me/services/database_service.dart';
 import 'package:provider/provider.dart';
 import 'package:time_planner/time_planner.dart';
 
-import '../../models/planner_task.dart';
-import '../../models/user.dart';
-import '../theme_provider.dart';
+import '../../../../models/planner_task.dart';
+import '../../../../models/user.dart';
+import '../../../../theme_provider.dart';
 
 class CoursePlannerThemeLoader extends StatefulWidget {
   final MyUser user;

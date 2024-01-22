@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/request.dart';
-import '../models/user.dart';
-import 'Home_screens/connect_profile.dart';
+import '../../../models/request.dart';
+import '../../../models/user.dart';
+import 'connect_profile.dart';
 
 class ConnectTile extends StatefulWidget {
   final MyUser user;

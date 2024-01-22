@@ -3,11 +3,11 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../../models/event.dart';
-import '../../models/user.dart';
-import '../../services/database_service.dart';
-import '../theme_provider.dart';
-import '../themes.dart';
+import '../../../../models/event.dart';
+import '../../../../models/user.dart';
+import '../../../../services/database_service.dart';
+import '../../../../theme_provider.dart';
+import '../../../../themes.dart';
 
 // import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 

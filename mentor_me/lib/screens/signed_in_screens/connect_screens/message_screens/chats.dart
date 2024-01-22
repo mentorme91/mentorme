@@ -4,13 +4,13 @@ import 'package:intl/intl.dart';
 import 'package:mentor_me/models/notification.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/message.dart';
-import '../../models/user.dart';
-import '../../services/chat_service.dart';
-import '../../services/database_service.dart';
-import '../../services/notification_service.dart';
-import '../profile_screens/detailed_image.dart';
-import '../theme_provider.dart';
+import '../../../../models/message.dart';
+import '../../../../models/user.dart';
+import '../../../../services/chat_service.dart';
+import '../../../../services/database_service.dart';
+import '../../../../services/notification_service.dart';
+import '../../home_screens/profile_screens/detailed_image.dart';
+import '../../../../theme_provider.dart';
 import 'chat_room.dart';
 
 List<String> _getSortedKeysWithTimestamp(Map<String, Timestamp?> connections) {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mentor_me/screens/theme_provider.dart';
+import 'package:mentor_me/theme_provider.dart';
 import 'package:provider/provider.dart';
 // import 'package:mentor_me/services/services.dart';
 // import 'package:provider/provider.dart';

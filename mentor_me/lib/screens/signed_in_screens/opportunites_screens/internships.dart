@@ -1,39 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:mentor_me/screens/post_form.dart';
-import 'package:mentor_me/screens/post_tile.dart';
+import 'package:mentor_me/screens/signed_in_screens/home_screens/post_form.dart';
+import 'package:mentor_me/screens/signed_in_screens/home_screens/post_tile.dart';
 import 'package:mentor_me/services/database_service.dart';
 import 'package:provider/provider.dart';
 
 import '../../../models/post.dart';
 import '../../../models/user.dart';
-import '../../theme_provider.dart';
+import '../../../theme_provider.dart';
 
-class OtherOpportunitiesPage extends StatefulWidget {
-  const OtherOpportunitiesPage({super.key});
+class InternShipsPage extends StatefulWidget {
+  const InternShipsPage({super.key});
 
   @override
-  State<OtherOpportunitiesPage> createState() => _OtherOpportunitiesPageState();
+  State<InternShipsPage> createState() => _InternShipsPageState();
 }
 
-class _OtherOpportunitiesPageState extends State<OtherOpportunitiesPage> {
+class _InternShipsPageState extends State<InternShipsPage> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Provider.of<MyThemeProvider>(context).theme;
     return Theme(
       data: theme,
-      child: OtherOpportunities(),
+      child: Internships(),
     );
   }
 }
 
-class OtherOpportunities extends StatefulWidget {
-  const OtherOpportunities({super.key});
+class Internships extends StatefulWidget {
+  const Internships({super.key});
 
   @override
-  State<OtherOpportunities> createState() => _OtherOpportunitiesState();
+  State<Internships> createState() => _InternshipsState();
 }
 
-class _OtherOpportunitiesState extends State<OtherOpportunities> {
+class _InternshipsState extends State<Internships> {
   String searchVal = '';
 
   void _postContent(MyUser? user, String postType) async {
@@ -57,7 +57,7 @@ class _OtherOpportunitiesState extends State<OtherOpportunities> {
           children: [
             Center(
               child: Text(
-                'New grad roles posts',
+                'Internship posts',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: Theme.of(context).colorScheme.onPrimary,
@@ -106,7 +106,7 @@ class _OtherOpportunitiesState extends State<OtherOpportunities> {
                         ),
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
-                          hintText: 'Search for a new grad role',
+                          hintText: 'Search for an internship',
                           hintStyle: TextStyle(
                             color: Colors.grey,
                             fontSize: 13,
@@ -138,7 +138,7 @@ class _OtherOpportunitiesState extends State<OtherOpportunities> {
               ),
             ),
             FutureBuilder<List<Post>>(
-              future: DatabaseService(uid: '').allPosts('other_posts'),
+              future: DatabaseService(uid: '').allPosts('internship_posts'),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Text('Loading...');
@@ -157,7 +157,7 @@ class _OtherOpportunitiesState extends State<OtherOpportunities> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _postContent(user, 'other_posts'),
+        onPressed: () => _postContent(user, 'internship_posts'),
         child: Icon(
           Icons.add,
           color: Colors.white,

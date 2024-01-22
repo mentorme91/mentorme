@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'models/user.dart';
-import 'screens/theme_provider.dart';
+import 'theme_provider.dart';
 import 'services/auth_service.dart';
 import 'screens/wrapper.dart';
 import 'firebase_options.dart';
-import 'screens/themes.dart';
+import 'themes.dart';
 import 'services/notification_service.dart';
 
 void main() async {

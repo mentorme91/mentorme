@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/post.dart';
-import '../../models/user.dart';
-import '../../services/database_service.dart';
-import '../post_tile.dart';
-import '../profile_screens/profile.dart';
+import '../../../models/post.dart';
+import '../../../models/user.dart';
+import '../../../services/database_service.dart';
+import 'post_tile.dart';
+import 'profile_screens/profile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
