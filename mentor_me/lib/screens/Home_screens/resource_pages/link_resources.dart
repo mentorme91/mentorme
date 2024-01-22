@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../models/link.dart';
 import '../../../models/user.dart';
@@ -51,7 +54,15 @@ class _LinkResourcesState extends State<LinkResources> {
                     subtitle: Column(
                       children: [
                         Text('Details: ${link.details}'),
-                        Text('Link: ${link.link}'),
+                        InkWell(
+                          onTap: () => launchUrl(Uri.parse(link.link)),
+                          child: Text(
+                            'https://mntrme/${generateRandomCharacters(7)}',
+                            style: TextStyle(
+                                decoration: TextDecoration.none,
+                                color: Colors.blue),
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -63,4 +74,17 @@ class _LinkResourcesState extends State<LinkResources> {
       ),
     );
   }
+}
+
+String generateRandomCharacters(int length) {
+  const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  Random random = Random();
+  String result = '';
+
+  for (int i = 0; i < length; i++) {
+    int randomIndex = random.nextInt(characters.length);
+    result += characters[randomIndex];
+  }
+
+  return result;
 }

@@ -3,9 +3,9 @@
     {
         "College Of Engineering and Architecture": 
         {
-            "Electrical Engineering": [],
-            "Computer Engineering": [],
-            "Computer Science": [],
+            "Electrical Engineering": ["EECE 101", "EECE 201", "EECE 413"],
+            "Computer Engineering": ["CSCI 315"],
+            "Computer Science": ["CSCI 315"],
             "Civil Engineering": [],
             "Chemical Engineering": [],
             "Architecture": []
@@ -20,7 +20,7 @@
         "College Of Arts and Sciences": 
         {
             "Biology": [],
-            "Physics": [],
+            "Physics": ["PHYS 014"],
             "Chemistry": [],
             "History": [],
             "English": []
