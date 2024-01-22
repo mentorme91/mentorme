@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+// import '../models/event.dart';
+import '../models/event.dart';
+import '../models/link.dart';
+import '../models/post.dart';
 import '../models/request.dart';
 import '../models/user.dart';
 
@@ -18,12 +22,16 @@ class DatabaseService extends ChangeNotifier {
   final CollectionReference studentsCollection =
       FirebaseFirestore.instance.collection('all_students');
   // get the collection of all schools in the database
-  final CollectionReference schoolsCollection =
-      FirebaseFirestore.instance.collection('schools');
+  // final CollectionReference schoolsCollection =
+  //     FirebaseFirestore.instance.collection('schools');
   final CollectionReference postsCollection =
-      FirebaseFirestore.instance.collection('posts');
+      FirebaseFirestore.instance.collection('all_posts');
   final CollectionReference chatCollection =
       FirebaseFirestore.instance.collection('chat_rooms');
+  final CollectionReference documentCollection =
+      FirebaseFirestore.instance.collection('resource_documents');
+  final CollectionReference linkCollection =
+      FirebaseFirestore.instance.collection('links');
 
   // update all student collections and student collections in respective schools
   Future UpdateStudentCollection(MyUser? user) async {
@@ -35,15 +43,21 @@ class DatabaseService extends ChangeNotifier {
     dic['requests'] = newRequests;
     // update all student collections and student collections in respective schools
     await studentsCollection.doc(user?.uid).set(dic);
-    await schoolsCollection
-        .doc(user?.school_id)
-        .collection('faculties')
-        .doc(user?.faculty)
-        .collection('departments')
-        .doc(user?.department)
-        .collection('students')
-        .doc(user?.uid)
-        .set(dic);
+    // await schoolsCollection
+    //     .doc(user?.school_id)
+    //     .collection('faculties')
+    //     .doc(user?.faculty)
+    //     .collection('departments')
+    //     .doc(user?.department)
+    //     .collection('students')
+    //     .doc(user?.uid)
+    //     .set(dic);
+    notifyListeners();
+  }
+
+  void postNewPost(Post post, String postName) {
+    postsCollection.doc(postName).collection('posts').add(post.toMap());
+    notifyListeners();
   }
 
   // get user data snapshots
@@ -62,8 +76,31 @@ class DatabaseService extends ChangeNotifier {
     return postsCollection.doc('posts').snapshots();
   }
 
+  Future<List<Post>> allPosts(String postName) async {
+    List<Post> allPosts = [];
+    QuerySnapshot<Object?> posts = await postsCollection
+        .doc(postName)
+        .collection('posts')
+        .orderBy('time', descending: false)
+        .get();
+    for (var post in posts.docs) {
+      Map<String, dynamic> postData = post.data() as Map<String, dynamic>;
+      Post thisPost = Post()..updateFromMap(postData);
+      allPosts.add(thisPost);
+    }
+    return allPosts;
+  }
+
   Stream<DocumentSnapshot> chatRoom(String roomID) {
     return postsCollection.doc(roomID).snapshots();
+  }
+
+  Stream<QuerySnapshot> getDocuments(String school, String courseCode) {
+    return documentCollection.doc(school).collection(courseCode).snapshots();
+  }
+
+  Stream<QuerySnapshot> getLinks(String school, String courseCode) {
+    return linkCollection.doc(school).collection(courseCode).snapshots();
   }
 
   Stream<QuerySnapshot> userMatches() {
@@ -78,7 +115,7 @@ class DatabaseService extends ChangeNotifier {
       Map<String, dynamic> studentData = student.data() as Map<String, dynamic>;
       if ((studentData['school_id'] == user?.school_id) &&
           (studentData['uid'] != user?.uid) &&
-          !(user?.connections.contains(studentData['uid']) ?? false)) {
+          !(user?.connections.keys.contains(studentData['uid']) ?? false)) {
         int percent = 20;
         percent += (studentData['faculty'] == user?.faculty) ? 55 : 0;
         percent += (studentData['department'] == user?.department) ? 20 : 0;
@@ -88,4 +125,76 @@ class DatabaseService extends ChangeNotifier {
     }
     return matches;
   }
+
+  Future<void> setTasks(Map<String, dynamic> map) async {
+    await studentsCollection
+        .doc(uid)
+        .collection('schedule_tasks')
+        .doc('document')
+        .set(map);
+  }
+
+  Future<List<dynamic>> getTasks() async {
+    DocumentSnapshot<Map<String, dynamic>> document = await studentsCollection
+        .doc(uid)
+        .collection('schedule_tasks')
+        .doc('document')
+        .get();
+    Map<String, dynamic> documentData = document.data() ?? {};
+    try {
+      List<dynamic> tasks = documentData['tasks'];
+      return tasks;
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
+
+  Future<void> addLink(String school, String courseCode, MyLink link) async {
+    await linkCollection
+        .doc(school)
+        .collection(courseCode)
+        .add(link.toMap()..addAll({'time': Timestamp.now()}));
+  }
+
+  //add event
+  Future<void> addEvent(Map<String, dynamic> map) async {
+    await studentsCollection
+        .doc(uid)
+        .collection('calendar_events')
+        .doc('document')
+        .set(map);
+
+    notifyListeners();
+  }
+  // recieve events
+
+  Future<Map<String, List<Event>>> getEvents() async {
+    DocumentSnapshot<Map<String, dynamic>> document = await studentsCollection
+        .doc(uid)
+        .collection('calendar_events')
+        .doc('document')
+        .get();
+    Map<String, dynamic> documentData = document.data() ?? {};
+    try {
+      Map<String, List<Event>> events = documentData.map(
+        (key, value) => MapEntry(
+          key,
+          toEvents(value as List),
+        ),
+      );
+      return events;
+    } catch (e) {
+      return {};
+    }
+  }
+}
+
+List<Event> toEvents(List l) {
+  return l
+      .map(
+        (event) => Event(information: '', title: '')
+          ..updateFromMap(event as Map<String, dynamic>),
+      )
+      .toList();
 }

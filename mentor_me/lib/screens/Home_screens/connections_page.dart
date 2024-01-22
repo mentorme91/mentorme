@@ -20,7 +20,7 @@ class _ConnectionsPageState extends State<ConnectionsPage> {
     Map<String, dynamic> studentData = snapshot.data() as Map<String, dynamic>;
     if ((studentData['school_id'] == user?.school_id) &&
         (studentData['uid'] != user?.uid) &&
-        !(user?.connections.contains(studentData['uid']) ?? false)) {
+        !(user?.connections.keys.contains(studentData['uid']) ?? false)) {
       int percent = 20;
       percent += (studentData['faculty'] == user?.faculty) ? 55 : 0;
       percent += (studentData['department'] == user?.department) ? 20 : 0;
@@ -50,7 +50,7 @@ class _ConnectionsPageState extends State<ConnectionsPage> {
 
   Future<List<MyUser>> _getConnections(MyUser? user) async {
     List<MyUser> connections = [];
-    for (var connectionId in user?.connections ?? []) {
+    for (var connectionId in user?.connections.keys.toList() ?? []) {
       MyUser u = await DatabaseService(uid: connectionId).userInfo;
       connections.add(u);
     }

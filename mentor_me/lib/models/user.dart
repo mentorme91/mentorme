@@ -1,4 +1,5 @@
 import 'request.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MyUser {
   String? uid;
@@ -13,7 +14,7 @@ class MyUser {
   String? _password;
   String? status;
   String? photoURL;
-  List<String> connections = [];
+  Map<String, Timestamp?> connections = {};
   List<String> cancels = [];
   List<String> rejects = [];
   Map<String, Request> requests = {};
@@ -87,8 +88,8 @@ class MyUser {
     status = studentData['status'];
     year = studentData['year'];
     photoURL = studentData['photoURL'];
-    List<dynamic> conns = studentData['connections'] ?? [];
-    connections = conns.cast<String>();
+    Map<String, dynamic> conns = studentData['connections'] ?? [];
+    connections = conns.cast<String, Timestamp?>();
     List<dynamic> rejs = studentData['rejects'] ?? [];
     rejects = rejs.cast<String>();
     List<dynamic> cns = studentData['cancels'] ?? [];
