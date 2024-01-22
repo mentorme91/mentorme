@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-import '../../services/tests.dart';
+import '../../services/json_decoder.dart';
 import 'resource_pages/course_resource.dart';
 
 class ResourcesPage extends StatefulWidget {
@@ -16,9 +16,9 @@ class _ResourcesPageState extends State<ResourcesPage> {
     return courses.map((course) => CourseTile(courseCode: course)).toList();
   }
 
-  List<String> _courses = courses;
+  List<String> courses = [];
 
-  List<String> _filterCourses(String searchVal) {
+  List<String> _filterCourses(List<String> courses) {
     List<String> filter = [];
     if (searchVal == '') {
       return courses;
@@ -30,6 +30,26 @@ class _ResourcesPageState extends State<ResourcesPage> {
       }
     }
     return filter;
+  }
+
+  Future<List<String>> _getCourses() async {
+    List<String> courses = [];
+    Map<String, dynamic> jsonMap = await loadJsonData('schools_info.json');
+    for (var school in jsonMap.keys.toList()) {
+      for (var faculty
+          in (jsonMap[school] as Map<String, dynamic>).keys.toList()) {
+        for (var dept in (jsonMap[school][faculty] as Map<String, dynamic>)
+            .keys
+            .toList()) {
+          for (var course in jsonMap[school][faculty][dept] as List<dynamic>) {
+            if (!courses.contains(course as String)) {
+              courses.add(course);
+            }
+          }
+        }
+      }
+    }
+    return courses;
   }
 
   String searchVal = '';
@@ -128,14 +148,25 @@ class _ResourcesPageState extends State<ResourcesPage> {
           SizedBox(
             height: 20,
           ),
-          Container(
-            height: screenHeight - 245,
-            child: GridView.count(
-              crossAxisCount: 3,
-              scrollDirection: Axis.vertical,
-              children: _createCourseTile(_courses),
-            ),
-          ),
+          FutureBuilder(
+              future: _getCourses(),
+              builder: ((context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                }
+                if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                }
+                List<String> courses = snapshot.data ?? [];
+                return SizedBox(
+                  height: screenHeight - 245,
+                  child: GridView.count(
+                    crossAxisCount: 3,
+                    scrollDirection: Axis.vertical,
+                    children: _createCourseTile(_filterCourses(courses)),
+                  ),
+                );
+              })),
         ],
       ),
     );
