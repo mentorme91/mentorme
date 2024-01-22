@@ -45,7 +45,10 @@ class _DocumentResourcesState extends State<DocumentResources> {
                   decoration: boxDecoration(Theme.of(context), 20),
                   child: ListTile(
                       title: Text(title),
-                      subtitle: Text('Tap to view file'),
+                      subtitle: Text(
+                        'Tap to view file',
+                        style: TextStyle(color: Colors.blue),
+                      ),
                       trailing: IconButton(
                         onPressed: () async {
                           bool pass =
