@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// custom [DocumentType] defines the various document types that can be uploaded in the document upload course resources page
 enum DocumentType {
   pdf,
   doc,
