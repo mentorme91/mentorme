@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mentor_me/screens/signed_in_screens/home_screens/profile_screens/change_password.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../models/user.dart';
@@ -64,6 +65,15 @@ class _PersonalInfoState extends State<PersonalInfo> {
   void initState() {
     super.initState();
     fetchData(); // Fetch data when the page is initialized
+  }
+
+  String error = '';
+  Future<void> _updateUserPassword() async {
+    await showDialog(
+        context: context,
+        builder: (context) => const ChangePasswordBottomSheet());
+// you should check here that email is not empty
+    
   }
 
   @override
@@ -438,7 +448,10 @@ class _PersonalInfoState extends State<PersonalInfo> {
                         children: [
                           const Text('Password'),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () async {
+
+                              await _updateUserPassword();
+                            },
                             child: const Text('Change Password'),
                           ),
                         ],
