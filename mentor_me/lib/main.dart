@@ -3,16 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'models/user.dart';
-import 'screens/theme_provider.dart';
+import 'theme_provider.dart';
 import 'services/auth_service.dart';
 import 'screens/wrapper.dart';
 import 'firebase_options.dart';
-import 'screens/themes.dart';
+import 'themes.dart';
 import 'services/notification_service.dart';
 
 void main() async {
+  // initialize WidgetsFlutterBinding
   WidgetsFlutterBinding.ensureInitialized();
+
+  // initialize custom notifications service
   await NotificationService().initNotifications();
+
+  // initialize firebase app for database manipulations
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -29,7 +34,8 @@ class MyApp extends StatelessWidget {
       value: AuthService().user,
       initialData: null,
       child: ChangeNotifierProvider(
-        create: (context) => MyThemeProvider(),
+        create: (context) =>
+            MyThemeProvider(), // provides our theme so it can be accesses from other pages through the BuildContext
         child: MaterialApp(
           theme: lightTheme,
           darkTheme: darkTheme,
