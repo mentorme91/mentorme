@@ -122,7 +122,7 @@ class _CoursePlannerState extends State<CoursePlanner> {
                   PlannerTask()..updateFromMap(task as Map<String, dynamic>))
               .toList();
           return TimePlanner(
-            startHour: 0,
+            startHour: 6,
             endHour: 23,
             headers: const [
               TimePlannerTitle(

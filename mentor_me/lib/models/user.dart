@@ -59,10 +59,12 @@ class MyUser {
     return user_dict;
   }
 
+  // get the string value of a MyUser class
   String toString() {
     return 'User($first_name $last_name, email: $email, school: $school_id, faculty: $faculty, department: $department)';
   }
 
+  // update a [MyUser] class from an Authentication User class (from Firebase)
   void updateUserFromUser(MyUser user) {
     _password = user.GetPassword();
     uid = user.uid;
@@ -77,6 +79,7 @@ class MyUser {
     photoURL = user.photoURL;
   }
 
+  // update user object from a map
   void updateFromMap(Map studentData) {
     uid = studentData['uid'];
     email = studentData['email'];
@@ -108,6 +111,7 @@ class MyUser {
   }
 }
 
+// // creates a new [MyUser] object
 MyUser newUser() {
   return MyUser(
     uid: '',

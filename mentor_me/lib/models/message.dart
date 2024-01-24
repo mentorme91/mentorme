@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// custom message class for chat messages
 class Message {
   String message, senderUID, recieverUID;
   Timestamp time = Timestamp.now();
@@ -9,6 +10,7 @@ class Message {
       required this.senderUID,
       required this.recieverUID});
 
+  // convert message object to map to add in firebase chatroom
   Map<String, dynamic> toMap() {
     return {
       'message': message,

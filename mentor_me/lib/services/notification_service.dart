@@ -4,11 +4,12 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../models/notification.dart';
 
 class NotificationService extends ChangeNotifier {
+  // initialise the plugin
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
   Future<void> initNotifications() async {
-    // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
+    // initialise the device settings
     AndroidInitializationSettings initializationSettingsAndroid =
         const AndroidInitializationSettings('@mipmap/ic_launcher');
     InitializationSettings initializationSettings =
@@ -16,17 +17,18 @@ class NotificationService extends ChangeNotifier {
     flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
       onDidReceiveNotificationResponse: (details) async {
-        print('hello!');
       },
     );
   }
 
+  // get notification details
   notificationDetails() {
     return const NotificationDetails(
         android: AndroidNotificationDetails('channelId', 'channelName',
             importance: Importance.max, priority: Priority.high));
   }
 
+  // show a notification
   Future<void> showNotification(MyNotification notification) async {
     await initNotifications();
     return await flutterLocalNotificationsPlugin.show(notification.id,

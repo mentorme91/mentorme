@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:time_planner/time_planner.dart';
 
+
+// custom task for user's schedule
 class PlannerTask {
   int day = 0, hour = 0, minutes = 0, hoursDuration = 0, minutesDuration = 0;
   String course = '';
@@ -11,10 +13,12 @@ class PlannerTask {
       this.hoursDuration = 0,
       this.minutesDuration = 0});
 
+  // get the TimePlannerDateTime from task
   TimePlannerDateTime toTimePlannerDateTime() {
     return TimePlannerDateTime(day: day, hour: hour + 1, minutes: minutes);
   }
 
+  // convert custom class to a TimePlannerTask
   TimePlannerTask toTimePlannerTask({Color? color, Function? onTap}) {
     return TimePlannerTask(
       minutesDuration: (hoursDuration * 60) + minutesDuration,
@@ -25,6 +29,7 @@ class PlannerTask {
     );
   }
 
+  // update task from a TimePlannerTask
   void updateFromTimePlannerTask(TimePlannerTask task) {
     day = task.dateTime.day;
     hour = task.dateTime.hour;
@@ -33,6 +38,7 @@ class PlannerTask {
     minutesDuration = task.minutesDuration - (hoursDuration * 60);
   }
 
+  // get the map representation of task
   Map<String, dynamic> ToMap() {
     return {
       'day': day,
@@ -44,6 +50,7 @@ class PlannerTask {
     };
   }
 
+  // update task from a map
   void updateFromMap(Map<String, dynamic> map) {
     day = map['day'] ?? 0;
     hour = map['hour'] ?? 0;
@@ -53,6 +60,7 @@ class PlannerTask {
     course = map['course'] ?? '';
   }
 
+  // compares two tasks (==)
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

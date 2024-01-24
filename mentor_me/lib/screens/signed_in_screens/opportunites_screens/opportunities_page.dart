@@ -17,27 +17,27 @@ class OpportunitiesPage extends StatefulWidget {
 class _OpportunitiesPageState extends State<OpportunitiesPage> {
   final Map<String, Map<String, dynamic>> _opportunites = {
     'Scholarships': {
-      'image': '',
+      'image': 'assets/images/scholarships.jpg',
       'name': 'Scholarships',
       'page': const ScholarshipsPage()
     },
     'Internships': {
-      'image': '',
+      'image': 'assets/images/internship.jpg',
       'name': 'Internships',
       'page': const InternShipsPage()
     },
     'New Grad roles': {
-      'image': '',
+      'image': 'assets/images/other_jobs.jpeg',
       'name': 'New Grad roles',
       'page': const NewGradRolesPage()
     },
     'Other job opportunities': {
-      'image': '',
+      'image': 'assets/images/other_jobs.jpeg',
       'name': 'Other job opportunities',
       'page': const OtherOpportunitiesPage()
     },
     'Graduate programs': {
-      'image': '',
+      'image': 'assets/images/grad_school.jpeg',
       'name': 'Graduate programs',
       'page': const GradSchoolPage()
     },

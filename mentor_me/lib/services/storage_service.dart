@@ -10,9 +10,13 @@ import 'package:path_provider/path_provider.dart';
 
 import '../models/user.dart';
 
+
+// controls firebase storage manipulation
 class StorageService {
+  // initialize firebase storage reference
   final storageRef = FirebaseStorage.instance.ref();
 
+  // load a firebase file from its URL
   Future<File?> loadFirebaseFile(String url, String title) async {
     try {
       final PDF = storageRef.child(url);
@@ -23,6 +27,7 @@ class StorageService {
     }
   }
 
+  // store a file in user's device
   Future<File> _storeFile(String url, List<int> bytes, String title) async {
     final dir = await getApplicationDocumentsDirectory();
     final file = File('${dir.path}/$title');
@@ -30,6 +35,7 @@ class StorageService {
     return file;
   }
 
+  // pick a file from user's device
   Future<File?> pickFile() async {
     FilePickerResult? result =
         await FilePicker.platform.pickFiles(allowMultiple: false);
@@ -40,6 +46,7 @@ class StorageService {
     return null;
   }
 
+  // upload a document to firebase
   Future<bool> uploadDocument(File? file, String title, String type,
       String school, String courseCode) async {
     try {
@@ -69,6 +76,7 @@ class StorageService {
     }
   }
 
+  // capture can image from user's gallery
   Future<String?> captureImage(MyUser user) async {
     final ImagePicker picker = ImagePicker();
     final XFile? pickedFile =
@@ -92,6 +100,7 @@ class StorageService {
     return null;
   }
 
+  // download a file to user's downlaod folder (in android)
   Future<bool> downloadFile(String path, String name) async {
     final ref = storageRef.child(path);
     final downloadPath = await getPathToDownload();
@@ -108,6 +117,7 @@ class StorageService {
     }
   }
 
+  // get the path to the android user's downloads folder
   Future<String> getPathToDownload() async {
     return await ExternalPath.getExternalStoragePublicDirectory(
         ExternalPath.DIRECTORY_DOWNLOADS);
