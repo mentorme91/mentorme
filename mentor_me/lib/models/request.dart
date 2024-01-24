@@ -1,3 +1,4 @@
+// custom enum [Status] manages the status of connect requests
 enum Status {
   pending,
   connected,
@@ -6,6 +7,7 @@ enum Status {
   none,
 }
 
+// custom request for connect requests sent and recieved
 class Request {
   String? senderUID, recieverUID;
   Status status;
@@ -14,6 +16,7 @@ class Request {
       required this.senderUID,
       required this.status});
 
+  // convert request object to map
   Map<String, dynamic> toMap() {
     return {
       'sender': senderUID,

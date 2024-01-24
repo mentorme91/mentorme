@@ -5,7 +5,9 @@ import 'package:provider/provider.dart';
 import '../../../models/post.dart';
 import '../../../models/user.dart';
 import '../../../services/database_service.dart';
+import 'comminuties_screens/communities.dart';
 import 'post_tile.dart';
+import 'profile_screens/notifications.dart';
 import 'profile_screens/profile.dart';
 
 class HomePage extends StatefulWidget {
@@ -108,7 +110,15 @@ class _HomePageState extends State<HomePage> {
                         ),
                         minimumSize: const Size(20, 40),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const NotificationsThemeLoader()));
+                        });
+                      },
                       child: Icon(
                         Icons.notifications,
                         color: Theme.of(context).colorScheme.background,
@@ -120,69 +130,90 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(
                 height: 20,
               ),
-              Container(
-                height: 60,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Theme.of(context).primaryColor,
-                ),
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  children: [
-                    const Expanded(
-                      child: FractionallySizedBox(
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(left: 10),
-                              child: Icon(
-                                Icons.public,
-                                color: Colors.white,
-                                size: 50,
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              CommunitiesPageThemeLoader()),
+                    );
+                  });
+                },
+                child: Container(
+                  height: 60,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    children: [
+                      const Expanded(
+                        child: FractionallySizedBox(
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: 10),
+                                child: Icon(
+                                  Icons.public,
+                                  color: Colors.white,
+                                  size: 50,
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Join A',
-                                  style: TextStyle(
-                                    // color: Theme.of(context)
-                                    //     .colorScheme
-                                    //     .background,
-                                    color: Colors.white,
-                                    fontSize: 15,
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Join A',
+                                    style: TextStyle(
+                                      // color: Theme.of(context)
+                                      //     .colorScheme
+                                      //     .background,
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  'Community',
-                                  style: TextStyle(
-                                    // color: Theme.of(context)
-                                    //     .colorScheme
-                                    //     .background,
-                                    color: Colors.white,
-                                    fontSize: 15,
+                                  Text(
+                                    'Community',
+                                    style: TextStyle(
+                                      // color: Theme.of(context)
+                                      //     .colorScheme
+                                      //     .background,
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            )
-                          ],
+                                ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.arrow_forward,
-                        color: Colors.white,
-                        size: 40,
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const CommunitiesPageThemeLoader()),
+                            );
+                          });
+                        },
+                        icon: const Icon(
+                          Icons.arrow_forward,
+                          color: Colors.white,
+                          size: 40,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               Padding(
@@ -201,7 +232,7 @@ class _HomePageState extends State<HomePage> {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Text('Loading...');
                     } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
+                      return Text('An Error occurred');
                     } else {
                       List<Post> posts = snapshot.data ?? [];
                       return Column(
@@ -209,7 +240,7 @@ class _HomePageState extends State<HomePage> {
                             posts.map((post) => PostTile(post: post)).toList(),
                       );
                     }
-                  })
+                  }),
             ]);
       },
     );

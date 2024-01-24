@@ -1,5 +1,6 @@
 // This file contains the user's Home screen
 
+import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
 
 import 'connect_screens/message_screens/chats.dart';
@@ -18,10 +19,20 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final double radius = 50;
   int _pageIndex = 0;
-  final List<Widget> _pages = [
+  final List<Widget> _pages = const [
+    HomePage(),
+    ConnectionsPage(),
     ResourcesPage(),
     OpportunitiesPage(),
   ];
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
+  }
+
+  final PageController _pageController = PageController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,10 +41,17 @@ class _HomeState extends State<Home> {
         preferredSize: Size.fromHeight(10),
         child: AppBar(),
       ),
-      body: SingleChildScrollView(
-        child: (_pageIndex != 0)
-            ? ((_pageIndex != 1) ? _pages[_pageIndex - 2] : ConnectionsPage())
-            : HomePage(),
+      // body: SingleChildScrollView(
+      //   child: (_pageIndex != 0)
+      //       ? ((_pageIndex != 1) ? _pages[_pageIndex - 2] : ConnectionsPage())
+      //       : HomePage(),
+      // ),
+      body: ExpandablePageView(
+        children: _pages,
+        controller: _pageController,
+        onPageChanged: (value) => setState(() {
+          _pageIndex = value;
+        }),
       ),
       floatingActionButton: (_pageIndex == 1)
           ? FloatingActionButton(
@@ -56,8 +74,8 @@ class _HomeState extends State<Home> {
           : null,
       bottomNavigationBar: BottomNavigationBar(
         iconSize: 20,
-        unselectedFontSize: 10,
-        selectedFontSize: 10,
+        unselectedFontSize: 12,
+        selectedFontSize: 13,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.black,
         backgroundColor: Theme.of(context).primaryColor,
@@ -67,6 +85,8 @@ class _HomeState extends State<Home> {
         onTap: (value) async {
           setState(() {
             _pageIndex = value;
+            _pageController.animateToPage(_pageIndex,
+                duration: Durations.medium2, curve: Curves.easeIn);
           });
         },
         items: const [

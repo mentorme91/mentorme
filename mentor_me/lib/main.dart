@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamProvider<MyUser?>.value(
-      value: AuthService().user,
+      value: AuthService().user, // provides a user stream which tracks updates in our user credentials
       initialData: null,
       child: ChangeNotifierProvider(
         create: (context) =>

@@ -55,6 +55,7 @@ class AuthService extends ChangeNotifier {
     }
   }
 
+  // this function resets a user's password from the forgot password page
   Future<String?> resetPassword(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);

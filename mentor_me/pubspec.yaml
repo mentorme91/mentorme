@@ -53,6 +53,8 @@ dependencies:
   path_provider: ^2.1.2
   open_file: ^3.2.1
   external_path: ^1.0.3
+  like_button: ^2.0.5
+  expandable_page_view: ^1.0.17
 
 dev_dependencies:
   flutter_test:

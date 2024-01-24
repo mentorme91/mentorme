@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mentor_me/screens/signed_in_screens/home_screens/profile_screens/change_password.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../models/user.dart';
@@ -8,6 +7,7 @@ import '../../../../services/input_verification.dart';
 import '../../../../services/json_decoder.dart';
 import '../../../drop_down.dart';
 import '../../../../theme_provider.dart';
+import 'change_password.dart';
 
 class PersonalInfoThemeLoader extends StatefulWidget {
   const PersonalInfoThemeLoader({super.key});

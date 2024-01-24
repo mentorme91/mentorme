@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:like_button/like_button.dart';
 
 import '../../../models/post.dart';
 
@@ -16,6 +17,7 @@ class _PostTileState extends State<PostTile> {
   bool bookmarkTapped = false;
 
   bool likeTapped = false;
+  double buttonSize = 20;
 
   @override
   Widget build(BuildContext context) {
@@ -117,25 +119,50 @@ class _PostTileState extends State<PostTile> {
                     child: Container(
                       child: Row(
                         children: [
-                          Text(
-                            widget.post.likes.toString(),
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.onPrimary,
-                              fontSize: 13,
+                          LikeButton(
+                            size: buttonSize,
+                            circleColor: CircleColor(
+                                start: Color(0xff00ddff),
+                                end: Color(0xff0099cc)),
+                            bubblesColor: BubblesColor(
+                              dotPrimaryColor: Color(0xff33b5e5),
+                              dotSecondaryColor: Color(0xff0099cc),
                             ),
-                          ),
-                          IconButton(
-                            onPressed: () => {
-                              setState(() {
-                                likeTapped = !likeTapped;
-                                widget.post.likes += likeTapped ? 1 : -1;
-                              })
+                            likeBuilder: (bool isLiked) {
+                              return Icon(
+                                Icons.thumb_up,
+                                color: isLiked
+                                    ? const Color.fromARGB(255, 56, 107, 246)
+                                    : Colors.grey,
+                                size: buttonSize,
+                              );
                             },
-                            icon: Icon(
-                              Icons.thumb_up,
-                              color: likeTapped
+                            likeCount: widget.post.likes,
+                            countBuilder:
+                                (int? count, bool isLiked, String text) {
+                              var color = isLiked
                                   ? const Color.fromARGB(255, 56, 107, 246)
-                                  : Colors.grey,
+                                  : Colors.black;
+                              Widget result;
+                              if (count == 0) {
+                                result = Text(
+                                  text,
+                                  style: TextStyle(color: color),
+                                );
+                              } else
+                                result = Text(
+                                  text,
+                                  style: TextStyle(color: color),
+                                );
+                              return result;
+                            },
+                          ),
+                          
+                          IconButton(
+                            onPressed: () => {},
+                            icon: const Icon(
+                              Icons.chat_rounded,
+                              color: Colors.grey,
                             ),
                           ),
                           Text(
@@ -145,13 +172,6 @@ class _PostTileState extends State<PostTile> {
                               fontSize: 13,
                             ),
                           ),
-                          IconButton(
-                            onPressed: () => {},
-                            icon: const Icon(
-                              Icons.chat_rounded,
-                              color: Colors.grey,
-                            ),
-                          )
                         ],
                       ),
                     ),

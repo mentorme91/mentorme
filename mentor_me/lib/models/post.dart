@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// custom post class for Posts
 class Post {
   String? userPhotoURL, content, title, userName;
   int likes = 0;
@@ -13,6 +14,7 @@ class Post {
     this.userPhotoURL,
   });
 
+  // convert post information to map
   Map<String, dynamic> toMap() {
     return {
       'photoURL': userPhotoURL,
@@ -25,6 +27,7 @@ class Post {
     };
   }
 
+  // update post object from map
   void updateFromMap(Map<String, dynamic> map) {
     userPhotoURL = map['photoURL'];
     userName = map['name'];

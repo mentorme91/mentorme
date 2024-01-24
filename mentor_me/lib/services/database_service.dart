@@ -55,6 +55,7 @@ class DatabaseService extends ChangeNotifier {
     notifyListeners();
   }
 
+  // adds a post to the database
   void postNewPost(Post post, String postName) {
     postsCollection.doc(postName).collection('posts').add(post.toMap());
     notifyListeners();
@@ -65,17 +66,25 @@ class DatabaseService extends ChangeNotifier {
     return studentsCollection.doc(uid).snapshots();
   }
 
+  // get user information and converts it into a [MyUser]
   Future<MyUser> get userInfo async {
+    // get the information as a Map
     DocumentSnapshot<Object?> val = await studentsCollection.doc(uid).get();
     Map data = val.data() as Map<String, dynamic>;
+
+    // convert map to [MyUser]
     MyUser user = MyUser()..updateFromMap(data);
     return user;
   }
 
+  // get posts
   Stream<DocumentSnapshot> get posts {
     return postsCollection.doc('posts').snapshots();
   }
 
+  // get all posts of a certain type
+  // convert the postData to [Post] class
+  // return list of all posts
   Future<List<Post>> allPosts(String postName) async {
     List<Post> allPosts = [];
     QuerySnapshot<Object?> posts = await postsCollection
@@ -91,22 +100,27 @@ class DatabaseService extends ChangeNotifier {
     return allPosts;
   }
 
+  // get chatroom information stream
   Stream<DocumentSnapshot> chatRoom(String roomID) {
     return postsCollection.doc(roomID).snapshots();
   }
 
+  // get stream of course resource documents
   Stream<QuerySnapshot> getDocuments(String school, String courseCode) {
     return documentCollection.doc(school).collection(courseCode).snapshots();
   }
 
+  // get stream of course resource links
   Stream<QuerySnapshot> getLinks(String school, String courseCode) {
     return linkCollection.doc(school).collection(courseCode).snapshots();
   }
 
+  // get stream of user matches
   Stream<QuerySnapshot> userMatches() {
     return studentsCollection.snapshots();
   }
 
+  // get matches and percentage match as a Map
   Future<Map<MyUser, int>> matches(MyUser? user) async {
     Map<MyUser, int> matches = {};
 
@@ -126,6 +140,7 @@ class DatabaseService extends ChangeNotifier {
     return matches;
   }
 
+  // update tasks in My Schedule
   Future<void> setTasks(Map<String, dynamic> map) async {
     await studentsCollection
         .doc(uid)
@@ -134,6 +149,7 @@ class DatabaseService extends ChangeNotifier {
         .set(map);
   }
 
+  // get tasks
   Future<List<dynamic>> getTasks() async {
     DocumentSnapshot<Map<String, dynamic>> document = await studentsCollection
         .doc(uid)
@@ -150,6 +166,7 @@ class DatabaseService extends ChangeNotifier {
     }
   }
 
+  // add a course resource link
   Future<void> addLink(String school, String courseCode, MyLink link) async {
     await linkCollection
         .doc(school)
@@ -157,7 +174,7 @@ class DatabaseService extends ChangeNotifier {
         .add(link.toMap()..addAll({'time': Timestamp.now()}));
   }
 
-  //add event
+  //add a my calendar event
   Future<void> addEvent(Map<String, dynamic> map) async {
     await studentsCollection
         .doc(uid)
@@ -167,8 +184,7 @@ class DatabaseService extends ChangeNotifier {
 
     notifyListeners();
   }
-  // recieve events
-
+  // retrieve events
   Future<Map<String, List<Event>>> getEvents() async {
     DocumentSnapshot<Map<String, dynamic>> document = await studentsCollection
         .doc(uid)
@@ -190,6 +206,7 @@ class DatabaseService extends ChangeNotifier {
   }
 }
 
+// convert a List<dynamic>, where dynamic is a Map<String, dynamic>, to List<Event>
 List<Event> toEvents(List l) {
   return l
       .map(

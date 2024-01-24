@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 // custom themes provided to the app
+
+// light theme
 final ThemeData lightTheme = ThemeData(
   appBarTheme: AppBarTheme(
     backgroundColor: Colors.white,
@@ -17,6 +19,7 @@ final ThemeData lightTheme = ThemeData(
       secondary: Color.fromARGB(255, 48, 48, 48)),
 );
 
+// dark theme
 final ThemeData darkTheme = ThemeData(
   appBarTheme: AppBarTheme(
     backgroundColor: Color(0xFF121212),
@@ -28,12 +31,13 @@ final ThemeData darkTheme = ThemeData(
     onPrimary: Colors.white,
     background: Color(0xFF121212),
     surface: Color.fromARGB(186, 16, 26, 46),
-    tertiaryContainer: Color.fromARGB(255, 49, 49, 49),
+    tertiaryContainer: Color.fromARGB(255, 82, 82, 82),
     tertiary: Colors.white,
     secondary: Color.fromARGB(255, 48, 48, 48),
   ),
 );
 
+// custom decoration for containers
 BoxDecoration boxDecoration(ThemeData theme, double radius) => BoxDecoration(
       color: theme.colorScheme.tertiaryContainer,
       borderRadius: BorderRadius.circular(radius),
@@ -47,6 +51,7 @@ BoxDecoration boxDecoration(ThemeData theme, double radius) => BoxDecoration(
       ],
     );
 
+// custom decoration for input fields
 InputDecoration inputDecoration(
         ThemeData theme, double radius, String? hintText) =>
     InputDecoration(
@@ -69,6 +74,8 @@ InputDecoration inputDecoration(
         ),
       ),
     );
+
+// custom decoration for dropdown fields
 InputDecoration inputDropDownDecoration(
         ThemeData theme, double radius, String? hintText) =>
     InputDecoration(
