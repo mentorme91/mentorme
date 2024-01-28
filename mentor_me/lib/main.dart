@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           theme: lightTheme,
           darkTheme: darkTheme,
-          home: const Wrapper(),
+          home: const Wrapper(), // it decides whether to show the authentication screen or user dashboard
         ),
       ),
     );

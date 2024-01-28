@@ -1,10 +1,10 @@
 //  This contains the loading screen
-// to keep use entertained while information is fetched from database
+// to keep users entertained while information is fetched from database
 
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter/material.dart';
-// import 'dart:async';
 
+// loading widget provided by spinKit
 class Loading extends StatelessWidget {
   const Loading({super.key});
 
@@ -19,6 +19,8 @@ class Loading extends StatelessWidget {
   }
 }
 
+
+// custom loading widget using mentorme logos
 class LoadingScreen extends StatefulWidget {
   @override
   _LoadingScreenState createState() => _LoadingScreenState();

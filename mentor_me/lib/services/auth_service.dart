@@ -91,8 +91,6 @@ Future<MyUser?> CreateUserFromAuthUser(User? authUser) async {
     return user;
   } catch (e) {
     // else return null
-    print('Something failed here');
-    print(e.toString());
     return null;
   }
 }

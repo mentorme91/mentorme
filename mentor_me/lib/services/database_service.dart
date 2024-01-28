@@ -21,15 +21,21 @@ class DatabaseService extends ChangeNotifier {
   // get the collection of all students in the database
   final CollectionReference studentsCollection =
       FirebaseFirestore.instance.collection('all_students');
-  // get the collection of all schools in the database
-  // final CollectionReference schoolsCollection =
-  //     FirebaseFirestore.instance.collection('schools');
+
+
+  // get the collection of all posts in the database
   final CollectionReference postsCollection =
       FirebaseFirestore.instance.collection('all_posts');
+
+
   final CollectionReference chatCollection =
       FirebaseFirestore.instance.collection('chat_rooms');
+
+
   final CollectionReference documentCollection =
       FirebaseFirestore.instance.collection('resource_documents');
+
+
   final CollectionReference linkCollection =
       FirebaseFirestore.instance.collection('links');
 
@@ -43,15 +49,6 @@ class DatabaseService extends ChangeNotifier {
     dic['requests'] = newRequests;
     // update all student collections and student collections in respective schools
     await studentsCollection.doc(user?.uid).set(dic);
-    // await schoolsCollection
-    //     .doc(user?.school_id)
-    //     .collection('faculties')
-    //     .doc(user?.faculty)
-    //     .collection('departments')
-    //     .doc(user?.department)
-    //     .collection('students')
-    //     .doc(user?.uid)
-    //     .set(dic);
     notifyListeners();
   }
 
