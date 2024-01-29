@@ -91,7 +91,7 @@ class MyUser {
     status = studentData['status'];
     year = studentData['year'];
     photoURL = studentData['photoURL'];
-    Map<String, dynamic> conns = studentData['connections'] ?? [];
+    Map<String, dynamic> conns = studentData['connections'] ?? {};
     connections = conns.cast<String, Timestamp?>();
     List<dynamic> rejs = studentData['rejects'] ?? [];
     rejects = rejs.cast<String>();
