@@ -31,7 +31,7 @@ class _OpportunitiesPageState extends State<OpportunitiesPage> {
       'name': 'New Grad roles',
       'page': const NewGradRolesPage()
     },
-    'Other job opportunities': {
+    'Job opportunities': {
       'image': 'assets/images/other_jobs.jpeg',
       'name': 'Other job opportunities',
       'page': const OtherOpportunitiesPage()

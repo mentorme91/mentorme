@@ -43,9 +43,15 @@ class _ProfileState extends State<Profile> {
     final user = Provider.of<MyUser?>(context);
     final AuthService _auth = AuthService();
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(10),
-        child: AppBar(),
+      appBar: AppBar(
+        title: Text(
+          'Profile',
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onPrimary,
+            fontWeight: FontWeight.bold,
+            fontSize: 27,
+          ),
+        ),
       ),
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Container(
@@ -56,37 +62,6 @@ class _ProfileState extends State<Profile> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Row(
-                children: [
-                  IconButton(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      onPressed: () => {
-                            setState(
-                              () {
-                                Navigator.pop(context);
-                              },
-                            )
-                          },
-                      icon: const BackButtonIcon()),
-                  Expanded(
-                    child: FractionallySizedBox(
-                      child: Center(
-                        child: Text(
-                          'Profile',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.onPrimary,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 50,
-                  ),
-                ],
-              ),
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.only(

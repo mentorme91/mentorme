@@ -25,10 +25,11 @@ class _UserCalendarThemeLoaderState extends State<UserCalendarThemeLoader> {
   Widget build(BuildContext context) {
     final ThemeData theme = Provider.of<MyThemeProvider>(context).theme;
     return Theme(
-        data: theme,
-        child: UserCalendar(
-          user: widget.user,
-        ));
+      data: theme,
+      child: UserCalendar(
+        user: widget.user,
+      ),
+    );
   }
 }
 
@@ -128,16 +129,29 @@ class _UserCalendarState extends State<UserCalendar> {
       margin: EdgeInsets.all(10),
       decoration: boxDecoration(Theme.of(context), 20),
       child: ListTile(
-        title: Center(child: Text(event.title)),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+        title: Row(
           children: [
+            CircleAvatar(
+              backgroundColor: Colors.blue,
+              radius: 5,
+            ),
+            SizedBox(width: 10),
             Text(
-                'Start Time: ${event.start?.format(context) ?? TimeOfDay.now().format(context)}'),
-            Text(
-                'End Time: ${event.end?.format(context) ?? TimeOfDay.now().format(context)}'),
-            Text('Information: ${event.information}'),
+              '${event.start?.format(context) ?? TimeOfDay.now().format(context)} - ${event.end?.format(context) ?? TimeOfDay.now().format(context)}',
+              style: TextStyle(fontSize: 15),
+            ),
           ],
+        ),
+        subtitle: Padding(
+          padding: const EdgeInsets.only(left: 20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(event.title,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text(event.information)
+            ],
+          ),
         ),
         leading: IconButton(
           onPressed: () async {
@@ -222,7 +236,16 @@ class _UserCalendarState extends State<UserCalendar> {
   Widget build(BuildContext context) {
     final user = Provider.of<MyUser?>(context);
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(
+          'My Calendar',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
+              fontWeight: FontWeight.bold,
+              fontSize: 30),
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await _addEvent();
@@ -233,16 +256,7 @@ class _UserCalendarState extends State<UserCalendar> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Center(
-              child: Text(
-                'My Calendar',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30),
-              ),
-            ),
+            SizedBox(height: 20),
             SingleChildScrollView(
               child: FutureBuilder<Map<String, List<Event>>>(
                 future: DatabaseService(uid: user?.uid).getEvents(),
@@ -265,7 +279,11 @@ class _UserCalendarState extends State<UserCalendar> {
                     events = snapshot.data ?? {};
                     _setDaysEvents(today);
                     return Column(
-                      children: [Calendar()] +
+                      children: [
+                            Calendar(),
+                            SizedBox(height: 20),
+                            Text(DateFormat('EEEE, MMMM d, yyyy').format(today))
+                          ] +
                           daysEvents
                               .map((event) => buildEventListTile(event))
                               .toList(),

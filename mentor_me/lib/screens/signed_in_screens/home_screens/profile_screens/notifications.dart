@@ -32,25 +32,23 @@ class _NotificationsState extends State<Notifications> {
   Widget build(BuildContext context) {
     // final user = Provider.of<MyUser?>(context);
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(
+          'Notifications',
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onPrimary,
+            fontWeight: FontWeight.bold,
+            fontSize: 27,
+          ),
+        ),
+      ),
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Container(
         height: double.infinity,
         color: Theme.of(context).colorScheme.background,
         child: SingleChildScrollView(
           child: Column(
-            children: [
-              Center(
-                child: Text(
-                  'Notifications',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30),
-                ),
-              ),
-            ],
+            children: [],
           ),
         ),
       ),

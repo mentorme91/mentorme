@@ -19,10 +19,10 @@ class Wrapper extends StatefulWidget {
 class _WrapperState extends State<Wrapper> {
   @override
   Widget build(BuildContext context) {
-    // get user information to determine whether user is signed in or not (not null or null)
+    /// get user information to determine whether user is signed in or not (not null or null)
     final MyUser? user = Provider.of<MyUser?>(context);
     return Theme(
         data: Provider.of<MyThemeProvider>(context).theme,
-        child: (user == null) ? const Auhenticate() : Home());
+        child: (user == null) ? const Auhenticate() : const Home());
   }
 }
