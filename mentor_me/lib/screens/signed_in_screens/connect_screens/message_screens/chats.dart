@@ -173,17 +173,19 @@ class _ChatsState extends State<Chats> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
+        title: Text(
+          'Chats',
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onPrimary,
+            fontWeight: FontWeight.bold,
+            fontSize: 27,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
             children: ([
-          Text(
-            'Chats',
-            style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          
           SizedBox(
             height: 20,
           ),

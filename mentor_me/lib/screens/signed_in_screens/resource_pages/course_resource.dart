@@ -151,7 +151,16 @@ class _CourseResourceState extends State<CourseResource> {
   Widget build(BuildContext context) {
     final MyUser? user = Provider.of<MyUser?>(context);
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(
+                '${widget.courseCode} Resources',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25),
+              ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: (_pageIndex == 0)
             ? () => _uploadDocument(user)
@@ -161,16 +170,7 @@ class _CourseResourceState extends State<CourseResource> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Center(
-              child: Text(
-                '${widget.courseCode} Resources',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30),
-              ),
-            ),
+            
             const SizedBox(
               height: 20,
             ),
