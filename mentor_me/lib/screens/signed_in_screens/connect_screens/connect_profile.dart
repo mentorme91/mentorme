@@ -304,6 +304,39 @@ class _ConnectProfileState extends State<ConnectProfile> {
             const SizedBox(
               height: 30,
             ),
+            Text(
+              'About',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimary,
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+              ),
+            ),
+            Container(
+              width: 300,
+              height: 110,
+              margin: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Theme.of(context).primaryColor,
+                  width: 0.2,
+                ),
+                color: Colors.white,
+              ),
+              child: Container(
+                child: Text(
+                  '${widget.match.first_name} ${widget.match.last_name} is a ${widget.match.year} year student in the faculty of ${widget.match.faculty}, majoring in ${widget.match.department}',
+                  style: const TextStyle(
+                    fontSize: 16,
+                  ),
+                  softWrap: true,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 40,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: _getChildren(user),

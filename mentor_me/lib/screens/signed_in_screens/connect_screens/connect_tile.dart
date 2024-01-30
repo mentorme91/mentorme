@@ -85,7 +85,7 @@ class _ConnectTileState extends State<ConnectTile> {
                 color: Theme.of(context).colorScheme.onPrimary, fontSize: 12),
           ),
           Container(
-            padding: EdgeInsets.only(left: 5, right: 5),
+            padding: const EdgeInsets.only(left: 5, right: 5),
             alignment: Alignment.center,
             child: Text(
               '${widget.user.department} Major',
