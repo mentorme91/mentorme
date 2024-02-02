@@ -14,6 +14,7 @@ class MyUser {
   String? _password;
   String? status;
   String? photoURL;
+  String? about;
   Map<String, Timestamp?> connections = {};
   List<String> cancels = [];
   List<String> rejects = [];
@@ -31,6 +32,7 @@ class MyUser {
     this.status,
     this.year,
     this.photoURL,
+    this.about,
   });
 
   // get user password
