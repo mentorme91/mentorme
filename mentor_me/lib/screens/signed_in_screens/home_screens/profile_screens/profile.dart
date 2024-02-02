@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:mentor_me/themes.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../models/user.dart';
@@ -29,6 +31,8 @@ class _UserProfileState extends State<UserProfile> {
     );
   }
 }
+
+TextEditingController _Controller = TextEditingController();
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -159,6 +163,60 @@ class _ProfileState extends State<Profile> {
                     height: 5,
                   ),
                   Text('${user?.email}'),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  GestureDetector(
+                    child: Container(
+                      width: 250,
+                      height: 200,
+                      padding: const EdgeInsets.all(6.0),
+                      margin: const EdgeInsets.all(6.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                          20,
+                        ),
+                        border: Border.all(
+                          color: Theme.of(context).primaryColor,
+                          width: 0.2,
+                        ),
+                        color: Colors.white,
+                      ),
+                      child: TextField(
+                        maxLines: null,
+                        keyboardType: TextInputType.multiline,
+                        controller: _Controller,
+                        decoration: const InputDecoration(
+                          labelText: "Enter a Text describing you",
+                          labelStyle: TextStyle(
+                            fontSize: 13,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        alignment: Alignment.center,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(2.0)),
+                        ),
+                        elevation: 2.0,
+                      ),
+                      onPressed: () {
+                        user?.about = _Controller.text;
+                      },
+                      child: const Text(
+                        'Update',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )),
                 ]),
               ),
               const SizedBox(
