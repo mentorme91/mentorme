@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:libre_doc_converter/libre_doc_converter.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../models/user.dart';
 import '../../../services/database_service.dart';
@@ -17,6 +19,7 @@ class DocumentResources extends StatefulWidget {
 }
 
 class _DocumentResourcesState extends State<DocumentResources> {
+  Map extensionImage = {'.pdf': 'pdf.png', '.docx': 'docx.jpeg'};
   @override
   Widget build(BuildContext context) {
     final MyUser? user = Provider.of<MyUser?>(context);
@@ -39,7 +42,9 @@ class _DocumentResourcesState extends State<DocumentResources> {
               itemBuilder: (context, index) {
                 final document = documents[index];
                 final title = document['title'] as String;
-                final url = document['path'] as String;
+                final path = document['path'] as String;
+                final url = document['url'] as String;
+                final extension = document['type'] as String;
                 return Container(
                   margin: EdgeInsets.all(10),
                   decoration: boxDecoration(Theme.of(context), 20),
@@ -49,10 +54,12 @@ class _DocumentResourcesState extends State<DocumentResources> {
                         'Tap to view file',
                         style: TextStyle(color: Colors.blue),
                       ),
+                      leading: Image.asset(
+                          'assets/images/${extensionImage[extension] ?? 'pdf.png'}'),
                       trailing: IconButton(
                         onPressed: () async {
                           bool pass =
-                              await StorageService().downloadFile(url, title);
+                              await StorageService().downloadFile(path, title);
                           if (pass) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
@@ -80,16 +87,43 @@ class _DocumentResourcesState extends State<DocumentResources> {
                         icon: Icon(Icons.download),
                       ),
                       onTap: () async {
-                        final file =
-                            await StorageService().loadFirebaseFile(url, title);
+                        final file = await StorageService()
+                            .loadFirebaseFile(path, title);
                         if (file == null) return;
-                        setState(() {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => PDFViewerPage(
-                                    file: file,
-                                    title: title,
-                                  )));
-                        });
+                        if (extension == '.pdf') {
+                          setState(() {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => PDFViewerPage(
+                                  file: file,
+                                  title: title,
+                                ),
+                              ),
+                            );
+                          });
+                        } else {
+                          print(file.path);
+                          final converter = LibreDocConverter(
+                            inputFile: file,
+                          );
+
+                          try {
+                            final pdfFile = await converter.toPdf();
+                            setState(() {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => PDFViewerPage(
+                                  file: pdfFile,
+                                  title: title,
+                                ),
+                              ),
+                            );
+                          });
+                          } catch (e) {
+                            print(e.toString());
+                            launchUrl(Uri.parse(url));
+                          }
+                        }
                       }),
                 );
               },

@@ -178,12 +178,26 @@ class CourseTile extends StatelessWidget {
   const CourseTile({required this.courseCode, super.key});
 
   Color _generateRandomColor() {
-    Random random = Random();
-    int r = random.nextInt(256);
-    int g = random.nextInt(256);
-    int b = random.nextInt(256);
-    return Color.fromARGB(255, r, g, b);
+  // Generate random values for red, green, and blue components
+  int red = Random().nextInt(256);
+  int green = Random().nextInt(256);
+  int blue = Random().nextInt(256);
+
+  // Ensure that the color is not too dark by checking the luminance
+  while (getColorLuminance(Color.fromRGBO(red, green, blue, 1.0)) < 0.6) {
+    red = Random().nextInt(256);
+    green = Random().nextInt(256);
+    blue = Random().nextInt(256);
   }
+
+  // Return the generated color
+  return Color.fromRGBO(red, green, blue, 1.0);
+}
+
+double getColorLuminance(Color color) {
+  // Calculate the luminance of the color
+  return 0.299 * color.red + 0.587 * color.green + 0.114 * color.blue;
+}
 
   @override
   Widget build(BuildContext context) {

@@ -135,6 +135,7 @@ class _ChatsState extends State<Chats> {
               var message =
                   snapshot.data?.docs.first.data() as Map<String, dynamic>;
               var lastMessage = Message(
+                status: message['status'] ?? 'seen',
                 message: (user?.uid == message['senderUID'])
                     ? 'You: ${message['message']}'
                     : message['message'],
