@@ -282,16 +282,17 @@ class _ConnectProfileState extends State<ConnectProfile> {
                 ),
               ),
             ),
+            SizedBox(height: 10,),
             Text(
               '${widget.match.first_name} ${widget.match.last_name}',
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onPrimary,
                 fontWeight: FontWeight.bold,
-                fontSize: 17,
+                fontSize: 20,
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 15,
             ),
             Text(
               '${widget.match.department} Major',
@@ -313,25 +314,13 @@ class _ConnectProfileState extends State<ConnectProfile> {
               ),
             ),
             Container(
-              width: 300,
-              height: 110,
-              margin: const EdgeInsets.all(8.0),
-              padding: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Theme.of(context).primaryColor,
-                  width: 0.2,
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                '${widget.match.about}',
+                style: const TextStyle(
+                  fontSize: 16,
                 ),
-                color: Colors.white,
-              ),
-              child: Container(
-                child: Text(
-                  '${widget.match.first_name} ${widget.match.last_name} is a ${widget.match.year} year student in the faculty of ${widget.match.faculty}, majoring in ${widget.match.department}',
-                  style: const TextStyle(
-                    fontSize: 16,
-                  ),
-                  softWrap: true,
-                ),
+                softWrap: true,
               ),
             ),
             const SizedBox(

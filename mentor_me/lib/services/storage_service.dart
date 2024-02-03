@@ -47,12 +47,12 @@ class StorageService {
   }
 
   // upload a document to firebase
-  Future<bool> uploadDocument(File? file, String title, String type,
+  Future<bool> uploadDocument(File file, String title, String type,
       String school, String courseCode) async {
     try {
       // Upload file to Firebase Storage
       final Reference storageReference =
-          storageRef.child('documents').child(file!.path);
+          storageRef.child('documents').child(file.path);
       final UploadTask uploadTask = storageReference.putFile(file);
       final TaskSnapshot taskSnapshot =
           await uploadTask.whenComplete(() => null);

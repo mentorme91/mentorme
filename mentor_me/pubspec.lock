@@ -421,6 +421,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.7"
+  libre_doc_converter:
+    dependency: "direct main"
+    description:
+      name: libre_doc_converter
+      sha256: d648dac07965a50d73391f793e00cb6e1065b1c43e878af3f845d7f5a71e4236
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.1"
   like_button:
     dependency: "direct main"
     description:

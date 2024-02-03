@@ -53,6 +53,7 @@ class MyUser {
       'status': status,
       'year': year,
       'photoURL': photoURL,
+      'about': about,
       'connections': connections,
       'requests': requests,
       'cancels': cancels,
@@ -79,6 +80,7 @@ class MyUser {
     status = user.status;
     year = user.year;
     photoURL = user.photoURL;
+    about = user.about;
   }
 
   // update user object from a map
@@ -92,6 +94,7 @@ class MyUser {
     department = studentData['department'];
     status = studentData['status'];
     year = studentData['year'];
+    about = studentData['about'];
     photoURL = studentData['photoURL'];
     Map<String, dynamic> conns = studentData['connections'] ?? {};
     connections = conns.cast<String, Timestamp?>();
@@ -124,6 +127,7 @@ MyUser newUser() {
     faculty: '',
     department: '',
     status: '',
+    about: '',
     year: 0,
   );
 }

@@ -26,7 +26,7 @@ class _RegisterState extends State<Register> {
   }
 
   final AuthService _auth = AuthService();
-  MyUser user = newUser();
+  MyUser user = MyUser();
   final double _formheight = 60;
   bool obscure = false, reobscure = false;
   final _formkey = GlobalKey<FormState>();
