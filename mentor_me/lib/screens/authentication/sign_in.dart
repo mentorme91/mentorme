@@ -30,7 +30,7 @@ class _SignInState extends State<SignIn> {
         setState(() {
           loading = true;
         });
-        dynamic authUser = await _auth.SignInUser(email, password);
+        dynamic authUser = await _auth.signInUser(email, password);
         if (authUser == null) {
           setState(() {
             loading = false;

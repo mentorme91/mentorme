@@ -93,7 +93,7 @@ return Color(int.parse(hex.substring(1), radix: 16) + 0xFF000000);
   return null;
 }
   // get the map representation of task
-  Map<String, dynamic> ToMap() {
+  Map<String, dynamic> toMap() {
     return {
       'day': day,
       'hour': hour,

@@ -487,7 +487,7 @@ class _ProfileState extends State<Profile> {
                     ListTile(
                       onTap: () {
                         Navigator.pop(context);
-                        _auth.SignOut();
+                        _auth.signOut();
                       },
                       leading: const Icon(
                         Icons.logout,

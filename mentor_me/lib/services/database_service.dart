@@ -42,7 +42,7 @@ class DatabaseService extends ChangeNotifier {
   // update all student collections and student collections in respective schools
   Future UpdateStudentCollection(MyUser? user) async {
     // get dictionary representation of user
-    Map<String, dynamic> dic = user?.todict() ?? {};
+    Map<String, dynamic> dic = user?.toMap() ?? {};
     Map<String, Request> requests = dic['requests'];
     Map newRequests =
         requests.map((key, value) => MapEntry(key, value.toMap()));
