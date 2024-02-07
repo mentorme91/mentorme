@@ -157,7 +157,7 @@ class _CoursePlannerState extends State<CoursePlanner> {
 
   Future _setTasksInDataBase(MyUser? user) async {
     Map<String, List<Map<String, dynamic>>> map = {
-      'tasks': tasks.map((task) => task.ToMap()).toList()
+      'tasks': tasks.map((task) => task.toMap()).toList()
     };
     await DatabaseService(uid: user?.uid).setTasks(map);
   }

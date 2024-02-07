@@ -14,11 +14,11 @@ class AuthService extends ChangeNotifier {
   Stream<MyUser?> get user {
     return _auth
         .authStateChanges()
-        .asyncMap((event) => CreateUserFromAuthUser(event));
+        .asyncMap((event) => createUserFromAuthUser(event));
   }
 
   // method to signin a user using email and password
-  Future SignInUser(email, password) async {
+  Future signInUser(email, password) async {
     try {
       UserCredential res = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
@@ -29,7 +29,7 @@ class AuthService extends ChangeNotifier {
   }
 
   // signs out a user
-  Future SignOut() async {
+  Future signOut() async {
     try {
       return await _auth.signOut();
     } catch (e) {
@@ -38,11 +38,11 @@ class AuthService extends ChangeNotifier {
   }
 
   // method to register a user
-  Future Register(MyUser user) async {
+  Future register(MyUser user) async {
     try {
       // register user with email and password from firebase auth service and get user credentials
       UserCredential res = await _auth.createUserWithEmailAndPassword(
-          email: user.email ?? '', password: user.GetPassword() ?? '');
+          email: user.email ?? '', password: user.getPassword() ?? '');
       // use user credentials to create an instance of database service for user or update user
       user.uid = res.user?.uid;
       res.user?.updateDisplayName(user.first_name);
@@ -68,7 +68,7 @@ class AuthService extends ChangeNotifier {
 }
 
 // create a custom user class from Firebase user class
-Future<MyUser?> CreateUserFromAuthUser(User? authUser) async {
+Future<MyUser?> createUserFromAuthUser(User? authUser) async {
   // get a snapshot of all student data
   if (authUser == null) {
     return null;
