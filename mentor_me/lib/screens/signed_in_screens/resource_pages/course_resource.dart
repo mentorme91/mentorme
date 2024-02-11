@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:mentor_me/screens/signed_in_screens/resource_pages/course_bot_chat.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart' as p;
 
@@ -187,11 +188,33 @@ class _CourseResourceState extends State<CourseResource> {
               fontSize: 25),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (_pageIndex == 0)
-            ? () => _uploadDocument(user)
-            : () => _uploadLink(user),
-        child: Icon(Icons.upload),
+      floatingActionButton: Container(
+        margin: EdgeInsets.only(left: 30),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            (_pageIndex == 0)
+                ? FloatingActionButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              CourseBotChatPageThemeLoader(courseCode: widget.courseCode),
+                        ),
+                      );
+                    },
+                    child: Icon(Icons.android),
+                  )
+                : SizedBox(),
+            FloatingActionButton(
+              onPressed: (_pageIndex == 0)
+                  ? () => _uploadDocument(user)
+                  : () => _uploadLink(user),
+              child: Icon(Icons.upload),
+            )
+          ],
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
