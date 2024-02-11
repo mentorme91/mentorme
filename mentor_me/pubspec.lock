@@ -320,6 +320,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_tex:
+    dependency: "direct main"
+    description:
+      name: flutter_tex
+      sha256: a32ac54e36f79e29be4d0f9eb5e8ee5c7e196807b4ad27df3b02a27bdce6bca9
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.6"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -445,6 +453,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  markdown:
+    dependency: transitive
+    description:
+      name: markdown
+      sha256: "1b134d9f8ff2da15cb298efe6cd8b7d2a78958c1b00384ebcbdf13fe340a6c90"
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.2.1"
   matcher:
     dependency: transitive
     description:
@@ -810,6 +826,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.9.1"
+  webview_flutter_plus:
+    dependency: transitive
+    description:
+      name: webview_flutter_plus
+      sha256: "54714cdf41b595970cd58b54e1f549f57583c91d9ccb7eb1fef24df9693ab3da"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.4"
   webview_flutter_wkwebview:
     dependency: transitive
     description:

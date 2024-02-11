@@ -22,6 +22,9 @@ class DatabaseService extends ChangeNotifier {
   final CollectionReference studentsCollection =
       FirebaseFirestore.instance.collection('all_students');
 
+  final CollectionReference botMessageCollection =
+      FirebaseFirestore.instance.collection('all_bot_messages');
+
 
   // get the collection of all posts in the database
   final CollectionReference postsCollection =
