@@ -36,12 +36,12 @@ class MyUser {
   });
 
   // get user password
-  String? GetPassword() => _password;
+  String? getPassword() => _password;
   // set user password
-  void SetPassword(String? pass) => _password = pass;
+  void setPassword(String? pass) => _password = pass;
 
   // still to implement
-  Map<String, dynamic> todict() {
+  Map<String, dynamic> toMap() {
     Map<String, dynamic> user_dict = {
       'uid': uid,
       'first_name': first_name,
@@ -53,6 +53,7 @@ class MyUser {
       'status': status,
       'year': year,
       'photoURL': photoURL,
+      'about': about,
       'connections': connections,
       'requests': requests,
       'cancels': cancels,
@@ -63,13 +64,14 @@ class MyUser {
   }
 
   // get the string value of a MyUser class
+  @override
   String toString() {
     return 'User($first_name $last_name, email: $email, school: $school_id, faculty: $faculty, department: $department)';
   }
 
   // update a [MyUser] class from an Authentication User class (from Firebase)
   void updateUserFromUser(MyUser user) {
-    _password = user.GetPassword();
+    _password = user.getPassword();
     uid = user.uid;
     first_name = user.first_name;
     last_name = user.last_name;
@@ -94,6 +96,7 @@ class MyUser {
     department = studentData['department'];
     status = studentData['status'];
     year = studentData['year'];
+    about = studentData['about'];
     photoURL = studentData['photoURL'];
     Map<String, dynamic> conns = studentData['connections'] ?? {};
     connections = conns.cast<String, Timestamp?>();
@@ -115,17 +118,3 @@ class MyUser {
   }
 }
 
-// // creates a new [MyUser] object
-MyUser newUser() {
-  return MyUser(
-    uid: '',
-    email: '',
-    first_name: '',
-    last_name: '',
-    school_id: '',
-    faculty: '',
-    department: '',
-    status: '',
-    year: 0,
-  );
-}

@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:mentor_me/screens/signed_in_screens/resource_pages/course_bot_chat.dart';
 import 'package:provider/provider.dart';
+import 'package:path/path.dart' as p;
 
 import '../../../models/link.dart';
 import '../../../models/user.dart';
@@ -46,6 +48,31 @@ class _CourseResourceState extends State<CourseResource> {
 
   void _uploadDocument(MyUser? user) async {
     File? file = await StorageService().pickFile();
+    if (file == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(
+              'No file was chosen',
+            ),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0))),
+      );
+      return;
+    }
+    // } else if (p.extension(file.path) != '.pdf') {
+    //   print(file.path);
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     SnackBar(
+    //         content: Text(
+    //           'The file you chose is not a pdf. Please chose a pdf file.',
+    //         ),
+    //         behavior: SnackBarBehavior.floating,
+    //         shape: RoundedRectangleBorder(
+    //             borderRadius: BorderRadius.circular(30.0))),
+    //   );
+    //   return;
+    // }
     final TextEditingController _titleController = TextEditingController();
 
     // ignore: use_build_context_synchronously
@@ -82,8 +109,8 @@ class _CourseResourceState extends State<CourseResource> {
       ),
     );
     if (title != null) {
-      StorageService().uploadDocument(
-          file, title, 'pdf', user?.school_id ?? '', widget.courseCode);
+      StorageService().uploadDocument(file, title, p.extension(file.path),
+          user?.school_id ?? '', widget.courseCode);
     }
     setState(() {});
   }
@@ -151,26 +178,47 @@ class _CourseResourceState extends State<CourseResource> {
   Widget build(BuildContext context) {
     final MyUser? user = Provider.of<MyUser?>(context);
     return Scaffold(
-      appBar: AppBar(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (_pageIndex == 0)
-            ? () => _uploadDocument(user)
-            : () => _uploadLink(user),
-        child: Icon(Icons.upload),
+      appBar: AppBar(
+        title: Text(
+          '${widget.courseCode} Resources',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
+              fontWeight: FontWeight.bold,
+              fontSize: 25),
+        ),
+      ),
+      floatingActionButton: Container(
+        margin: EdgeInsets.only(left: 30),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            (_pageIndex == 0)
+                ? FloatingActionButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              CourseBotChatPageThemeLoader(courseCode: widget.courseCode),
+                        ),
+                      );
+                    },
+                    child: Icon(Icons.android),
+                  )
+                : SizedBox(),
+            FloatingActionButton(
+              onPressed: (_pageIndex == 0)
+                  ? () => _uploadDocument(user)
+                  : () => _uploadLink(user),
+              child: Icon(Icons.upload),
+            )
+          ],
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Center(
-              child: Text(
-                '${widget.courseCode} Resources',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30),
-              ),
-            ),
             const SizedBox(
               height: 20,
             ),

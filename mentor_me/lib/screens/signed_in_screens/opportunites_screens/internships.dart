@@ -51,20 +51,19 @@ class _InternshipsState extends State<Internships> {
   Widget build(BuildContext context) {
     final user = Provider.of<MyUser?>(context);
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(
+          'Internship posts',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
+              fontWeight: FontWeight.bold,
+              fontSize: 25),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Center(
-              child: Text(
-                'Internship posts',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30),
-              ),
-            ),
             const SizedBox(
               height: 20,
             ),

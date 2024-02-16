@@ -63,6 +63,7 @@ class _ChatRoomState extends State<ChatRoom> {
       Message message = Message(
           message: _messageController.text,
           senderUID: user?.uid ?? '',
+          status: 'delivered',
           recieverUID: widget.reciever.uid ?? '');
       user?.connections[widget.reciever.uid ?? ''] = message.time;
       widget.reciever.connections[user?.uid ?? ''] = message.time;

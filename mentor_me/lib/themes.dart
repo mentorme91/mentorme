@@ -7,6 +7,7 @@ final ThemeData lightTheme = ThemeData(
   appBarTheme: AppBarTheme(
     backgroundColor: Colors.white,
   ),
+  fontFamily: 'OpenSans',
   shadowColor: Colors.grey.withOpacity(0.2),
   primaryColor: const Color.fromARGB(255, 56, 107, 246),
   colorScheme: const ColorScheme.light(
@@ -21,10 +22,11 @@ final ThemeData lightTheme = ThemeData(
 
 // dark theme
 final ThemeData darkTheme = ThemeData(
+  fontFamily: 'OpenSans',
   appBarTheme: AppBarTheme(
     backgroundColor: Color(0xFF121212),
   ),
-  shadowColor: Colors.grey.withOpacity(0),
+  shadowColor: Colors.grey.withOpacity(0.25),
   primaryColor: Color.fromARGB(251, 57, 126, 255),
   colorScheme: const ColorScheme.dark(
     primary: Color.fromARGB(255, 56, 107, 246),

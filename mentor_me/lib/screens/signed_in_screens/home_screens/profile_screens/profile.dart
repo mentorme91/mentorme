@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:mentor_me/themes.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../models/user.dart';
@@ -43,14 +41,60 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  void _pushAboutEditor(MyUser? user) async {
+    await showDialog(
+        context: context,
+        builder: ((context) {
+          String about = user?.about ?? '';
+          DatabaseService _database = DatabaseService(uid: user?.uid);
+          return AlertDialog(
+            title: Text(
+              'Add About',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+            content: TextFormField(
+              initialValue: about,
+              onChanged: (value) => about = value,
+              maxLength: 150,
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(
+                    'Cancel',
+                  )),
+              TextButton(
+                  onPressed: () {
+                    user?.about = about;
+                    _database.UpdateStudentCollection(user);
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'Save',
+                  )),
+            ],
+          );
+        }));
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<MyUser?>(context);
     final AuthService _auth = AuthService();
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(10),
-        child: AppBar(),
+      appBar: AppBar(
+        title: Text(
+          'Profile',
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onPrimary,
+            fontWeight: FontWeight.bold,
+            fontSize: 27,
+          ),
+        ),
       ),
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Container(
@@ -61,37 +105,7 @@ class _ProfileState extends State<Profile> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Row(
-                children: [
-                  IconButton(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      onPressed: () => {
-                            setState(
-                              () {
-                                Navigator.pop(context);
-                              },
-                            )
-                          },
-                      icon: const BackButtonIcon()),
-                  Expanded(
-                    child: FractionallySizedBox(
-                      child: Center(
-                        child: Text(
-                          'Profile',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.onPrimary,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 50,
-                  ),
-                ],
-              ),
+              SizedBox(height: 20,),
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.only(
@@ -189,73 +203,69 @@ class _ProfileState extends State<Profile> {
                     height: 5,
                   ),
                   Text('${user?.email}'),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  const Text(
-                    "About",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  GestureDetector(
-                    child: Container(
-                      width: 250,
-                      height: 200,
-                      padding: const EdgeInsets.all(6.0),
-                      margin: const EdgeInsets.all(6.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                          20,
-                        ),
-                        border: Border.all(
-                          color: Theme.of(context).primaryColor,
-                          width: 0.2,
-                        ),
-                        color: Colors.white,
-                      ),
-                      child: TextField(
-                        maxLines: null,
-                        keyboardType: TextInputType.multiline,
-                        controller: _Controller,
-                        decoration: const InputDecoration(
-                          labelText: "Enter a Text describing you",
-                          labelStyle: TextStyle(
-                            fontSize: 13,
-                            fontStyle: FontStyle.italic,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  TextButton(
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        alignment: Alignment.center,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(2.0)),
-                        ),
-                        elevation: 2.0,
-                      ),
-                      onPressed: () {
-                        user?.about = _Controller.text;
-                      },
-                      child: const Text(
-                        'Update',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )),
                 ]),
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.only(
+                  top: 10,
+                  bottom: 50,
+                ),
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 30,
+                ),
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Theme.of(context).shadowColor,
+                      spreadRadius: 5,
+                      blurRadius: 5,
+                      offset: const Offset(
+                          0, 3), // changes the position of the shadow
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(
+                    20,
+                  ),
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.background,
+                    width: 0.2,
+                  ),
+                  color: Theme.of(context).colorScheme.background,
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      'About',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(
+                        left: 20,
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(user?.about ?? ''),
+                          ),
+                          IconButton(
+                            onPressed: () => _pushAboutEditor(user),
+                            icon: Icon(
+                              Icons.edit,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(
                 height: 40,
@@ -536,7 +546,7 @@ class _ProfileState extends State<Profile> {
                     ListTile(
                       onTap: () {
                         Navigator.pop(context);
-                        _auth.SignOut();
+                        _auth.signOut();
                       },
                       leading: const Icon(
                         Icons.logout,
@@ -557,6 +567,7 @@ class _ProfileState extends State<Profile> {
                   ],
                 ),
               ),
+              SizedBox(height: 30,),
             ],
           ),
         ),

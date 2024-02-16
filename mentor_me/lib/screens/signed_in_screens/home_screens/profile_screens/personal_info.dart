@@ -47,7 +47,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
   bool loading = false;
   bool obscure = false;
   late Map<String, dynamic> schoolsData;
-  MyUser dummy = newUser();
+  MyUser dummy = MyUser();
 
   Future<void> fetchData() async {
     try {
@@ -79,7 +79,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<MyUser?>(context);
-    if (dummy.toString() == newUser().toString()) {
+    if (dummy.toString() == MyUser().toString()) {
       dummy.updateUserFromUser(user ?? MyUser());
     }
     return Scaffold(

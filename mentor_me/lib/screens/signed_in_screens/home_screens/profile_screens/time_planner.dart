@@ -1,13 +1,22 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:mentor_me/services/database_service.dart';
 import 'package:provider/provider.dart';
+import 'package:multiselect/multiselect.dart';
 import 'package:time_planner/time_planner.dart';
 
 import '../../../../models/planner_task.dart';
 import '../../../../models/user.dart';
+import '../../../../services/database_service.dart';
 import '../../../../theme_provider.dart';
+
+Color _generateRandomColor() {
+  Random random = Random();
+  int r = random.nextInt(256);
+  int g = random.nextInt(256);
+  int b = random.nextInt(256);
+  return Color.fromARGB(255, r, g, b);
+}
 
 class CoursePlannerThemeLoader extends StatefulWidget {
   final MyUser user;
@@ -48,40 +57,118 @@ class _CoursePlannerState extends State<CoursePlanner> {
     'Saturday': 5,
     'Sunday': 6,
   };
-  Color _generateRandomColor() {
-    Random random = Random();
-    int r = random.nextInt(256);
-    int g = random.nextInt(256);
-    int b = random.nextInt(256);
-    return Color.fromARGB(255, r, g, b);
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
   }
 
+  late double screenHeight;
+
   void _addSchedule() async {
-    PlannerTask task = await _getSchedule();
-    tasks.add(task);
+    List<PlannerTask> newTasks = await _getSchedule();
+    tasks.addAll(newTasks);
     await _setTasksInDataBase(widget.user);
     setState(() {});
   }
 
-  void _deleteTask(PlannerTask task) async {
-    tasks.remove(task);
+  Future _deleteTask(PlannerTask task) async {
+    List toBeDeleted = [];
+    for (var thisTask in tasks) {
+      if (thisTask.course == task.course) {
+        toBeDeleted.add(thisTask);
+      }
+    }
+    for (var t in toBeDeleted) {
+      tasks.remove(t);
+    }
     await _setTasksInDataBase(widget.user);
+    setState(() {
+      print('task deleted!');
+    });
+  }
+
+  void _showTask(PlannerTask task) async {
+    List<PlannerTask> toBeShown = [];
+    for (var thisTask in tasks) {
+      if (thisTask.course == task.course) {
+        toBeShown.add(thisTask);
+      }
+    }
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+          return AlertDialog(
+            title: Text('${toBeShown[0].course} Schedule'),
+            content: SizedBox(
+              height: 300,
+              child: Column(
+                children: toBeShown
+                    .map((task) => Column(children: [
+                          Center(
+                              child: Text(
+                            daysToInt.keys.toList()[task.day],
+                          )),
+                          Center(
+                            child: Text(
+                                '${task.getStartTimeFormatted()} - ${task.getEndTimeFormatted()}'),
+                          )
+                        ]))
+                    .toList(),
+              ),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text('Close')),
+              TextButton(
+                onPressed: () async {
+                  await _deleteTask(toBeShown[0]);
+                  await _setTasksInDataBase(widget.user);
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'Delete',
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+              TextButton(
+                  onPressed: () async {
+                    await _deleteTask(toBeShown[0]);
+                    List<PlannerTask> newTask =
+                        await _getSchedule(old: toBeShown);
+                    tasks.addAll(newTask);
+                    await _setTasksInDataBase(widget.user);
+                    Navigator.pop(context);
+                  },
+                  child: Text('Edit')),
+            ],
+            actionsAlignment: MainAxisAlignment.center,
+            alignment: Alignment.centerRight,
+          );
+        });
+      },
+    );
+
     setState(() {});
   }
 
   Future _setTasksInDataBase(MyUser? user) async {
     Map<String, List<Map<String, dynamic>>> map = {
-      'tasks': tasks.map((task) => task.ToMap()).toList()
+      'tasks': tasks.map((task) => task.toMap()).toList()
     };
     await DatabaseService(uid: user?.uid).setTasks(map);
   }
 
-  Future<PlannerTask> _getSchedule({PlannerTask? old}) async {
-    PlannerTask task;
+  Future<List<PlannerTask>> _getSchedule({List<PlannerTask>? old}) async {
+    List<PlannerTask> oldTask;
+    List<PlannerTask> task = [];
     if (old != null) {
-      task = old;
+      oldTask = old;
     } else {
-      task = PlannerTask();
+      oldTask = [];
     }
     await showDialog(
       context: context,
@@ -89,7 +176,8 @@ class _CoursePlannerState extends State<CoursePlanner> {
         return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
           return CustomDialogForTaskInput(
-            task: task,
+            tasks: task,
+            oldTasks: oldTask,
           );
         });
       },
@@ -103,7 +191,14 @@ class _CoursePlannerState extends State<CoursePlanner> {
     final MyUser? user = Provider.of<MyUser?>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Schedule'),
+        title: Text(
+          'My Schedule',
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onPrimary,
+            fontWeight: FontWeight.bold,
+            fontSize: 27,
+          ),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _addSchedule(),
@@ -159,8 +254,7 @@ class _CoursePlannerState extends State<CoursePlanner> {
               ),
             ],
             tasks: tasks
-                .map((task) => task.toTimePlannerTask(
-                    color: _generateRandomColor(), onTap: _deleteTask))
+                .map((task) => task.toTimePlannerTask(onTap: _showTask))
                 .toList(),
             style: TimePlannerStyle(
               // default value for height is 80
@@ -180,10 +274,12 @@ class _CoursePlannerState extends State<CoursePlanner> {
 }
 
 class CustomDialogForTaskInput extends StatefulWidget {
-  final PlannerTask task;
+  final List<PlannerTask> tasks;
+  final List<PlannerTask> oldTasks;
   const CustomDialogForTaskInput({
     super.key,
-    required this.task,
+    required this.tasks,
+    this.oldTasks = const [],
   });
 
   @override
@@ -196,8 +292,36 @@ class _CustomDialogForTaskInputState extends State<CustomDialogForTaskInput> {
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: widget.task.course);
+
+    if (widget.oldTasks.isNotEmpty) {
+      selectedDays = widget.oldTasks.map((task) => allDays[task.day]).toList();
+      startTime = widget.oldTasks[0].getStartTime();
+      endTime = widget.oldTasks[0].getEndTime();
+      courseName = widget.oldTasks[0].course;
+    } else {
+      selectedDays = [];
+      startTime = TimeOfDay.now();
+      endTime = TimeOfDay.now();
+      courseName = '';
+    }
+    print(selectedDays);
+
+    _controller = TextEditingController(text: courseName);
   }
+
+  late TimeOfDay startTime;
+  late TimeOfDay endTime;
+  late List<String> selectedDays;
+  late String courseName;
+  List<String> allDays = const [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -206,43 +330,86 @@ class _CustomDialogForTaskInputState extends State<CustomDialogForTaskInput> {
       title: Text('Dropdown Form'),
       content: Form(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            DropdownField(
-              label: 'Day',
-              items: const [
-                'Monday',
-                'Tuesday',
-                'Wednesday',
-                'Thursday',
-                'Friday',
-                'Saturday',
-                'Sunday'
-              ],
-              task: widget.task,
-            ),
-            DropdownField(
-                label: 'Hour',
-                items: List.generate(24, (index) => index.toString()),
-                task: widget.task),
-            DropdownField(
-                label: 'Minute',
-                items: List.generate(60, (index) => index.toString()),
-                task: widget.task),
-            DropdownField(
-                label: 'Hour Duration',
-                items: List.generate(24, (index) => index.toString()),
-                task: widget.task),
-            DropdownField(
-                label: 'Minute Duration',
-                items: List.generate(60, (index) => index.toString()),
-                task: widget.task),
             TextField(
               controller: _controller,
               decoration: InputDecoration(labelText: 'Course Name'),
               onChanged: (value) {
                 setState(() {
-                  widget.task.course = value;
+                  courseName = value;
+                });
+              },
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text('Days'),
+            DropDownMultiSelect(
+                options: allDays,
+                selectedValues: selectedDays,
+                onChanged: (selectedValues) => selectedDays = selectedValues),
+            ListTile(
+              title: Text('Start Time'),
+              subtitle: TextField(
+                enabled: false,
+                decoration: InputDecoration(
+                    hintText: startTime.format(context),
+                    hintStyle: TextStyle()),
+              ),
+              // subtitle: Text(newEvent.start?.format(context) ??
+              //     TimeOfDay.now().format(context)),
+              onTap: () async {
+                TimeOfDay? selectedTime = await showTimePicker(
+                  context: context,
+                  initialTime: startTime,
+                  builder: (BuildContext context, Widget? child) {
+                    return MediaQuery(
+                      data: MediaQuery.of(context)
+                          .copyWith(alwaysUse24HourFormat: false),
+                      child: child!,
+                    );
+                  },
+                );
+                if (selectedTime != null) {
+                  setState(() {
+                    startTime = selectedTime;
+                  });
+                }
+                setState(() {
+                  print('Refreshed');
+                });
+              },
+            ),
+            ListTile(
+              title: Text('End Time'),
+              subtitle: TextField(
+                enabled: false,
+                decoration: InputDecoration(
+                    hintText: endTime.format(context), hintStyle: TextStyle()),
+              ),
+              // subtitle: Text(newEvent.end?.format(context) ??
+              //     TimeOfDay.now().format(context)),
+              onTap: () async {
+                TimeOfDay? selectedTime = await showTimePicker(
+                  context: context,
+                  initialTime: endTime,
+                  builder: (BuildContext context, Widget? child) {
+                    return MediaQuery(
+                      data: MediaQuery.of(context)
+                          .copyWith(alwaysUse24HourFormat: false),
+                      child: child!,
+                    );
+                  },
+                );
+                if (selectedTime != null) {
+                  setState(() {
+                    endTime = selectedTime;
+                  });
+                }
+                setState(() {
+                  print('Refreshed');
                 });
               },
             ),
@@ -260,78 +427,21 @@ class _CustomDialogForTaskInputState extends State<CustomDialogForTaskInput> {
           onPressed: () {
             // Handle form submission
             // You can access the selected values from the DropdownFields here
+            Color color = _generateRandomColor();
+            for (var day in selectedDays) {
+              PlannerTask task = PlannerTask();
+              task.course = courseName;
+              task.day = allDays.indexOf(day);
+              task.color = color;
+              task.updateFromStartAndEndTime(startTime, endTime);
+              widget.tasks.add(task);
+            }
+
             Navigator.of(context).pop();
           },
           child: Text('Submit'),
         ),
       ],
     ));
-  }
-}
-
-class DropdownField extends StatefulWidget {
-  final String label;
-  final List<String> items;
-  final PlannerTask task;
-
-  DropdownField({required this.label, required this.items, required this.task});
-
-  @override
-  State<DropdownField> createState() => _DropdownFieldState();
-}
-
-class _DropdownFieldState extends State<DropdownField> {
-  var dayToInt = {
-    'Monday': 0,
-    'Tuesday': 1,
-    'Wednesday': 2,
-    'Thursday': 3,
-    'Friday': 4,
-    'Saturday': 5,
-    'Sunday': 6,
-  };
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(widget.label),
-          DropdownButtonFormField<String>(
-            value: widget.items[0],
-            onChanged: (value) {
-              setState(() {
-                switch (widget.label) {
-                  case 'Day':
-                    widget.task.day = dayToInt[value] ?? 0;
-                    break;
-                  case 'Hour':
-                    widget.task.hour = int.parse(value ?? '0');
-                    break;
-                  case 'Minute':
-                    widget.task.minutes = int.parse(value ?? '0');
-                    break;
-                  case 'Hour Duration':
-                    widget.task.hoursDuration = int.parse(value ?? '0');
-                    break;
-                  case 'Minute Duration':
-                    widget.task.minutesDuration = int.parse(value ?? '0');
-                    break;
-                  default:
-                    print('Label error');
-                }
-              });
-            },
-            items: widget.items.map((item) {
-              return DropdownMenuItem<String>(
-                value: item,
-                child: Text(item),
-              );
-            }).toList(),
-          ),
-        ],
-      ),
-    );
   }
 }

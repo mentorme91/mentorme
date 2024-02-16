@@ -22,6 +22,9 @@ class DatabaseService extends ChangeNotifier {
   final CollectionReference studentsCollection =
       FirebaseFirestore.instance.collection('all_students');
 
+  final CollectionReference botMessageCollection =
+      FirebaseFirestore.instance.collection('all_bot_messages');
+
 
   // get the collection of all posts in the database
   final CollectionReference postsCollection =
@@ -42,7 +45,7 @@ class DatabaseService extends ChangeNotifier {
   // update all student collections and student collections in respective schools
   Future UpdateStudentCollection(MyUser? user) async {
     // get dictionary representation of user
-    Map<String, dynamic> dic = user?.todict() ?? {};
+    Map<String, dynamic> dic = user?.toMap() ?? {};
     Map<String, Request> requests = dic['requests'];
     Map newRequests =
         requests.map((key, value) => MapEntry(key, value.toMap()));
