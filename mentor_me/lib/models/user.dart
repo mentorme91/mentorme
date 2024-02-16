@@ -57,6 +57,7 @@ class MyUser {
       'requests': requests,
       'cancels': cancels,
       'rejects': rejects,
+      'About': about,
     };
     return user_dict;
   }
@@ -79,6 +80,7 @@ class MyUser {
     status = user.status;
     year = user.year;
     photoURL = user.photoURL;
+    about = user.about;
   }
 
   // update user object from a map

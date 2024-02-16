@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'models/user.dart';
 import 'theme_provider.dart';
@@ -31,7 +32,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamProvider<MyUser?>.value(
-      value: AuthService().user, // provides a user stream which tracks updates in our user credentials
+      value: AuthService()
+          .user, // provides a user stream which tracks updates in our user credentials
       initialData: null,
       child: ChangeNotifierProvider(
         create: (context) =>
@@ -39,7 +41,17 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           theme: lightTheme,
           darkTheme: darkTheme,
-          home: const Wrapper(), // it decides whether to show the authentication screen or user dashboard
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('en'), // English
+            Locale('fr'), // french
+          ],
+          home:
+              const Wrapper(), // it decides whether to show the authentication screen or user dashboard
         ),
       ),
     );
