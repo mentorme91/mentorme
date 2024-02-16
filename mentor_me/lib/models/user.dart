@@ -58,6 +58,7 @@ class MyUser {
       'requests': requests,
       'cancels': cancels,
       'rejects': rejects,
+      'About': about,
     };
     return user_dict;
   }

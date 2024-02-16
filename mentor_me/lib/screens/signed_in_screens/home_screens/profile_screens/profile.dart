@@ -11,6 +11,7 @@ import 'detailed_image.dart';
 import 'notifications.dart';
 import 'personal_info.dart';
 import 'time_planner.dart';
+import 'Language.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
@@ -442,6 +443,64 @@ class _ProfileState extends State<Profile> {
                       child: Divider(
                         color: Colors.white, // Set the color to white
                         height: 1, // Set the height of the divider
+                      ),
+                    ),
+                    ListTile(
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return Wrap(
+                              children: [
+                                RadioListTile(
+                                  title: const Text('English'),
+                                  value: "English",
+                                  groupValue: Lang,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      Lang = value.toString();
+                                    });
+                                  },
+                                ),
+                                const Divider(
+                                  color: Colors.black,
+                                  height: 1,
+                                ),
+                                RadioListTile(
+                                    title: const Text('French'),
+                                    value: "French",
+                                    groupValue: Lang,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        Lang = value.toString();
+                                      });
+                                    })
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      leading: const Icon(
+                        Icons.language,
+                        color: Colors.white,
+                      ),
+                      title: const Text(
+                        "Language",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 17,
+                        ),
+                      ),
+                      trailing: const Icon(
+                        Icons.arrow_right,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Divider(
+                        color: Colors.white,
+                        height: 1,
                       ),
                     ),
                     Container(
