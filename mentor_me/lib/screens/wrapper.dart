@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/user.dart';
+import '../notifications_provider.dart';
 import 'authentication/authenticate.dart';
 import 'signed_in_screens/Home.dart';
 import '../theme_provider.dart';
@@ -22,7 +23,13 @@ class _WrapperState extends State<Wrapper> {
     /// get user information to determine whether user is signed in or not (not null or null)
     final MyUser? user = Provider.of<MyUser?>(context);
     return Theme(
-        data: Provider.of<MyThemeProvider>(context).theme,
-        child: (user == null) ? const Auhenticate() : const Home());
+      data: Provider.of<MyThemeProvider>(context).theme,
+      child: (user == null)
+          ? const Auhenticate()
+          : ChangeNotifierProvider(
+              create: (_) => NotificationProvider(user: user),
+              child: Home(),
+            ),
+    );
   }
 }

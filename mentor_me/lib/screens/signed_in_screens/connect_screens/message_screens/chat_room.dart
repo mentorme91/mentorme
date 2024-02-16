@@ -86,6 +86,7 @@ class _ChatRoomState extends State<ChatRoom> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Text('Loading...');
           }
+          
           WidgetsBinding.instance.addPostFrameCallback((_) {
             _scrollToBottom();
           });

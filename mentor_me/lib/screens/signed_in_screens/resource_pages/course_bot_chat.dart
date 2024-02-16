@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tex/flutter_tex.dart';
 import 'package:provider/provider.dart';
 
 import '../../../models/bot_message.dart';
@@ -55,7 +56,7 @@ class _CourseBotChatPageState extends State<CourseBotChatPage> {
     _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
       duration: Duration(milliseconds: 2),
-      curve: Curves.easeOut,
+      curve: Curves.easeIn,
     );
   }
 
@@ -70,7 +71,8 @@ class _CourseBotChatPageState extends State<CourseBotChatPage> {
       setState(() {
         thinking = true;
       });
-      String url = 'https://803d-2601-152-b01-1550-c500-e9f3-3c61-3b44.ngrok-free.app/api?Query=${message.message}';
+      String url =
+          'https://07f8-2601-152-b01-1550-f801-8bd1-8ea4-81ed.ngrok-free.app/api?Query=${message.message}';
       var decodedData;
       try {
         String data = await getData(url);
@@ -78,7 +80,7 @@ class _CourseBotChatPageState extends State<CourseBotChatPage> {
       } catch (e) {
         decodedData = {'response': 'Oops! An error occurred :('};
       }
-      
+
       setState(() {
         thinking = false;
       });
@@ -159,16 +161,26 @@ class _CourseBotChatPageState extends State<CourseBotChatPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    alignment: Alignment.topLeft,
-                    // color: Colors.red,
-                  //   child: TeXView(child: TeXViewDocument(data['message']), style: TeXViewStyle(width: data['message'].length > (screenWidth / 10)
-                  // ? ((2 * screenWidth) / 3).toInt()
-                  // : null,),),
-                    child: Text(
-                      data['message'],
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                      textAlign: TextAlign.start,
+                  SingleChildScrollView(
+                    child: Container(
+                      width: data['message'].length > (screenWidth / 12)
+                          ? ((2 * screenWidth) / 3)
+                          : (data['message'].length / 6) * 47,
+                      alignment: Alignment.topLeft,
+                      // color: Colors.red,
+                      child: TeXView(
+                        child: TeXViewDocument(
+                          data['message'],
+                          style: TeXViewStyle(contentColor: Theme.of(context).colorScheme.background,)
+                        ),
+                        renderingEngine: TeXViewRenderingEngine.katex(),
+                      ),
+                      // child: Text(
+
+                      //   data['message'],
+                      //   style: TextStyle(color: Colors.white, fontSize: 12),
+                      //   textAlign: TextAlign.start,
+                      // ),
                     ),
                   ),
                   Container(
@@ -191,8 +203,10 @@ class _CourseBotChatPageState extends State<CourseBotChatPage> {
             ),
             (!isBot)
                 ? CircleAvatar(
-                    backgroundImage: NetworkImage(user?.photoURL ??
-                        'https://drive.google.com/uc?export=view&id=1nEoPU2dKhwGuVA9gSXrUcvoYYwFsefzJ'),
+                    backgroundImage: NetworkImage(
+                      user?.photoURL ??
+                          'https://drive.google.com/uc?export=view&id=1nEoPU2dKhwGuVA9gSXrUcvoYYwFsefzJ',
+                    ),
                     radius: 20.0,
                   )
                 : Expanded(

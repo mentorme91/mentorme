@@ -1,14 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mentor_me/models/notification.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../models/message.dart';
 import '../../../../models/user.dart';
 import '../../../../services/chat_service.dart';
 import '../../../../services/database_service.dart';
-import '../../../../services/notification_service.dart';
 import '../../home_screens/profile_screens/detailed_image.dart';
 import '../../../../theme_provider.dart';
 import 'chat_room.dart';
@@ -95,9 +93,7 @@ class _ChatsState extends State<Chats> {
         '${connection.first_name} ${connection.last_name}',
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
-      subtitle: Text((lastMessage.message.length < 25)
-          ? lastMessage.message
-          : '${lastMessage.message.substring(0, 25)}...'),
+      subtitle: Text(lastMessage.message, maxLines: 1, overflow: TextOverflow.ellipsis,),
       trailing: Text(getTime(lastMessage.time.toDate())),
     );
   }
@@ -131,7 +127,7 @@ class _ChatsState extends State<Chats> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Text('Loading...');
             }
-            if (snapshot.data!.docs.isNotEmpty) {
+            if (snapshot.data!.docChanges.length != 0) {
               var message =
                   snapshot.data?.docs.first.data() as Map<String, dynamic>;
               var lastMessage = Message(
@@ -143,10 +139,6 @@ class _ChatsState extends State<Chats> {
                 recieverUID: message['recieverUID'],
               );
               lastMessage.time = message['time'];
-              MyNotification notification = MyNotification(
-                  title: 'Message from ${connection.first_name}',
-                  body: lastMessage.message);
-              NotificationService().showNotification(notification);
               times.add(lastMessage.time);
               return _connectChatTile(connection, lastMessage, user, theme);
             }
