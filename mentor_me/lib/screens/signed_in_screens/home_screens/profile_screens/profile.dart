@@ -105,7 +105,9 @@ class _ProfileState extends State<Profile> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.only(
@@ -446,8 +448,8 @@ class _ProfileState extends State<Profile> {
                       ),
                     ),
                     ListTile(
-                      onTap: () {
-                        showModalBottomSheet(
+                      onTap: () async {
+                        await showModalBottomSheet(
                           context: context,
                           builder: (context) {
                             return Wrap(
@@ -460,6 +462,7 @@ class _ProfileState extends State<Profile> {
                                     setState(() {
                                       Lang = value.toString();
                                     });
+                                    Navigator.pop(context);
                                   },
                                 ),
                                 const Divider(
@@ -567,7 +570,9 @@ class _ProfileState extends State<Profile> {
                   ],
                 ),
               ),
-              SizedBox(height: 30,),
+              SizedBox(
+                height: 30,
+              ),
             ],
           ),
         ),
