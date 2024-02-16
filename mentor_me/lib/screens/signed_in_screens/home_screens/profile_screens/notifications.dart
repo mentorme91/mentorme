@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tex/flutter_tex.dart';
 import 'package:mentor_me/theme_provider.dart';
 import 'package:provider/provider.dart';
 // import 'package:mentor_me/services/services.dart';
@@ -42,13 +43,12 @@ class _NotificationsState extends State<Notifications> {
           ),
         ),
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
       body: Container(
-        height: double.infinity,
-        color: Theme.of(context).colorScheme.background,
         child: SingleChildScrollView(
           child: Column(
-            children: [],
+            children: [
+              TeXView(child: TeXViewDocument(r"""When \[ a \ne 0 \], there are two solutions to \[x^2 + bx + c = 0 \]"""))
+            ],
           ),
         ),
       ),

@@ -105,7 +105,7 @@ class _OtherOpportunitiesState extends State<OtherOpportunities> {
                         ),
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
-                          hintText: 'Search for a new grad role',
+                          hintText: 'Search for a job',
                           hintStyle: TextStyle(
                             color: Colors.grey,
                             fontSize: 13,
