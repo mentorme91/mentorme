@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'models/user.dart';
 import 'theme_provider.dart';
@@ -41,15 +42,8 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           theme: lightTheme,
           darkTheme: darkTheme,
-          localizationsDelegates: const [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [
-            Locale('en'), // English
-            Locale('fr'), // french
-          ],
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
           home:
               const Wrapper(), // it decides whether to show the authentication screen or user dashboard
         ),
