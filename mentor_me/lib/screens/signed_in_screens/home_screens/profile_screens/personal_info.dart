@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../models/user.dart';
 import '../../../../services/database_service.dart';
@@ -73,7 +74,6 @@ class _PersonalInfoState extends State<PersonalInfo> {
         context: context,
         builder: (context) => const ChangePasswordBottomSheet());
 // you should check here that email is not empty
-    
   }
 
   @override
@@ -449,7 +449,6 @@ class _PersonalInfoState extends State<PersonalInfo> {
                           const Text('Password'),
                           TextButton(
                             onPressed: () async {
-
                               await _updateUserPassword();
                             },
                             child: const Text('Change Password'),

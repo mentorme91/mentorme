@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../models/request.dart';
 import '../../../models/user.dart';
@@ -282,7 +283,9 @@ class _ConnectProfileState extends State<ConnectProfile> {
                 ),
               ),
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             Text(
               '${widget.match.first_name} ${widget.match.last_name}',
               style: TextStyle(

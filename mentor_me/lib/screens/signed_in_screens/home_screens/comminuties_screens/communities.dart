@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../theme_provider.dart';
 
@@ -9,9 +10,7 @@ class CommunitiesPageThemeLoader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Provider.of<MyThemeProvider>(context).theme;
-    return Theme(
-        data: theme,
-        child: CommunitiesPage());
+    return Theme(data: theme, child: CommunitiesPage());
   }
 }
 

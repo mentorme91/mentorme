@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../models/message.dart';
 import '../../../../models/user.dart';
@@ -93,7 +94,11 @@ class _ChatsState extends State<Chats> {
         '${connection.first_name} ${connection.last_name}',
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
-      subtitle: Text(lastMessage.message, maxLines: 1, overflow: TextOverflow.ellipsis,),
+      subtitle: Text(
+        lastMessage.message,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
       trailing: Text(getTime(lastMessage.time.toDate())),
     );
   }
@@ -178,7 +183,6 @@ class _ChatsState extends State<Chats> {
       body: SingleChildScrollView(
         child: Column(
             children: ([
-          
           SizedBox(
             height: 20,
           ),

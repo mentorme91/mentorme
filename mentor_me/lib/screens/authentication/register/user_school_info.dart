@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mentor_me/screens/authentication/register/extra_info.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../models/user.dart';
 import '../../../services/input_verification.dart';

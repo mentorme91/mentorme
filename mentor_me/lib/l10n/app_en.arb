@@ -1,5 +1,6 @@
 {
   "account": "Create Account",
+  "newAccount": "Create an Account",
   "status": "Status (Mentor/Mentee)",
   "statusValue": "Enter status",
   "mentor": "Mentor",
@@ -8,6 +9,7 @@
   "monday": "Monday",
   "mentee": "Mentee",
   "visitor": "Visitor",
+  "both": "both",
   "home": "Home",
   "firstName": "First Name",
   "delivered": "delivered",
@@ -45,7 +47,7 @@
   "incorrectPassword": "Password does not match",
   "forgotPassword": "Forgot Password",
   "passwordLink": "Enter your account email, we will send you a link to change your password",
-  "havingAccount": "Already have anAccount",
+  "havingAccount": "Already have an Account?",
   "signIn": "Sign In",
   "saveChanges": "Save changes",
   "cancelChanges": "Cancel changes",
@@ -112,5 +114,5 @@
   "newGradRoles": "New Grad Roles",
   "jobs": "Other job opportunities",
   "gradPrograms": "Graduate Programs",
-  "about": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+  "about": "Lorem Ipsum is simply dummy text.", 
 }

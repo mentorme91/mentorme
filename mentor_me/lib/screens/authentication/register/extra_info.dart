@@ -93,12 +93,12 @@ class _ExtraInfoState extends State<ExtraInfo> {
                 ),
                 child: SingleChildScrollView(
                     child: Column(children: [
-                  const Center(
+                  Center(
                     child: Text(
-                      'Create Account',
+                      AppLocalizations.of(context)!.account,
                       textAlign: TextAlign.center,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 30),
                     ),
                   ),
                   const SizedBox(
@@ -112,9 +112,9 @@ class _ExtraInfoState extends State<ExtraInfo> {
                         const SizedBox(
                           height: 20,
                         ),
-                        const Text(
-                          'Status (Mentor/Mentee)',
-                          style: TextStyle(
+                        Text(
+                          AppLocalizations.of(context)!.status,
+                          style: const TextStyle(
                             fontSize: 15,
                           ),
                         ),
@@ -126,12 +126,16 @@ class _ExtraInfoState extends State<ExtraInfo> {
                                 Theme.of(context).colorScheme.tertiaryContainer,
                             color: Theme.of(context).colorScheme.onPrimary,
                           ),
-                          validator: (value) =>
-                              validateText(widget.user.status, 'Enter status'),
+                          validator: (value) => validateText(widget.user.status,
+                              AppLocalizations.of(context)!.statusValue),
                           decoration: inputDropDownDecoration(
                               Theme.of(context), radius, null),
-                          items: createDropDown(
-                              ['Mentor', 'Mentee', 'Visitor', 'Both']),
+                          items: createDropDown([
+                            AppLocalizations.of(context)!.mentor,
+                            AppLocalizations.of(context)!.mentee,
+                            AppLocalizations.of(context)!.visitor,
+                            "both"
+                          ]),
                           onChanged: (val) {
                             setState(() {
                               widget.user.status = val;
@@ -141,9 +145,9 @@ class _ExtraInfoState extends State<ExtraInfo> {
                         const SizedBox(
                           height: 20,
                         ),
-                        const Text(
-                          'Password',
-                          style: TextStyle(
+                        Text(
+                          AppLocalizations.of(context)!.password,
+                          style: const TextStyle(
                             fontSize: 15,
                           ),
                         ),
@@ -197,9 +201,9 @@ class _ExtraInfoState extends State<ExtraInfo> {
                         const SizedBox(
                           height: 20,
                         ),
-                        const Text(
-                          'Retype password',
-                          style: TextStyle(
+                        Text(
+                          AppLocalizations.of(context)!.passwordErrorMes,
+                          style: const TextStyle(
                             fontSize: 15,
                           ),
                         ),
@@ -231,7 +235,8 @@ class _ExtraInfoState extends State<ExtraInfo> {
                                     validator: (value) => (retypePassword ==
                                             widget.user.getPassword())
                                         ? null
-                                        : 'Password does not match',
+                                        : AppLocalizations.of(context)!
+                                            .incorrectPassword,
                                   ),
                                 ),
                               ),
@@ -270,7 +275,7 @@ class _ExtraInfoState extends State<ExtraInfo> {
                         ),
                         onPressed: _createAccount,
                         child: Text(
-                          'Create An Account',
+                          "Create an Account",
                           style: TextStyle(
                             fontSize: 17,
                             color: Colors.white,
@@ -285,15 +290,15 @@ class _ExtraInfoState extends State<ExtraInfo> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
-                        'Already have an Account?',
-                        style: TextStyle(fontSize: 15),
+                      Text(
+                        AppLocalizations.of(context)!.havingAccount,
+                        style: const TextStyle(fontSize: 15),
                       ),
                       TextButton(
                         onPressed: () => widget.toggleAuth(1),
-                        child: const Text(
-                          'Sign In',
-                          style: TextStyle(
+                        child: Text(
+                          AppLocalizations.of(context)!.signIn,
+                          style: const TextStyle(
                             fontSize: 15,
                             color: Color.fromARGB(255, 56, 107, 246),
                           ),

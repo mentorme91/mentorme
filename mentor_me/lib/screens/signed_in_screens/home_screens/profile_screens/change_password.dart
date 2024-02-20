@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../services/input_verification.dart';
 import '../../../../themes.dart';
@@ -38,8 +39,7 @@ class _ChangePasswordBottomSheetState extends State<ChangePasswordBottomSheet> {
       setState(() {
         if (attempts > 5) {
           error = 'Too many incorrect attempts, try again later!';
-        }
-        else {
+        } else {
           error = 'Incorrect password';
         }
       });
@@ -58,8 +58,13 @@ class _ChangePasswordBottomSheetState extends State<ChangePasswordBottomSheet> {
               key: _formkey,
               child: Column(
                 children: [
-                  Text(error, style: TextStyle(color: Colors.red),),
-                  SizedBox(height: 10,),
+                  Text(
+                    error,
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
                   const Text(
                     'Old Password',
                     style: TextStyle(
@@ -113,7 +118,9 @@ class _ChangePasswordBottomSheetState extends State<ChangePasswordBottomSheet> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   const Text(
                     'New Password',
                     style: TextStyle(
@@ -251,16 +258,15 @@ class _ChangePasswordBottomSheetState extends State<ChangePasswordBottomSheet> {
                       bool isReset = await resetPassword();
                       if (isReset) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                backgroundColor: Colors.white,
-                                  content: Text(
-                                    'Password updated!',
-                                  ),
-                                  behavior: SnackBarBehavior.floating,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(30.0))),
-                            );
+                          SnackBar(
+                              backgroundColor: Colors.white,
+                              content: Text(
+                                'Password updated!',
+                              ),
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0))),
+                        );
                         Navigator.pop(context);
                       }
                     }
