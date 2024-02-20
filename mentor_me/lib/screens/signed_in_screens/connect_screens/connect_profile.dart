@@ -105,7 +105,7 @@ class _ConnectProfileState extends State<ConnectProfile> {
     await DatabaseService(uid: '').UpdateStudentCollection(widget.match);
 
     setState(() {
-      show = 'canceled';
+      show = AppLocalizations.of(context)!.canceled;
     });
   }
 
@@ -143,9 +143,9 @@ class _ConnectProfileState extends State<ConnectProfile> {
           onPressed: () async {
             _pushChat(user);
           },
-          child: const Text(
-            'Message',
-            style: TextStyle(
+          child: Text(
+            AppLocalizations.of(context)!.message,
+            style: const TextStyle(
               fontSize: 17,
               color: Colors.white,
             ),
@@ -153,9 +153,9 @@ class _ConnectProfileState extends State<ConnectProfile> {
         ),
       );
     } else if (user?.cancels.contains(widget.match.uid) ?? false) {
-      children.add(const Text('You can reconnect only after 30 days'));
+      children.add(Text(AppLocalizations.of(context)!.conTime));
     } else if (user?.rejects.contains(widget.match.uid) ?? false) {
-      children.add(const Text('You can reconnect only after 30 days'));
+      children.add(Text(AppLocalizations.of(context)!.conTime));
     } else if (widget.status == Status.pending) {
       List ids = [user?.uid, widget.match.uid]..sort();
       if (user?.uid == user?.requests[ids.join('_')]?.senderUID) {
@@ -170,9 +170,9 @@ class _ConnectProfileState extends State<ConnectProfile> {
             onPressed: () async {
               _cancelConnectRequest(user);
             },
-            child: const Text(
-              'Cancel Request',
-              style: TextStyle(
+            child: Text(
+              AppLocalizations.of(context)!.cancelReq,
+              style: const TextStyle(
                 fontSize: 17,
                 color: Colors.white,
               ),
@@ -191,9 +191,9 @@ class _ConnectProfileState extends State<ConnectProfile> {
             onPressed: () async {
               _acceptConnectRequest(user);
             },
-            child: const Text(
-              'Accept',
-              style: TextStyle(
+            child: Text(
+              AppLocalizations.of(context)!.accept,
+              style: const TextStyle(
                 fontSize: 17,
                 color: Colors.white,
               ),
@@ -211,9 +211,9 @@ class _ConnectProfileState extends State<ConnectProfile> {
             onPressed: () async {
               _rejectConnectRequest(user);
             },
-            child: const Text(
-              'Reject',
-              style: TextStyle(
+            child: Text(
+              AppLocalizations.of(context)!.reject,
+              style: const TextStyle(
                 fontSize: 17,
                 color: Colors.white,
               ),
@@ -233,9 +233,9 @@ class _ConnectProfileState extends State<ConnectProfile> {
           onPressed: () async {
             _sendConnectRequest(user);
           },
-          child: const Text(
-            'Connect',
-            style: TextStyle(
+          child: Text(
+            AppLocalizations.of(context)!.connect,
+            style: const TextStyle(
               fontSize: 17,
               color: Colors.white,
             ),
@@ -243,7 +243,7 @@ class _ConnectProfileState extends State<ConnectProfile> {
         ),
       );
     } else {
-      children.add(Text('Request sent successfully!'));
+      children.add(Text(AppLocalizations.of(context)!.sentRegMes));
     }
 
     return children;
@@ -298,7 +298,7 @@ class _ConnectProfileState extends State<ConnectProfile> {
               height: 15,
             ),
             Text(
-              '${widget.match.department} Major',
+              '${widget.match.department} ${AppLocalizations.of(context)!.major}',
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onPrimary,
                 fontWeight: FontWeight.bold,
@@ -309,7 +309,7 @@ class _ConnectProfileState extends State<ConnectProfile> {
               height: 30,
             ),
             Text(
-              'About',
+              AppLocalizations.of(context)!.about,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onPrimary,
                 fontWeight: FontWeight.bold,

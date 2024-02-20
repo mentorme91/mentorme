@@ -110,10 +110,11 @@ class _OnboardingState extends State<Onboarding> {
               ),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 60),
-                child: const Text(
-                  'Enhance Learning and Knowledge Sharing',
+                child: Text(
+                  AppLocalizations.of(context)!.moto,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 20),
                 ),
               ),
               const SizedBox(
@@ -121,10 +122,10 @@ class _OnboardingState extends State<Onboarding> {
               ),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 30),
-                child: const Text(
-                  'MentorMe aims at lorem ipsum dolor sit amet consectetur. Diam integer felis etiam neque id viv.',
+                child: Text(
+                  AppLocalizations.of(context)!.description,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 15,
                   ),
                 ),
@@ -141,8 +142,8 @@ class _OnboardingState extends State<Onboarding> {
                 ),
                 onPressed: () => widget.toggleAuth(2),
                 child: Text(
-                  'Create An Account',
-                  style: TextStyle(
+                  AppLocalizations.of(context)!.havingAccount,
+                  style: const TextStyle(
                     fontSize: 17,
                     color: Colors.white,
                   ),
@@ -166,7 +167,7 @@ class _OnboardingState extends State<Onboarding> {
                 ),
                 onPressed: () => widget.toggleAuth(1),
                 child: Text(
-                  'Log In',
+                  "Log in",
                   style: TextStyle(
                     fontSize: 17,
                     color: Color.fromARGB(255, 56, 107, 246),

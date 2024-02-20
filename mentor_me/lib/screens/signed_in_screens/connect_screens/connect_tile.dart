@@ -89,7 +89,7 @@ class _ConnectTileState extends State<ConnectTile> {
             padding: const EdgeInsets.only(left: 5, right: 5),
             alignment: Alignment.center,
             child: Text(
-              '${widget.user.department} Major',
+              '${widget.user.department} ${AppLocalizations.of(context)!.major}',
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: Theme.of(context).primaryColor, fontSize: 10),
@@ -97,13 +97,13 @@ class _ConnectTileState extends State<ConnectTile> {
           ),
           (_getStatus(user ?? MyUser()) == Status.none)
               ? Text(
-                  '${widget.percent}% Match',
+                  '${widget.percent}% ${AppLocalizations.of(context)!.match}',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       color: Theme.of(context).primaryColor, fontSize: 12),
                 )
               : (_getStatus(user ?? MyUser()) == Status.pending)
-                  ? Text(sender ? '' : 'Reply to request')
+                  ? Text(sender ? '' : AppLocalizations.of(context)!.reply)
                   : Text(''),
         ],
       ),

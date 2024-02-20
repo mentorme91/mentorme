@@ -134,7 +134,7 @@ class _ExtraInfoState extends State<ExtraInfo> {
                             AppLocalizations.of(context)!.mentor,
                             AppLocalizations.of(context)!.mentee,
                             AppLocalizations.of(context)!.visitor,
-                            "both"
+                            AppLocalizations.of(context)!.both,
                           ]),
                           onChanged: (val) {
                             setState(() {
@@ -275,8 +275,8 @@ class _ExtraInfoState extends State<ExtraInfo> {
                         ),
                         onPressed: _createAccount,
                         child: Text(
-                          "Create an Account",
-                          style: TextStyle(
+                          AppLocalizations.of(context)!.newAccount,
+                          style: const TextStyle(
                             fontSize: 17,
                             color: Colors.white,
                           ),

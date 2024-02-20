@@ -39,7 +39,7 @@ class _ConnectionsPageState extends State<ConnectionsPage> {
             return Text('Error occured!');
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text('Loading...');
+            return Text(AppLocalizations.of(context)!.load);
           }
           return Row(
             children: snapshot.data!.docs
@@ -104,7 +104,7 @@ class _ConnectionsPageState extends State<ConnectionsPage> {
           ),
           Center(
             child: Text(
-              'Connections',
+              AppLocalizations.of(context)!.connections,
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: Theme.of(context).colorScheme.onPrimary,
@@ -153,7 +153,7 @@ class _ConnectionsPageState extends State<ConnectionsPage> {
                       ),
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
-                        hintText: 'Search Connections',
+                        hintText: AppLocalizations.of(context)!.conHint,
                         hintStyle: TextStyle(
                           color: Colors.grey,
                           fontSize: 13,
@@ -188,7 +188,7 @@ class _ConnectionsPageState extends State<ConnectionsPage> {
             height: 15,
           ),
           ListTile(
-            title: Text('See connect requests'),
+            title: Text(AppLocalizations.of(context)!.seeConReq),
             trailing: Icon(Icons.arrow_right_alt),
             tileColor: Theme.of(context).colorScheme.surface,
             onTap: () => _loadConnectRequestsPage(user),
@@ -196,7 +196,7 @@ class _ConnectionsPageState extends State<ConnectionsPage> {
           Padding(
             padding: EdgeInsets.only(left: 20, top: 15),
             child: Text(
-              'Your Matches',
+              AppLocalizations.of(context)!.matchNot,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onPrimary,
                 fontSize: 18,
@@ -213,7 +213,7 @@ class _ConnectionsPageState extends State<ConnectionsPage> {
           Padding(
             padding: EdgeInsets.only(left: 20, top: 20),
             child: Text(
-              'Your Connections',
+              AppLocalizations.of(context)!.conNote,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onPrimary,
                 fontSize: 18,
@@ -228,7 +228,7 @@ class _ConnectionsPageState extends State<ConnectionsPage> {
                 future: _getConnections(user),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Text('Loading...');
+                    return Text(AppLocalizations.of(context)!.load);
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {

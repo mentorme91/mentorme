@@ -230,7 +230,7 @@ class _HomePageState extends State<HomePage> {
                   future: DatabaseService(uid: '').allPosts('admin_posts'),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Text('Loading...');
+                      return Text(AppLocalizations.of(context)!.load);
                     } else if (snapshot.hasError) {
                       return Text('An Error occurred');
                     } else {
