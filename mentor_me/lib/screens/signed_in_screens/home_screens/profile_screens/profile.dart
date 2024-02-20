@@ -105,7 +105,9 @@ class _ProfileState extends State<Profile> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.only(
@@ -446,8 +448,8 @@ class _ProfileState extends State<Profile> {
                       ),
                     ),
                     ListTile(
-                      onTap: () {
-                        showModalBottomSheet(
+                      onTap: () async {
+                        await showModalBottomSheet(
                           context: context,
                           builder: (context) {
                             return Wrap(
@@ -455,11 +457,12 @@ class _ProfileState extends State<Profile> {
                                 RadioListTile(
                                   title: const Text('English'),
                                   value: "English",
-                                  groupValue: Lang,
+                                  groupValue: lang,
                                   onChanged: (value) {
                                     setState(() {
-                                      Lang = value.toString();
+                                      lang = value.toString();
                                     });
+                                    Navigator.pop(context);
                                   },
                                 ),
                                 const Divider(
@@ -469,10 +472,11 @@ class _ProfileState extends State<Profile> {
                                 RadioListTile(
                                     title: const Text('French'),
                                     value: "French",
-                                    groupValue: Lang,
+                                    groupValue: lang,
                                     onChanged: (value) {
                                       setState(() {
-                                        Lang = value.toString();
+                                        lang = value.toString();
+                                        Navigator.pop(context);
                                       });
                                     })
                               ],
@@ -567,7 +571,9 @@ class _ProfileState extends State<Profile> {
                   ],
                 ),
               ),
-              SizedBox(height: 30,),
+              SizedBox(
+                height: 30,
+              ),
             ],
           ),
         ),

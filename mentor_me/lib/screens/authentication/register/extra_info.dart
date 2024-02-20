@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../models/user.dart';
 import '../../../services/auth_service.dart';
@@ -21,15 +22,16 @@ class ExtraInfoThemeLoader extends StatefulWidget {
       required this.user});
 
   @override
-  State<ExtraInfoThemeLoader> createState() =>
-      ExtraInfoThemeLoaderState();
+  State<ExtraInfoThemeLoader> createState() => ExtraInfoThemeLoaderState();
 }
 
 class ExtraInfoThemeLoaderState extends State<ExtraInfoThemeLoader> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Provider.of<MyThemeProvider>(context).theme;
-    return Theme(data: theme, child: ExtraInfo(toggleAuth: widget.toggleAuth, user: widget.user));
+    return Theme(
+        data: theme,
+        child: ExtraInfo(toggleAuth: widget.toggleAuth, user: widget.user));
   }
 }
 
@@ -111,7 +113,7 @@ class _ExtraInfoState extends State<ExtraInfo> {
                           height: 20,
                         ),
                         const Text(
-                          'Satus (Mentor/Mentee)',
+                          'Status (Mentor/Mentee)',
                           style: TextStyle(
                             fontSize: 15,
                           ),
