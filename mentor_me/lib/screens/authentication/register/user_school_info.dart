@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mentor_me/screens/authentication/register/extra_info.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../models/user.dart';
 import '../../../services/input_verification.dart';
@@ -105,11 +106,12 @@ class _UserSchoolInfoState extends State<UserSchoolInfo> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const Center(
+              Center(
                 child: Text(
-                  'Create Account',
+                  AppLocalizations.of(context)!.account,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 30),
                 ),
               ),
               const SizedBox(
@@ -120,9 +122,9 @@ class _UserSchoolInfoState extends State<UserSchoolInfo> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'School',
-                      style: TextStyle(
+                    Text(
+                      AppLocalizations.of(context)!.school,
+                      style: const TextStyle(
                         fontSize: 15,
                       ),
                     ),
@@ -134,8 +136,8 @@ class _UserSchoolInfoState extends State<UserSchoolInfo> {
                             Theme.of(context).colorScheme.tertiaryContainer,
                         color: Theme.of(context).colorScheme.onPrimary,
                       ),
-                      validator: (value) =>
-                          validateText(widget.user.school_id, 'Enter school'),
+                      validator: (value) => validateText(widget.user.school_id,
+                          AppLocalizations.of(context)!.schoolGuide),
                       decoration: inputDropDownDecoration(
                           Theme.of(context), radius, null),
                       items: createDropDown(schoolsData.keys.toList()),
@@ -148,9 +150,9 @@ class _UserSchoolInfoState extends State<UserSchoolInfo> {
                     const SizedBox(
                       height: 20,
                     ),
-                    const Text(
-                      'Faculty',
-                      style: TextStyle(
+                    Text(
+                      AppLocalizations.of(context)!.faculty,
+                      style: const TextStyle(
                         fontSize: 15,
                       ),
                     ),
@@ -162,8 +164,8 @@ class _UserSchoolInfoState extends State<UserSchoolInfo> {
                             Theme.of(context).colorScheme.tertiaryContainer,
                         color: Theme.of(context).colorScheme.onPrimary,
                       ),
-                      validator: (value) =>
-                          validateText(widget.user.faculty, 'Enter faculty'),
+                      validator: (value) => validateText(widget.user.faculty,
+                          AppLocalizations.of(context)!.facultyGuide),
                       decoration: inputDropDownDecoration(
                           Theme.of(context), radius, null),
                       items: createDropDown(
@@ -178,9 +180,9 @@ class _UserSchoolInfoState extends State<UserSchoolInfo> {
                     const SizedBox(
                       height: 20,
                     ),
-                    const Text(
-                      'Department',
-                      style: TextStyle(
+                    Text(
+                      AppLocalizations.of(context)!.department,
+                      style: const TextStyle(
                         fontSize: 15,
                       ),
                     ),
@@ -192,8 +194,8 @@ class _UserSchoolInfoState extends State<UserSchoolInfo> {
                             Theme.of(context).colorScheme.tertiaryContainer,
                         color: Theme.of(context).colorScheme.onPrimary,
                       ),
-                      validator: (value) => validateText(
-                          widget.user.department, 'Enter department'),
+                      validator: (value) => validateText(widget.user.department,
+                          AppLocalizations.of(context)!.departmentGuide),
                       decoration: inputDropDownDecoration(
                           Theme.of(context), radius, null),
                       items: createDropDown(schoolsData[widget.user.school_id]
@@ -210,9 +212,9 @@ class _UserSchoolInfoState extends State<UserSchoolInfo> {
                     const SizedBox(
                       height: 20,
                     ),
-                    const Text(
-                      'Year in School',
-                      style: TextStyle(
+                    Text(
+                      AppLocalizations.of(context)!.yearNote,
+                      style: const TextStyle(
                         fontSize: 15,
                       ),
                     ),
@@ -226,7 +228,7 @@ class _UserSchoolInfoState extends State<UserSchoolInfo> {
                       ),
                       validator: (value) => validateText(
                           (widget.user.year == null) ? '' : 'not zero',
-                          'Enter school year'),
+                          AppLocalizations.of(context)!.yearGuide),
                       decoration: inputDropDownDecoration(
                           Theme.of(context), radius, null),
                       items: createDropDown(['1', '2', '3', '4']),
@@ -239,7 +241,7 @@ class _UserSchoolInfoState extends State<UserSchoolInfo> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Row(
@@ -254,7 +256,7 @@ class _UserSchoolInfoState extends State<UserSchoolInfo> {
                     ),
                     onPressed: _goToNextPage,
                     child: Text(
-                      'Next',
+                      AppLocalizations.of(context)!.next,
                       style: TextStyle(
                         fontSize: 17,
                         color: Colors.white,
@@ -269,15 +271,15 @@ class _UserSchoolInfoState extends State<UserSchoolInfo> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    'Already have an Account?',
-                    style: TextStyle(fontSize: 15),
+                  Text(
+                    AppLocalizations.of(context)!.havingAccount,
+                    style: const TextStyle(fontSize: 15),
                   ),
                   TextButton(
                     onPressed: () => widget.toggleAuth(1),
-                    child: const Text(
-                      'Sign In',
-                      style: TextStyle(
+                    child: Text(
+                      AppLocalizations.of(context)!.signIn,
+                      style: const TextStyle(
                         fontSize: 15,
                         color: Color.fromARGB(255, 56, 107, 246),
                       ),

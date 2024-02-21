@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mentor_me/themes.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../services/auth_service.dart';
 import '../../services/input_verification.dart';

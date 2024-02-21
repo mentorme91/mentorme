@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:mentor_me/themes.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../models/message.dart';
 import '../../../../models/request.dart';
@@ -86,7 +87,7 @@ class _ChatRoomState extends State<ChatRoom> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Text('Loading...');
           }
-          
+
           WidgetsBinding.instance.addPostFrameCallback((_) {
             _scrollToBottom();
           });

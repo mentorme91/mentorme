@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../models/user.dart';
 import 'connect_tile.dart';
@@ -53,7 +54,7 @@ class _RequestsPageState extends State<RequestsPage> {
             width: double.infinity,
             padding: EdgeInsets.only(top: 15),
             child: Text(
-              'Sent Requests',
+              AppLocalizations.of(context)!.resNote,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onPrimary,
@@ -78,7 +79,7 @@ class _RequestsPageState extends State<RequestsPage> {
           Container(
             padding: EdgeInsets.only(top: 15),
             child: Text(
-              'Recieved requests',
+              AppLocalizations.of(context)!.reqNote2,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onPrimary,
                 fontSize: 18,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mentor_me/screens/authentication/register/user_school_info.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../models/user.dart';
 import '../../../services/input_verification.dart';
@@ -65,11 +66,12 @@ class _UserInfoState extends State<UserInfo> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const Center(
+              Center(
                 child: Text(
-                  'Create Account',
+                  AppLocalizations.of(context)!.account,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 30),
                 ),
               ),
               const SizedBox(
@@ -80,9 +82,9 @@ class _UserInfoState extends State<UserInfo> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'First Name',
-                      style: TextStyle(
+                    Text(
+                      AppLocalizations.of(context)!.firstName,
+                      style: const TextStyle(
                         fontSize: 15,
                       ),
                     ),
@@ -110,15 +112,16 @@ class _UserInfoState extends State<UserInfo> {
                           });
                         },
                         validator: (value) => validateText(
-                            widget.user.first_name, 'Enter first name'),
+                            widget.user.first_name,
+                            AppLocalizations.of(context)!.firstNameGuide),
                       ),
                     ),
                     const SizedBox(
                       height: 25,
                     ),
-                    const Text(
-                      'Last Name',
-                      style: TextStyle(
+                    Text(
+                      AppLocalizations.of(context)!.lastName,
+                      style: const TextStyle(
                         fontSize: 15,
                       ),
                     ),
@@ -146,15 +149,16 @@ class _UserInfoState extends State<UserInfo> {
                           });
                         },
                         validator: (value) => validateText(
-                            widget.user.last_name, 'Enter last name'),
+                            widget.user.last_name,
+                            AppLocalizations.of(context)!.lastNameNote),
                       ),
                     ),
                     const SizedBox(
                       height: 25,
                     ),
-                    const Text(
-                      'Email',
-                      style: TextStyle(
+                    Text(
+                      AppLocalizations.of(context)!.email,
+                      style: const TextStyle(
                         fontSize: 15,
                       ),
                     ),
@@ -186,7 +190,8 @@ class _UserInfoState extends State<UserInfo> {
                                   });
                                 },
                                 validator: (value) => validateText(
-                                    widget.user.email, 'Enter email'),
+                                    widget.user.email,
+                                    AppLocalizations.of(context)!.emailGuide),
                               ),
                             ),
                           ),
@@ -217,8 +222,8 @@ class _UserInfoState extends State<UserInfo> {
                     ),
                     onPressed: _goToNextPage,
                     child: Text(
-                      'Next',
-                      style: TextStyle(
+                      AppLocalizations.of(context)!.next,
+                      style: const TextStyle(
                         fontSize: 17,
                         color: Colors.white,
                       ),
@@ -232,15 +237,15 @@ class _UserInfoState extends State<UserInfo> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    'Already have an Account?',
-                    style: TextStyle(fontSize: 15),
+                  Text(
+                    AppLocalizations.of(context)!.havingAccount,
+                    style: const TextStyle(fontSize: 15),
                   ),
                   TextButton(
                     onPressed: () => widget.toggleAuth(1),
-                    child: const Text(
-                      'Sign In',
-                      style: TextStyle(
+                    child: Text(
+                      AppLocalizations.of(context)!.signIn,
+                      style: const TextStyle(
                         fontSize: 15,
                         color: Color.fromARGB(255, 56, 107, 246),
                       ),

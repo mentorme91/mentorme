@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mentor_me/main.dart';
+import 'package:mentor_me/models/language.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../models/user.dart';
+import '../../../../models/language.dart';
 import '../../../../services/auth_service.dart';
 import '../../../../services/database_service.dart';
 import '../../../../services/storage_service.dart';
@@ -41,6 +45,8 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  String lang = "English";
+
   void _pushAboutEditor(MyUser? user) async {
     await showDialog(
         context: context,
@@ -50,7 +56,7 @@ class _ProfileState extends State<Profile> {
           return AlertDialog(
             title: Text(
               'Add About',
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
               ),
@@ -88,7 +94,7 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Profile',
+          AppLocalizations.of(context)!.profile,
           style: TextStyle(
             color: Theme.of(context).colorScheme.onPrimary,
             fontWeight: FontWeight.bold,
@@ -241,14 +247,14 @@ class _ProfileState extends State<Profile> {
                 child: Column(
                   children: [
                     Text(
-                      'About',
-                      style: TextStyle(
+                      AppLocalizations.of(context)!.about,
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(
+                      margin: const EdgeInsets.only(
                         left: 20,
                       ),
                       child: Row(
@@ -303,11 +309,11 @@ class _ProfileState extends State<Profile> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 20),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
                       child: Text(
-                        'Settings',
-                        style: TextStyle(
+                        AppLocalizations.of(context)!.settings,
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 17,
                         ),
@@ -327,9 +333,9 @@ class _ProfileState extends State<Profile> {
                         Icons.person_2,
                         color: Colors.white,
                       ),
-                      title: const Text(
-                        'Personal Info',
-                        style: TextStyle(
+                      title: Text(
+                        AppLocalizations.of(context)!.personalInfo,
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 17,
                         ),
@@ -358,9 +364,9 @@ class _ProfileState extends State<Profile> {
                         Icons.notifications_outlined,
                         color: Colors.white,
                       ),
-                      title: const Text(
-                        'Notifications',
-                        style: TextStyle(
+                      title: Text(
+                        AppLocalizations.of(context)!.notifications,
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 17,
                         ),
@@ -393,9 +399,9 @@ class _ProfileState extends State<Profile> {
                         Icons.calendar_month,
                         color: Colors.white,
                       ),
-                      title: const Text(
-                        'My Calendar',
-                        style: TextStyle(
+                      title: Text(
+                        AppLocalizations.of(context)!.calendar,
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 17,
                         ),
@@ -428,9 +434,9 @@ class _ProfileState extends State<Profile> {
                         Icons.schedule,
                         color: Colors.white,
                       ),
-                      title: const Text(
-                        'My Schedule',
-                        style: TextStyle(
+                      title: Text(
+                        AppLocalizations.of(context)!.schedule,
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 17,
                         ),
@@ -455,7 +461,8 @@ class _ProfileState extends State<Profile> {
                             return Wrap(
                               children: [
                                 RadioListTile(
-                                  title: const Text('English'),
+                                  title: Text(
+                                      AppLocalizations.of(context)!.english),
                                   value: "English",
                                   groupValue: lang,
                                   onChanged: (value) {
@@ -463,6 +470,9 @@ class _ProfileState extends State<Profile> {
                                       lang = value.toString();
                                     });
                                     Navigator.pop(context);
+
+                                    MyApp.setLocale(
+                                        context, const Locale('en', ''));
                                   },
                                 ),
                                 const Divider(
@@ -470,14 +480,18 @@ class _ProfileState extends State<Profile> {
                                   height: 1,
                                 ),
                                 RadioListTile(
-                                    title: const Text('French'),
+                                    title: Text(
+                                        AppLocalizations.of(context)!.french),
                                     value: "French",
                                     groupValue: lang,
                                     onChanged: (value) {
                                       setState(() {
                                         lang = value.toString();
-                                        Navigator.pop(context);
                                       });
+                                      Navigator.pop(context);
+
+                                      MyApp.setLocale(
+                                          context, const Locale('fr', ''));
                                     })
                               ],
                             );
@@ -488,9 +502,9 @@ class _ProfileState extends State<Profile> {
                         Icons.language,
                         color: Colors.white,
                       ),
-                      title: const Text(
-                        "Language",
-                        style: TextStyle(
+                      title: Text(
+                        AppLocalizations.of(context)!.language,
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 17,
                         ),
@@ -556,9 +570,9 @@ class _ProfileState extends State<Profile> {
                         Icons.logout,
                         color: Colors.red,
                       ),
-                      title: const Text(
-                        'Log Out',
-                        style: TextStyle(
+                      title: Text(
+                        AppLocalizations.of(context)!.logOut,
+                        style: const TextStyle(
                           color: Colors.red,
                           fontSize: 17,
                         ),
@@ -571,7 +585,7 @@ class _ProfileState extends State<Profile> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
             ],
