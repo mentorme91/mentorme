@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mentor_me/main.dart';
-import 'package:mentor_me/models/language.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../models/user.dart';
-import '../../../../models/language.dart';
 import '../../../../services/auth_service.dart';
 import '../../../../services/database_service.dart';
 import '../../../../services/storage_service.dart';
@@ -15,7 +13,6 @@ import 'detailed_image.dart';
 import 'notifications.dart';
 import 'personal_info.dart';
 import 'time_planner.dart';
-import 'Language.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});

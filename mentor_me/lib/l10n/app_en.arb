@@ -110,7 +110,7 @@
   "reqNote2": "Recieved Request",
   "resNote": "Course Resources",
   "resNote2": "Search Resources",
-  "reply": "Reply to requets",
+  "reply": "Reply to request",
   "match": "Match",
   "opp": "Opportunities",
   "oppNote": "Search For Opportunities",
@@ -119,5 +119,5 @@
   "newGradRoles": "New Grad Roles",
   "jobs": "Other job opportunities",
   "gradPrograms": "Graduate Programs",
-  "about": "Lorem Ipsum is simply dummy text.", 
+  "about": "About"
 }
