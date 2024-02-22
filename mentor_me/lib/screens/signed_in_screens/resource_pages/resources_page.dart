@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'dart:math';
 
 import '../../../services/json_decoder.dart';
@@ -65,7 +66,7 @@ class _ResourcesPageState extends State<ResourcesPage> {
           ),
           Center(
             child: Text(
-              'Course Resources',
+              AppLocalizations.of(context)!.resNote,
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: Theme.of(context).colorScheme.onPrimary,
@@ -114,7 +115,7 @@ class _ResourcesPageState extends State<ResourcesPage> {
                       ),
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
-                        hintText: 'Search Resources',
+                        hintText: AppLocalizations.of(context)!.resNote2,
                         hintStyle: TextStyle(
                           color: Colors.grey,
                           fontSize: 13,
@@ -178,26 +179,26 @@ class CourseTile extends StatelessWidget {
   const CourseTile({required this.courseCode, super.key});
 
   Color _generateRandomColor() {
-  // Generate random values for red, green, and blue components
-  int red = Random().nextInt(256);
-  int green = Random().nextInt(256);
-  int blue = Random().nextInt(256);
+    // Generate random values for red, green, and blue components
+    int red = Random().nextInt(256);
+    int green = Random().nextInt(256);
+    int blue = Random().nextInt(256);
 
-  // Ensure that the color is not too dark by checking the luminance
-  while (getColorLuminance(Color.fromRGBO(red, green, blue, 1.0)) < 0.6) {
-    red = Random().nextInt(256);
-    green = Random().nextInt(256);
-    blue = Random().nextInt(256);
+    // Ensure that the color is not too dark by checking the luminance
+    while (getColorLuminance(Color.fromRGBO(red, green, blue, 1.0)) < 0.6) {
+      red = Random().nextInt(256);
+      green = Random().nextInt(256);
+      blue = Random().nextInt(256);
+    }
+
+    // Return the generated color
+    return Color.fromRGBO(red, green, blue, 1.0);
   }
 
-  // Return the generated color
-  return Color.fromRGBO(red, green, blue, 1.0);
-}
-
-double getColorLuminance(Color color) {
-  // Calculate the luminance of the color
-  return 0.299 * color.red + 0.587 * color.green + 0.114 * color.blue;
-}
+  double getColorLuminance(Color color) {
+    // Calculate the luminance of the color
+    return 0.299 * color.red + 0.587 * color.green + 0.114 * color.blue;
+  }
 
   @override
   Widget build(BuildContext context) {

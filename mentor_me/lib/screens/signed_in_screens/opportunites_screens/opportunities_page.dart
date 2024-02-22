@@ -80,7 +80,7 @@ class _OpportunitiesPageState extends State<OpportunitiesPage> {
               ),
               Center(
                 child: Text(
-                  'Opportunities',
+                  AppLocalizations.of(context)!.opp,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       color: Theme.of(context).colorScheme.onPrimary,
@@ -129,7 +129,7 @@ class _OpportunitiesPageState extends State<OpportunitiesPage> {
                           ),
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
-                            hintText: 'Search Resources',
+                            hintText: AppLocalizations.of(context)!.resNote2,
                             hintStyle: TextStyle(
                               color: Colors.grey,
                               fontSize: 13,

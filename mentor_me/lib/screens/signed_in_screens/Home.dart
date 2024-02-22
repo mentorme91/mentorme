@@ -1,6 +1,7 @@
 // This file contains the user's Home screen
 
 import 'package:expandable_page_view/expandable_page_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 import 'connect_screens/message_screens/chats.dart';
@@ -89,38 +90,38 @@ class _HomeState extends State<Home> {
                 duration: Durations.medium2, curve: Curves.easeIn);
           });
         },
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(
+            icon: const Icon(
               Icons.home_rounded,
               // color: Colors.black,
               size: 20,
             ),
-            label: 'Home',
+            label: AppLocalizations.of(context)!.home,
           ),
           BottomNavigationBarItem(
-            icon: Icon(
+            icon: const Icon(
               Icons.groups_rounded,
               // color: Colors.white,
               size: 20,
             ),
-            label: 'Connections',
+            label: AppLocalizations.of(context)!.connections,
           ),
           BottomNavigationBarItem(
-            icon: Icon(
+            icon: const Icon(
               Icons.layers_rounded,
               // color: Colors.black,
               size: 20,
             ),
-            label: 'Resources',
+            label: AppLocalizations.of(context)!.resources,
           ),
           BottomNavigationBarItem(
-            icon: Icon(
+            icon: const Icon(
               Icons.home_repair_service,
               // color: Colors.white,
               size: 20,
             ),
-            label: 'Opportunities',
+            label: AppLocalizations.of(context)!.opp,
           ),
         ],
       ),

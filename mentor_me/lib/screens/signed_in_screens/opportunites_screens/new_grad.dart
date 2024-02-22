@@ -54,7 +54,7 @@ class _NewGradRolesState extends State<NewGradRoles> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'New Grad role posts',
+          AppLocalizations.of(context)!.newGradRolePost,
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Theme.of(context).colorScheme.onPrimary,
@@ -106,7 +106,8 @@ class _NewGradRolesState extends State<NewGradRoles> {
                         ),
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
-                          hintText: 'Search for a new grad role',
+                          hintText:
+                              AppLocalizations.of(context)!.searchNewGradRole,
                           hintStyle: TextStyle(
                             color: Colors.grey,
                             fontSize: 13,
@@ -141,7 +142,7 @@ class _NewGradRolesState extends State<NewGradRoles> {
               future: DatabaseService(uid: '').allPosts('new_gard_posts'),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Text('Loading...');
+                  return Text(AppLocalizations.of(context)!.load);
                 } else if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
                 } else {

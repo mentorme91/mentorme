@@ -79,11 +79,11 @@ class _SignInState extends State<SignIn> {
                     const SizedBox(
                       height: 30,
                     ),
-                    const Center(
+                    Center(
                       child: Text(
-                        'Log In',
+                        AppLocalizations.of(context)!.login,
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 30),
                       ),
                     ),
@@ -107,9 +107,9 @@ class _SignInState extends State<SignIn> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'Email',
-                            style: TextStyle(
+                          Text(
+                            AppLocalizations.of(context)!.email,
+                            style: const TextStyle(
                               fontSize: 15,
                             ),
                           ),
@@ -141,8 +141,10 @@ class _SignInState extends State<SignIn> {
                                           email = value;
                                         });
                                       },
-                                      validator: (value) =>
-                                          validateText(email, 'Enter email'),
+                                      validator: (value) => validateText(
+                                          email,
+                                          AppLocalizations.of(context)!
+                                              .emailGuide),
                                     ),
                                   ),
                                 ),
@@ -158,9 +160,9 @@ class _SignInState extends State<SignIn> {
                           const SizedBox(
                             height: 40,
                           ),
-                          const Text(
-                            'Password',
-                            style: TextStyle(
+                          Text(
+                            AppLocalizations.of(context)!.password,
+                            style: const TextStyle(
                               fontSize: 15,
                             ),
                           ),
@@ -218,9 +220,10 @@ class _SignInState extends State<SignIn> {
                               children: [
                                 TextButton(
                                   onPressed: () => widget.toggleAuth(3),
-                                  child: const Text(
-                                    'Forgot Password?',
-                                    style: TextStyle(
+                                  child: Text(
+                                    AppLocalizations.of(context)!
+                                        .forgotPassword,
+                                    style: const TextStyle(
                                       color: Color.fromARGB(255, 56, 107, 246),
                                     ),
                                   ),
@@ -245,9 +248,9 @@ class _SignInState extends State<SignIn> {
                                 EdgeInsets.symmetric(horizontal: 100)),
                           ),
                           onPressed: _signIn,
-                          child: const Text(
-                            'Log In',
-                            style: TextStyle(
+                          child: Text(
+                            AppLocalizations.of(context)!.login,
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 17,
                             ),
@@ -261,14 +264,14 @@ class _SignInState extends State<SignIn> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          'Don\'t have an account yet?',
+                        Text(
+                          AppLocalizations.of(context)!.noAccount,
                         ),
                         TextButton(
                           onPressed: () => widget.toggleAuth(2),
-                          child: const Text(
-                            'Create Account',
-                            style: TextStyle(
+                          child: Text(
+                            AppLocalizations.of(context)!.account,
+                            style: const TextStyle(
                                 color: Color.fromARGB(255, 56, 107, 246)),
                           ),
                         ),

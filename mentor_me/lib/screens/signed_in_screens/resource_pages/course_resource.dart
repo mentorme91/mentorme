@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:mentor_me/screens/signed_in_screens/resource_pages/course_bot_chat.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart' as p;
 
@@ -52,7 +53,7 @@ class _CourseResourceState extends State<CourseResource> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
             content: Text(
-              'No file was chosen',
+              AppLocalizations.of(context)!.noFile,
             ),
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
@@ -80,17 +81,18 @@ class _CourseResourceState extends State<CourseResource> {
       context: context,
       builder: (context) => SingleChildScrollView(
         child: AlertDialog(
-          title: Text('Enter document title'),
+          title: Text(AppLocalizations.of(context)!.docTitle),
           content: TextField(
             controller: _titleController,
-            decoration: InputDecoration(labelText: 'Title'),
+            decoration:
+                InputDecoration(labelText: AppLocalizations.of(context)!.title),
           ),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context, null);
               },
-              child: Text('Cancel'),
+              child: Text(AppLocalizations.of(context)!.cancel),
             ),
             TextButton(
               onPressed: () {
@@ -102,7 +104,7 @@ class _CourseResourceState extends State<CourseResource> {
                   // Show error message or handle invalid input
                 }
               },
-              child: Text('Upload'),
+              child: Text(AppLocalizations.of(context)!.upload),
             ),
           ],
         ),
@@ -124,20 +126,23 @@ class _CourseResourceState extends State<CourseResource> {
       context: context,
       builder: (context) => SingleChildScrollView(
         child: AlertDialog(
-          title: Text('Enter Link Information'),
+          title: Text(AppLocalizations.of(context)!.linkInfo),
           content: Column(
             children: [
               TextField(
                 controller: _titleController,
-                decoration: InputDecoration(labelText: 'Title'),
+                decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.title),
               ),
               TextField(
                 controller: _detailsController,
-                decoration: InputDecoration(labelText: 'Details'),
+                decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.details),
               ),
               TextField(
                 controller: _linkController,
-                decoration: InputDecoration(labelText: 'Link'),
+                decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.link),
               ),
             ],
           ),
@@ -146,7 +151,7 @@ class _CourseResourceState extends State<CourseResource> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('Cancel'),
+              child: Text(AppLocalizations.of(context)!.cancel),
             ),
             TextButton(
               onPressed: () {
@@ -180,7 +185,7 @@ class _CourseResourceState extends State<CourseResource> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          '${widget.courseCode} Resources',
+          '${widget.courseCode} ${AppLocalizations.of(context)!.resources}',
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Theme.of(context).colorScheme.onPrimary,
@@ -199,8 +204,8 @@ class _CourseResourceState extends State<CourseResource> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              CourseBotChatPageThemeLoader(courseCode: widget.courseCode),
+                          builder: (context) => CourseBotChatPageThemeLoader(
+                              courseCode: widget.courseCode),
                         ),
                       );
                     },
@@ -260,7 +265,7 @@ class _CourseResourceState extends State<CourseResource> {
                         ),
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
-                          hintText: 'Search for a resource',
+                          hintText: AppLocalizations.of(context)!.searchRes,
                           hintStyle: TextStyle(
                             color: Colors.grey,
                             fontSize: 13,
@@ -319,22 +324,22 @@ class _CourseResourceState extends State<CourseResource> {
             _pageIndex = value;
           });
         },
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(
+            icon: const Icon(
               Icons.file_copy,
               // color: Colors.black,
               size: 20,
             ),
-            label: 'Documents',
+            label: AppLocalizations.of(context)!.documents,
           ),
           BottomNavigationBarItem(
-            icon: Icon(
+            icon: const Icon(
               Icons.link,
               // color: Colors.white,
               size: 20,
             ),
-            label: 'Links',
+            label: '${AppLocalizations.of(context)!.link}s',
           ),
         ],
       ),

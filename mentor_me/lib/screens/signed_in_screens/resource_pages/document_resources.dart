@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:libre_doc_converter/libre_doc_converter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -51,7 +52,7 @@ class _DocumentResourcesState extends State<DocumentResources> {
                   child: ListTile(
                       title: Text(title),
                       subtitle: Text(
-                        'Tap to view file',
+                        AppLocalizations.of(context)!.toView,
                         style: TextStyle(color: Colors.blue),
                       ),
                       leading: Image.asset(
@@ -64,7 +65,7 @@ class _DocumentResourcesState extends State<DocumentResources> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                   content: Text(
-                                    'File $title successfully downloaded in downloads folder!',
+                                    '${AppLocalizations.of(context)!.file} $title ${AppLocalizations.of(context)!.succDownload}',
                                   ),
                                   behavior: SnackBarBehavior.floating,
                                   shape: RoundedRectangleBorder(
@@ -75,7 +76,7 @@ class _DocumentResourcesState extends State<DocumentResources> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                   content: Text(
-                                    'File $title failed to download!',
+                                    '${AppLocalizations.of(context)!.file} $title ${AppLocalizations.of(context)!.failDownload}',
                                   ),
                                   behavior: SnackBarBehavior.floating,
                                   shape: RoundedRectangleBorder(
@@ -110,15 +111,15 @@ class _DocumentResourcesState extends State<DocumentResources> {
                           try {
                             final pdfFile = await converter.toPdf();
                             setState(() {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => PDFViewerPage(
-                                  file: pdfFile,
-                                  title: title,
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => PDFViewerPage(
+                                    file: pdfFile,
+                                    title: title,
+                                  ),
                                 ),
-                              ),
-                            );
-                          });
+                              );
+                            });
                           } catch (e) {
                             print(e.toString());
                             launchUrl(Uri.parse(url));

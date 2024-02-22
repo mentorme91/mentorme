@@ -239,7 +239,7 @@ class _UserCalendarState extends State<UserCalendar> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'My Calendar',
+          AppLocalizations.of(context)!.calendar,
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Theme.of(context).colorScheme.onPrimary,
@@ -266,7 +266,7 @@ class _UserCalendarState extends State<UserCalendar> {
                     return Column(
                       children: [
                         Calendar(),
-                        Text('Loading...'),
+                        Text(AppLocalizations.of(context)!.load),
                       ],
                     );
                   } else if (snapshot.hasError) {
@@ -331,11 +331,11 @@ class _CustomBottomSheetContentState extends State<CustomBottomSheetContent> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: AlertDialog(
-        title: Text('Add Event'),
+        title: Text(AppLocalizations.of(context)!.event),
         content: Column(
           children: [
             ListTile(
-              title: Text('Start Time'),
+              title: Text(AppLocalizations.of(context)!.startTime),
               subtitle: TextField(
                 enabled: false,
                 decoration: InputDecoration(
@@ -356,12 +356,12 @@ class _CustomBottomSheetContentState extends State<CustomBottomSheetContent> {
                   });
                 }
                 setState(() {
-                  print('Refreshed');
+                  print(AppLocalizations.of(context)!.refreshed);
                 });
               },
             ),
             ListTile(
-              title: Text('End Time'),
+              title: Text(AppLocalizations.of(context)!.endTime),
               subtitle: TextField(
                 enabled: false,
                 decoration: InputDecoration(
@@ -382,13 +382,14 @@ class _CustomBottomSheetContentState extends State<CustomBottomSheetContent> {
                   });
                 }
                 setState(() {
-                  print('Refreshed');
+                  print(AppLocalizations.of(context)!.refreshed);
                 });
               },
             ),
             TextField(
               controller: _titleController,
-              decoration: InputDecoration(labelText: 'Title'),
+              decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.title),
               onChanged: (value) {
                 setState(() {
                   widget.event.title = value;
@@ -397,7 +398,8 @@ class _CustomBottomSheetContentState extends State<CustomBottomSheetContent> {
             ),
             TextField(
               controller: _infoController,
-              decoration: InputDecoration(labelText: 'Event Informations'),
+              decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.eventInfo),
               onChanged: (value) {
                 setState(() {
                   widget.event.information = value;
@@ -420,7 +422,7 @@ class _CustomBottomSheetContentState extends State<CustomBottomSheetContent> {
               // });
               Navigator.pop(context); // Close the dialog
             },
-            child: Text('Submit'),
+            child: Text(AppLocalizations.of(context)!.submit),
           ),
           ElevatedButton(
             onPressed: () {
@@ -436,7 +438,7 @@ class _CustomBottomSheetContentState extends State<CustomBottomSheetContent> {
               }
               Navigator.pop(context); // Close the dialog
             },
-            child: Text('Cancel'),
+            child: Text(AppLocalizations.of(context)!.canceled),
           ),
         ],
       ),

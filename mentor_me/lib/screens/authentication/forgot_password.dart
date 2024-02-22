@@ -33,12 +33,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         if (res != null) {
           setState(() {
             loading = false;
-            widget.toggleAuth(1, message: 'Recovery email sent successfully!');
+            widget.toggleAuth(1,
+                message: AppLocalizations.of(context)!.recoveryEmail);
           });
         } else {
           setState(() {
             loading = false;
-            wrongCredentials = 'This email is not in our database';
+            wrongCredentials = AppLocalizations.of(context)!.emailError;
           });
         }
       }
@@ -75,22 +76,22 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     const SizedBox(
                       height: 30,
                     ),
-                    const Center(
+                    Center(
                       child: Text(
-                        'Forgot Passowrd',
+                        AppLocalizations.of(context)!.forgotPassword,
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 30),
                       ),
                     ),
                     const SizedBox(
                       height: 30,
                     ),
-                    const Center(
+                    Center(
                       child: Text(
-                        'Enter your account email, we will send you a link to change your password',
+                        AppLocalizations.of(context)!.passwordLink,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 15),
+                        style: const TextStyle(fontSize: 15),
                       ),
                     ),
                     const SizedBox(
@@ -113,9 +114,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'Email',
-                            style: TextStyle(
+                          Text(
+                            AppLocalizations.of(context)!.email,
+                            style: const TextStyle(
                               fontSize: 15,
                             ),
                           ),
@@ -153,7 +154,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                         });
                                       },
                                       validator: (value) => validateText(
-                                          email, 'Enter a valid email'),
+                                          email,
+                                          AppLocalizations.of(context)!
+                                              .invalidEmail),
                                     ),
                                   ),
                                 ),
@@ -186,9 +189,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                 EdgeInsets.symmetric(horizontal: 100)),
                           ),
                           onPressed: _sendResetPasswordEmail,
-                          child: const Text(
-                            'Send Email',
-                            style: TextStyle(
+                          child: Text(
+                            AppLocalizations.of(context)!.sendEmial,
+                            style: const TextStyle(
                               fontSize: 17,
                               color: Colors.white,
                             ),
@@ -202,17 +205,17 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          'Don\'t have an account yet?',
-                          style: TextStyle(
+                        Text(
+                          AppLocalizations.of(context)!.noAccount,
+                          style: const TextStyle(
                             color: Colors.black,
                           ),
                         ),
                         TextButton(
                           onPressed: () => widget.toggleAuth(2),
-                          child: const Text(
-                            'Create Account',
-                            style: TextStyle(
+                          child: Text(
+                            AppLocalizations.of(context)!.account,
+                            style: const TextStyle(
                               color: Color.fromARGB(255, 56, 107, 246),
                             ),
                           ),

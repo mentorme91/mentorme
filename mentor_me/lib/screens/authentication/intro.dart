@@ -80,9 +80,9 @@ class _OnboardingState extends State<Onboarding> {
           TextButton(
             // used to toggle to the signIn page
             onPressed: () => widget.toggleAuth(1),
-            child: const Text(
-              'Skip',
-              style: TextStyle(
+            child: Text(
+              AppLocalizations.of(context)!.skip,
+              style: const TextStyle(
                 fontSize: 15,
                 color: Color.fromARGB(255, 56, 107, 246),
               ),
@@ -167,7 +167,7 @@ class _OnboardingState extends State<Onboarding> {
                 ),
                 onPressed: () => widget.toggleAuth(1),
                 child: Text(
-                  "Log in",
+                  AppLocalizations.of(context)!.login,
                   style: TextStyle(
                     fontSize: 17,
                     color: Color.fromARGB(255, 56, 107, 246),

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tex/flutter_tex.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 import '../../../models/bot_message.dart';
@@ -78,7 +79,10 @@ class _CourseBotChatPageState extends State<CourseBotChatPage> {
         String data = await getData(url);
         decodedData = jsonDecode(data);
       } catch (e) {
-        decodedData = {'response': 'Oops! An error occurred :('};
+        decodedData = {
+          AppLocalizations.of(context)!.response:
+              AppLocalizations.of(context)!.ai
+        };
       }
 
       setState(() {
@@ -100,7 +104,7 @@ class _CourseBotChatPageState extends State<CourseBotChatPage> {
             return Text('Error occured!');
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text('Loading...');
+            return Text(AppLocalizations.of(context)!.load);
           }
           WidgetsBinding.instance.addPostFrameCallback((_) {
             _scrollToBottom();
@@ -111,7 +115,9 @@ class _CourseBotChatPageState extends State<CourseBotChatPage> {
                     .map((document) => _buildMessageItem(document, user))
                     .toList() +
                 [
-                  thinking ? Text('Thinking...') : SizedBox(),
+                  thinking
+                      ? Text(AppLocalizations.of(context)!.think)
+                      : SizedBox(),
                 ],
           );
         });
@@ -169,10 +175,11 @@ class _CourseBotChatPageState extends State<CourseBotChatPage> {
                       alignment: Alignment.topLeft,
                       // color: Colors.red,
                       child: TeXView(
-                        child: TeXViewDocument(
-                          data['message'],
-                          style: TeXViewStyle(contentColor: Theme.of(context).colorScheme.background,)
-                        ),
+                        child: TeXViewDocument(data['message'],
+                            style: TeXViewStyle(
+                              contentColor:
+                                  Theme.of(context).colorScheme.background,
+                            )),
                         renderingEngine: TeXViewRenderingEngine.katex(),
                       ),
                       // child: Text(
@@ -235,8 +242,8 @@ class _CourseBotChatPageState extends State<CourseBotChatPage> {
                   color: Theme.of(context).colorScheme.tertiary,
                 ),
                 controller: _messageController,
-                decoration: inputDecoration(
-                    Theme.of(context), _borderRadius, 'Message here...')),
+                decoration: inputDecoration(Theme.of(context), _borderRadius,
+                    AppLocalizations.of(context)!.messageHere)),
           ),
         ),
         IconButton(

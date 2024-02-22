@@ -64,7 +64,7 @@ class _ChatRoomState extends State<ChatRoom> {
       Message message = Message(
           message: _messageController.text,
           senderUID: user?.uid ?? '',
-          status: 'delivered',
+          status: AppLocalizations.of(context)!.delivered,
           recieverUID: widget.reciever.uid ?? '');
       user?.connections[widget.reciever.uid ?? ''] = message.time;
       widget.reciever.connections[user?.uid ?? ''] = message.time;
@@ -85,7 +85,7 @@ class _ChatRoomState extends State<ChatRoom> {
             return Text('Error occured!');
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text('Loading...');
+            return Text(AppLocalizations.of(context)!.load);
           }
 
           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -102,11 +102,11 @@ class _ChatRoomState extends State<ChatRoom> {
 
   String getDate(String date) {
     if (date == DateFormat('yyyy-MM-dd').format(today)) {
-      return 'Today';
+      return AppLocalizations.of(context)!.today;
     }
     DateTime yesterday = today.subtract(const Duration(days: 1));
     if (date == DateFormat('yyyy-MM-dd').format(yesterday)) {
-      return 'Yesterday';
+      return AppLocalizations.of(context)!.yesterday;
     }
     return date;
   }
@@ -234,8 +234,8 @@ class _ChatRoomState extends State<ChatRoom> {
                   color: Theme.of(context).colorScheme.tertiary,
                 ),
                 controller: _messageController,
-                decoration: inputDecoration(
-                    Theme.of(context), _borderRadius, 'Message here...')),
+                decoration: inputDecoration(Theme.of(context), _borderRadius,
+                    AppLocalizations.of(context)!.messageHere)),
           ),
         ),
         IconButton(
@@ -297,7 +297,8 @@ class _ChatRoomState extends State<ChatRoom> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              widget.reciever.first_name ?? 'New user',
+                              widget.reciever.first_name ??
+                                  AppLocalizations.of(context)!.newUser,
                               style: TextStyle(
                                 color: Theme.of(context).colorScheme.onPrimary,
                                 fontWeight: FontWeight.bold,

@@ -54,7 +54,7 @@ class _ScholarshipsState extends State<Scholarships> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Scholarship posts',
+          AppLocalizations.of(context)!.scholPost,
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Theme.of(context).colorScheme.onPrimary,
@@ -106,7 +106,7 @@ class _ScholarshipsState extends State<Scholarships> {
                         ),
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
-                          hintText: 'Search for a scholarship',
+                          hintText: AppLocalizations.of(context)!.searchSchol,
                           hintStyle: TextStyle(
                             color: Colors.grey,
                             fontSize: 13,
@@ -141,7 +141,7 @@ class _ScholarshipsState extends State<Scholarships> {
               future: DatabaseService(uid: '').allPosts('scholarship_posts'),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Text('Loading...');
+                  return Text(AppLocalizations.of(context)!.load);
                 } else if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
                 } else {

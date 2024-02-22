@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tex/flutter_tex.dart';
 import 'package:mentor_me/theme_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // import 'package:mentor_me/services/services.dart';
 // import 'package:provider/provider.dart';
 
@@ -35,7 +36,7 @@ class _NotificationsState extends State<Notifications> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Notifications',
+          AppLocalizations.of(context)!.notifications,
           style: TextStyle(
             color: Theme.of(context).colorScheme.onPrimary,
             fontWeight: FontWeight.bold,
@@ -44,10 +45,12 @@ class _NotificationsState extends State<Notifications> {
         ),
       ),
       body: Container(
-        child: SingleChildScrollView(
+        child: const SingleChildScrollView(
           child: Column(
             children: [
-              TeXView(child: TeXViewDocument(r"""When \[ a \ne 0 \], there are two solutions to \[x^2 + bx + c = 0 \]"""))
+              TeXView(
+                  child: TeXViewDocument(
+                      r"""When \[ a \ne 0 \], there are two solutions to \[x^2 + bx + c = 0 \]"""))
             ],
           ),
         ),
