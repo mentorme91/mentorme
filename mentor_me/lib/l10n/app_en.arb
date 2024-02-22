@@ -130,7 +130,7 @@
   "reqNote2": "Recieved Request",
   "resNote": "Course Resources",
   "resNote2": "Search Resources",
-  "reply": "Reply to requets",
+  "reply": "Reply to request",
   "match": "Match",
   "opp": "Opportunities",
   "oppNote": "Search For Opportunities",
@@ -161,4 +161,5 @@
   "failDownload": "failed to download",
   "file": "File",
   "toView": "Tap to view file"
+  "about": "About"
 }
