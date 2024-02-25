@@ -77,8 +77,8 @@ class _HomePageState extends State<HomePage> {
                                 children: [
                                   Text(
                                     (user?.first_name == null)
-                                        ? 'Welcome'
-                                        : 'Welcome back',
+                                        ? AppLocalizations.of(context)!.welcome
+                                        : AppLocalizations.of(context)!.back,
                                     style: TextStyle(
                                       color: Theme.of(context)
                                           .colorScheme
@@ -150,11 +150,11 @@ class _HomePageState extends State<HomePage> {
                   margin: const EdgeInsets.symmetric(horizontal: 20),
                   child: Row(
                     children: [
-                      const Expanded(
+                      Expanded(
                         child: FractionallySizedBox(
                           child: Row(
                             children: [
-                              Padding(
+                              const Padding(
                                 padding: EdgeInsets.only(left: 10),
                                 child: Icon(
                                   Icons.public,
@@ -162,7 +162,7 @@ class _HomePageState extends State<HomePage> {
                                   size: 50,
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               Column(
@@ -170,8 +170,8 @@ class _HomePageState extends State<HomePage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Join A',
-                                    style: TextStyle(
+                                    AppLocalizations.of(context)!.join,
+                                    style: const TextStyle(
                                       // color: Theme.of(context)
                                       //     .colorScheme
                                       //     .background,
@@ -180,8 +180,8 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ),
                                   Text(
-                                    'Community',
-                                    style: TextStyle(
+                                    AppLocalizations.of(context)!.community,
+                                    style: const TextStyle(
                                       // color: Theme.of(context)
                                       //     .colorScheme
                                       //     .background,
@@ -219,7 +219,7 @@ class _HomePageState extends State<HomePage> {
               Padding(
                 padding: const EdgeInsets.only(left: 20, top: 30),
                 child: Text(
-                  'Recent Posts',
+                  AppLocalizations.of(context)!.post,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.onPrimary,
                     fontSize: 20,

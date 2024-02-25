@@ -109,7 +109,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                     child: FractionallySizedBox(
                       child: Center(
                         child: Text(
-                          'Personal Information',
+                          AppLocalizations.of(context)!.personalInformation,
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.onPrimary,
                             fontWeight: FontWeight.bold,
@@ -133,7 +133,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('First Name'),
+                          Text(AppLocalizations.of(context)!.firstName),
                           TextButton(
                             onPressed: () {
                               if (_formkey.currentState?.validate() ?? false) {
@@ -147,8 +147,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
                               }
                             },
                             child: Text(enablers['first_name'] ?? false
-                                ? 'Save'
-                                : 'Edit'),
+                                ? AppLocalizations.of(context)!.save
+                                : AppLocalizations.of(context)!.edit),
                           ),
                         ],
                       ),
@@ -158,8 +158,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
                         onChanged: (value) {
                           dummy.first_name = value;
                         },
-                        validator: (value) =>
-                            validateText(value, 'Incorrect value'),
+                        validator: (value) => validateText(
+                            value, AppLocalizations.of(context)!.incorrectVAl),
                       ),
                       const SizedBox(
                         height: 20,
@@ -167,7 +167,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('Last Name'),
+                          Text(AppLocalizations.of(context)!.lastName),
                           TextButton(
                             onPressed: () {
                               if (_formkey.currentState?.validate() ?? false) {
@@ -181,8 +181,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
                               }
                             },
                             child: Text(enablers['last_name'] ?? false
-                                ? 'Save'
-                                : 'Edit'),
+                                ? AppLocalizations.of(context)!.save
+                                : AppLocalizations.of(context)!.edit),
                           ),
                         ],
                       ),
@@ -192,8 +192,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
                         onChanged: (value) {
                           dummy.last_name = value;
                         },
-                        validator: (value) =>
-                            validateText(value, 'Incorrect value'),
+                        validator: (value) => validateText(
+                            value, AppLocalizations.of(context)!.incorrectVAl),
                       ),
                       const SizedBox(
                         height: 20,
@@ -201,7 +201,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('Email'),
+                          Text(AppLocalizations.of(context)!.email),
                           TextButton(
                             onPressed: () {
                               if (_formkey.currentState?.validate() ?? false) {
@@ -214,8 +214,9 @@ class _PersonalInfoState extends State<PersonalInfo> {
                                 );
                               }
                             },
-                            child: Text(
-                                enablers['email'] ?? false ? 'Save' : 'Edit'),
+                            child: Text(enablers['email'] ?? false
+                                ? AppLocalizations.of(context)!.save
+                                : AppLocalizations.of(context)!.edit),
                           ),
                         ],
                       ),
@@ -225,8 +226,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
                         onChanged: (value) {
                           dummy.email = value;
                         },
-                        validator: (value) =>
-                            validateText(value, 'Incorrect value'),
+                        validator: (value) => validateText(
+                            value, AppLocalizations.of(context)!.incorrectVAl),
                       ),
                       const SizedBox(
                         height: 20,
@@ -234,7 +235,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('School'),
+                          Text(AppLocalizations.of(context)!.school),
                           TextButton(
                             onPressed: () {
                               if (_formkey.currentState?.validate() ?? false) {
@@ -247,8 +248,9 @@ class _PersonalInfoState extends State<PersonalInfo> {
                                 );
                               }
                             },
-                            child: Text(
-                                enablers['school'] ?? false ? 'Save' : 'Edit'),
+                            child: Text(enablers['school'] ?? false
+                                ? AppLocalizations.of(context)!.save
+                                : AppLocalizations.of(context)!.edit),
                           ),
                         ],
                       ),
@@ -260,8 +262,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
                         onChanged: (value) {
                           dummy.school_id = value;
                         },
-                        validator: (value) =>
-                            validateText(value, 'Incorrect value'),
+                        validator: (value) => validateText(
+                            value, AppLocalizations.of(context)!.incorrectVAl),
                         decoration: InputDecoration(
                           hintText: dummy.school_id,
                           hintStyle: const TextStyle(
@@ -275,7 +277,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('Faculty'),
+                          Text(AppLocalizations.of(context)!.faculty),
                           TextButton(
                             onPressed: () {
                               if (_formkey.currentState?.validate() ?? false) {
@@ -288,8 +290,9 @@ class _PersonalInfoState extends State<PersonalInfo> {
                                 );
                               }
                             },
-                            child: Text(
-                                enablers['faculty'] ?? false ? 'Save' : 'Edit'),
+                            child: Text(enablers['faculty'] ?? false
+                                ? AppLocalizations.of(context)!.save
+                                : AppLocalizations.of(context)!.edit),
                           ),
                         ],
                       ),
@@ -302,8 +305,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
                         onChanged: (value) {
                           dummy.faculty = value;
                         },
-                        validator: (value) =>
-                            validateText(value, 'Incorrect value'),
+                        validator: (value) => validateText(
+                            value, AppLocalizations.of(context)!.incorrectVAl),
                         decoration: InputDecoration(
                           hintText: dummy.faculty,
                           hintStyle: const TextStyle(
@@ -317,7 +320,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('Department'),
+                          Text(AppLocalizations.of(context)!.department),
                           TextButton(
                             onPressed: () {
                               if (_formkey.currentState?.validate() ?? false) {
@@ -331,8 +334,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
                               }
                             },
                             child: Text(enablers['department'] ?? false
-                                ? 'Save'
-                                : 'Edit'),
+                                ? AppLocalizations.of(context)!.save
+                                : AppLocalizations.of(context)!.edit),
                           ),
                         ],
                       ),
@@ -348,8 +351,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
                         onChanged: (value) {
                           dummy.department = value;
                         },
-                        validator: (value) =>
-                            validateText(value, 'Incorrect value'),
+                        validator: (value) => validateText(
+                            value, AppLocalizations.of(context)!.incorrectVAl),
                         decoration: InputDecoration(
                           hintText: dummy.department,
                           hintStyle: const TextStyle(
@@ -363,7 +366,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('Status'),
+                          Text(AppLocalizations.of(context)!.status),
                           TextButton(
                             onPressed: () {
                               if (_formkey.currentState?.validate() ?? false) {
@@ -376,21 +379,26 @@ class _PersonalInfoState extends State<PersonalInfo> {
                                 );
                               }
                             },
-                            child: Text(
-                                enablers['status'] ?? false ? 'Save' : 'Edit'),
+                            child: Text(enablers['status'] ?? false
+                                ? AppLocalizations.of(context)!.save
+                                : AppLocalizations.of(context)!.edit),
                           ),
                         ],
                       ),
                       DropdownButtonFormField(
                         items: (enablers['status'] ?? false)
-                            ? createDropDown(['Mentor', 'Mentee', 'Visitor'])
+                            ? createDropDown([
+                                AppLocalizations.of(context)!.mentor,
+                                AppLocalizations.of(context)!.mentee,
+                                AppLocalizations.of(context)!.visitor
+                              ])
                             : null,
                         value: dummy.status,
                         onChanged: (value) {
                           dummy.status = value;
                         },
-                        validator: (value) =>
-                            validateText(value, 'Incorrect value'),
+                        validator: (value) => validateText(
+                            value, AppLocalizations.of(context)!.incorrectVAl),
                         decoration: InputDecoration(
                           hintText: dummy.status,
                           hintStyle: const TextStyle(
@@ -404,7 +412,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('Year'),
+                          Text(AppLocalizations.of(context)!.year),
                           TextButton(
                             onPressed: () {
                               if (_formkey.currentState?.validate() ?? false) {
@@ -417,8 +425,9 @@ class _PersonalInfoState extends State<PersonalInfo> {
                                 );
                               }
                             },
-                            child: Text(
-                                enablers['year'] ?? false ? 'Save' : 'Edit'),
+                            child: Text(enablers['year'] ?? false
+                                ? AppLocalizations.of(context)!.save
+                                : AppLocalizations.of(context)!.edit),
                           ),
                         ],
                       ),
@@ -430,8 +439,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
                         onChanged: (value) {
                           dummy.year = int.tryParse(value) ?? 1;
                         },
-                        validator: (value) =>
-                            validateText(value, 'Incorrect value'),
+                        validator: (value) => validateText(
+                            value, AppLocalizations.of(context)!.incorrectVAl),
                         decoration: InputDecoration(
                           hintText: dummy.year.toString(),
                           hintStyle: const TextStyle(
@@ -445,12 +454,13 @@ class _PersonalInfoState extends State<PersonalInfo> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('Password'),
+                          Text(AppLocalizations.of(context)!.password),
                           TextButton(
                             onPressed: () async {
                               await _updateUserPassword();
                             },
-                            child: const Text('Change Password'),
+                            child: Text(
+                                AppLocalizations.of(context)!.changePassword),
                           ),
                         ],
                       ),
@@ -499,7 +509,9 @@ class _PersonalInfoState extends State<PersonalInfo> {
                       }
                     },
                     child: Text(
-                      loading ? 'Loading...' : 'Save changes',
+                      loading
+                          ? AppLocalizations.of(context)!.load
+                          : AppLocalizations.of(context)!.saveChanges,
                       style: const TextStyle(
                         fontSize: 17,
                         color: Colors.white,
@@ -531,7 +543,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                       });
                     },
                     child: Text(
-                      'Cancel changes',
+                      AppLocalizations.of(context)!.cancelChanges,
                       style: TextStyle(
                         fontSize: 17,
                         color: Theme.of(context).primaryColor,

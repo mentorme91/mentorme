@@ -53,7 +53,7 @@ class _GradSchoolState extends State<GradSchool> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Graduate Programme posts',
+          AppLocalizations.of(context)!.gradPost,
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Theme.of(context).colorScheme.onPrimary,
@@ -105,7 +105,8 @@ class _GradSchoolState extends State<GradSchool> {
                         ),
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
-                          hintText: 'Search for a Graduate programme',
+                          hintText:
+                              AppLocalizations.of(context)!.searchGradProg,
                           hintStyle: TextStyle(
                             color: Colors.grey,
                             fontSize: 13,
@@ -140,7 +141,7 @@ class _GradSchoolState extends State<GradSchool> {
               future: DatabaseService(uid: '').allPosts('grad_school_posts'),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Text('Loading...');
+                  return Text(AppLocalizations.of(context)!.load);
                 } else if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
                 } else {

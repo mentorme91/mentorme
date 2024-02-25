@@ -32,7 +32,7 @@ class _CommunitiesPageState extends State<CommunitiesPage> {
         children: [
           Center(
             child: Text(
-              'Find a Community',
+              AppLocalizations.of(context)!.findCom,
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: Theme.of(context).colorScheme.onPrimary,
@@ -81,7 +81,7 @@ class _CommunitiesPageState extends State<CommunitiesPage> {
                       ),
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
-                        hintText: 'Search Communities',
+                        hintText: AppLocalizations.of(context)!.searchCom,
                         hintStyle: TextStyle(
                           color: Colors.grey,
                           fontSize: 13,

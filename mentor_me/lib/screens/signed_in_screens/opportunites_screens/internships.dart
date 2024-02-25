@@ -53,7 +53,7 @@ class _InternshipsState extends State<Internships> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Internship posts',
+          AppLocalizations.of(context)!.internPost,
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Theme.of(context).colorScheme.onPrimary,
@@ -105,7 +105,7 @@ class _InternshipsState extends State<Internships> {
                         ),
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
-                          hintText: 'Search for an internship',
+                          hintText: AppLocalizations.of(context)!.searchIntern,
                           hintStyle: TextStyle(
                             color: Colors.grey,
                             fontSize: 13,
@@ -140,7 +140,7 @@ class _InternshipsState extends State<Internships> {
               future: DatabaseService(uid: '').allPosts('internship_posts'),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Text('Loading...');
+                  return Text(AppLocalizations.of(context)!.load);
                 } else if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
                 } else {

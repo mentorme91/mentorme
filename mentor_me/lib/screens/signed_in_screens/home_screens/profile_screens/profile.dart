@@ -53,7 +53,7 @@ class _ProfileState extends State<Profile> {
           DatabaseService _database = DatabaseService(uid: user?.uid);
           return AlertDialog(
             title: Text(
-              'Add About',
+              AppLocalizations.of(context)!.addAbout,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
@@ -68,7 +68,7 @@ class _ProfileState extends State<Profile> {
               TextButton(
                   onPressed: () => Navigator.pop(context),
                   child: Text(
-                    'Cancel',
+                    AppLocalizations.of(context)!.cancel,
                   )),
               TextButton(
                   onPressed: () {
@@ -77,7 +77,7 @@ class _ProfileState extends State<Profile> {
                     Navigator.pop(context);
                   },
                   child: Text(
-                    'Save',
+                    AppLocalizations.of(context)!.save,
                   )),
             ],
           );
@@ -472,7 +472,12 @@ class _ProfileState extends State<Profile> {
                                     Navigator.pop(context);
 
                                     MyApp.setLocale(
-                                        context, const Locale('en', ''));
+                                        context,
+                                        Locale(
+                                            Language.languageList()
+                                                .first
+                                                .languageCode,
+                                            ''));
                                   },
                                 ),
                                 const Divider(
@@ -492,7 +497,12 @@ class _ProfileState extends State<Profile> {
                                       Navigator.pop(context);
 
                                       MyApp.setLocale(
-                                          context, const Locale('fr', ''));
+                                          context,
+                                          Locale(
+                                              Language.languageList()
+                                                  .last
+                                                  .languageCode,
+                                              ''));
                                     })
                               ],
                             );

@@ -110,7 +110,7 @@ class _ChatsState extends State<Chats> {
     }
     DateTime yesterday = today.subtract(const Duration(days: 1));
     if (date == DateFormat('yyyy-MM-dd').format(yesterday)) {
-      return 'Yesterday';
+      return AppLocalizations.of(context)!.yesterday;
     }
     return date;
   }
@@ -171,7 +171,7 @@ class _ChatsState extends State<Chats> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
         title: Text(
-          'Chats',
+          AppLocalizations.of(context)!.chats,
           style: TextStyle(
             color: Theme.of(context).colorScheme.onPrimary,
             fontWeight: FontWeight.bold,
@@ -223,7 +223,7 @@ class _ChatsState extends State<Chats> {
                       ),
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
-                        hintText: 'Search Chats',
+                        hintText: AppLocalizations.of(context)!.searchChats,
                         hintStyle: TextStyle(
                           color: Colors.grey,
                           fontSize: 13,
@@ -261,7 +261,7 @@ class _ChatsState extends State<Chats> {
             future: _getConnections(user),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Text('Loading...');
+                return Text(AppLocalizations.of(context)!.load);
               } else if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               } else {

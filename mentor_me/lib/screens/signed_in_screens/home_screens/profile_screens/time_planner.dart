@@ -101,7 +101,8 @@ class _CoursePlannerState extends State<CoursePlanner> {
         return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
           return AlertDialog(
-            title: Text('${toBeShown[0].course} Schedule'),
+            title: Text(
+                '${toBeShown[0].course} ${AppLocalizations.of(context)!.schedule2}'),
             content: SizedBox(
               height: 300,
               child: Column(
@@ -122,7 +123,7 @@ class _CoursePlannerState extends State<CoursePlanner> {
             actions: [
               TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text('Close')),
+                  child: Text(AppLocalizations.of(context)!.close)),
               TextButton(
                 onPressed: () async {
                   await _deleteTask(toBeShown[0]);
@@ -143,7 +144,7 @@ class _CoursePlannerState extends State<CoursePlanner> {
                     await _setTasksInDataBase(widget.user);
                     Navigator.pop(context);
                   },
-                  child: Text('Edit')),
+                  child: Text(AppLocalizations.of(context)!.edit)),
             ],
             actionsAlignment: MainAxisAlignment.center,
             alignment: Alignment.centerRight,
@@ -157,7 +158,8 @@ class _CoursePlannerState extends State<CoursePlanner> {
 
   Future _setTasksInDataBase(MyUser? user) async {
     Map<String, List<Map<String, dynamic>>> map = {
-      'tasks': tasks.map((task) => task.toMap()).toList()
+      AppLocalizations.of(context)!.task:
+          tasks.map((task) => task.toMap()).toList()
     };
     await DatabaseService(uid: user?.uid).setTasks(map);
   }
@@ -192,7 +194,7 @@ class _CoursePlannerState extends State<CoursePlanner> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'My Schedule',
+          AppLocalizations.of(context)!.schedule,
           style: TextStyle(
             color: Theme.of(context).colorScheme.onPrimary,
             fontWeight: FontWeight.bold,
@@ -208,7 +210,7 @@ class _CoursePlannerState extends State<CoursePlanner> {
         future: DatabaseService(uid: user?.uid).getTasks(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text('Loading...');
+            return Text(AppLocalizations.of(context)!.load);
           } else if (snapshot.hasError) {
             return Text('Future Error: ${snapshot.error}');
           }
@@ -219,38 +221,38 @@ class _CoursePlannerState extends State<CoursePlanner> {
           return TimePlanner(
             startHour: 6,
             endHour: 23,
-            headers: const [
+            headers: [
               TimePlannerTitle(
-                title: 'Monday',
-                titleStyle: TextStyle(fontSize: 10),
+                title: AppLocalizations.of(context)!.monday,
+                titleStyle: const TextStyle(fontSize: 10),
               ),
               TimePlannerTitle(
-                title: 'Tuesday',
-                titleStyle: TextStyle(fontSize: 10),
+                title: AppLocalizations.of(context)!.tuesday,
+                titleStyle: const TextStyle(fontSize: 10),
               ),
               TimePlannerTitle(
-                title: 'Wednesday',
-                titleStyle: TextStyle(fontSize: 10),
+                title: AppLocalizations.of(context)!.wednesday,
+                titleStyle: const TextStyle(fontSize: 10),
               ),
               TimePlannerTitle(
-                title: 'Thursday',
-                titleStyle: TextStyle(fontSize: 10),
+                title: AppLocalizations.of(context)!.thursday,
+                titleStyle: const TextStyle(fontSize: 10),
               ),
               TimePlannerTitle(
-                title: 'Friday',
-                titleStyle: TextStyle(fontSize: 10),
+                title: AppLocalizations.of(context)!.friday,
+                titleStyle: const TextStyle(fontSize: 10),
               ),
               TimePlannerTitle(
-                title: 'Saturday',
-                titleStyle: TextStyle(fontSize: 10),
+                title: AppLocalizations.of(context)!.saturday,
+                titleStyle: const TextStyle(fontSize: 10),
               ),
               TimePlannerTitle(
-                title: 'Saturday',
-                titleStyle: TextStyle(fontSize: 10),
+                title: AppLocalizations.of(context)!.saturday,
+                titleStyle: const TextStyle(fontSize: 10),
               ),
               TimePlannerTitle(
-                title: 'Sunday',
-                titleStyle: TextStyle(fontSize: 10),
+                title: AppLocalizations.of(context)!.sunday,
+                titleStyle: const TextStyle(fontSize: 10),
               ),
             ],
             tasks: tasks

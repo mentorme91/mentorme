@@ -37,9 +37,9 @@ class _ChangePasswordBottomSheetState extends State<ChangePasswordBottomSheet> {
       print(e.toString());
       setState(() {
         if (attempts > 5) {
-          error = 'Too many incorrect attempts, try again later!';
+          error = AppLocalizations.of(context)!.attempts;
         } else {
-          error = 'Incorrect password';
+          error = AppLocalizations.of(context)!.invalidPass;
         }
       });
     }
@@ -64,9 +64,9 @@ class _ChangePasswordBottomSheetState extends State<ChangePasswordBottomSheet> {
                   SizedBox(
                     height: 10,
                   ),
-                  const Text(
-                    'Old Password',
-                    style: TextStyle(
+                  Text(
+                    AppLocalizations.of(context)!.oldPass,
+                    style: const TextStyle(
                       fontSize: 15,
                     ),
                   ),
@@ -120,9 +120,9 @@ class _ChangePasswordBottomSheetState extends State<ChangePasswordBottomSheet> {
                   SizedBox(
                     height: 20,
                   ),
-                  const Text(
-                    'New Password',
-                    style: TextStyle(
+                  Text(
+                    AppLocalizations.of(context)!.newPass,
+                    style: const TextStyle(
                       fontSize: 15,
                     ),
                   ),
@@ -175,9 +175,9 @@ class _ChangePasswordBottomSheetState extends State<ChangePasswordBottomSheet> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const Text(
-                    'Retype new password',
-                    style: TextStyle(
+                  Text(
+                    AppLocalizations.of(context)!.retypeNewPass,
+                    style: const TextStyle(
                       fontSize: 15,
                     ),
                   ),
@@ -208,7 +208,8 @@ class _ChangePasswordBottomSheetState extends State<ChangePasswordBottomSheet> {
                               },
                               validator: (value) => (retypePassword == password)
                                   ? null
-                                  : 'Password does not match',
+                                  : AppLocalizations.of(context)!
+                                      .incorrectPassword,
                             ),
                           ),
                         ),
@@ -260,7 +261,7 @@ class _ChangePasswordBottomSheetState extends State<ChangePasswordBottomSheet> {
                           SnackBar(
                               backgroundColor: Colors.white,
                               content: Text(
-                                'Password updated!',
+                                AppLocalizations.of(context)!.passUpdated,
                               ),
                               behavior: SnackBarBehavior.floating,
                               shape: RoundedRectangleBorder(
@@ -275,7 +276,9 @@ class _ChangePasswordBottomSheetState extends State<ChangePasswordBottomSheet> {
                   });
                 },
                 child: Text(
-                  loading ? 'Loading...' : 'Reset',
+                  loading
+                      ? AppLocalizations.of(context)!.load
+                      : AppLocalizations.of(context)!.reset,
                   style: const TextStyle(
                     fontSize: 17,
                     color: Colors.white,
@@ -299,7 +302,7 @@ class _ChangePasswordBottomSheetState extends State<ChangePasswordBottomSheet> {
                   Navigator.pop(context);
                 },
                 child: Text(
-                  'Cancel',
+                  AppLocalizations.of(context)!.cancel,
                   style: TextStyle(
                     fontSize: 17,
                     color: Theme.of(context).primaryColor,

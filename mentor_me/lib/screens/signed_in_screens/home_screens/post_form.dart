@@ -17,17 +17,19 @@ class _PostFormDialogState extends State<PostFormDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Create a Post'),
+      title: Text(AppLocalizations.of(context)!.contNote),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
             controller: _titleController,
-            decoration: InputDecoration(labelText: 'Title'),
+            decoration:
+                InputDecoration(labelText: AppLocalizations.of(context)!.title),
           ),
           TextField(
             controller: _contentController,
-            decoration: InputDecoration(labelText: 'Content'),
+            decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.content),
           ),
         ],
       ),
@@ -36,7 +38,7 @@ class _PostFormDialogState extends State<PostFormDialog> {
           onPressed: () {
             Navigator.pop(context);
           },
-          child: Text('Cancel'),
+          child: Text(AppLocalizations.of(context)!.cancel),
         ),
         TextButton(
           onPressed: () {
@@ -56,7 +58,7 @@ class _PostFormDialogState extends State<PostFormDialog> {
               // Show error message or handle invalid input
             }
           },
-          child: Text('Post'),
+          child: Text(AppLocalizations.of(context)!.post),
         ),
       ],
     );
