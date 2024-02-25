@@ -142,7 +142,7 @@ class _OnboardingState extends State<Onboarding> {
                 ),
                 onPressed: () => widget.toggleAuth(2),
                 child: Text(
-                  AppLocalizations.of(context)!.havingAccount,
+                  AppLocalizations.of(context)!.newAccount,
                   style: const TextStyle(
                     fontSize: 17,
                     color: Colors.white,
