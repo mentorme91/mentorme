@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../language_provider.dart';
+import '../../../../models/language.dart';
 import '../../../../models/user.dart';
 import '../../../../services/auth_service.dart';
 import '../../../../services/database_service.dart';

@@ -3,6 +3,8 @@ import 'package:mentor_me/screens/signed_in_screens/home_screens/post_form.dart'
 import 'package:mentor_me/screens/signed_in_screens/home_screens/post_tile.dart';
 import 'package:mentor_me/services/database_service.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 import '../../../models/post.dart';
 import '../../../models/user.dart';

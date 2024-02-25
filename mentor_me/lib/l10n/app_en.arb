@@ -160,6 +160,6 @@
   "succDownload": "successfully downloaded in downloads folder!",
   "failDownload": "failed to download",
   "file": "File",
-  "toView": "Tap to view file"
+  "toView": "Tap to view file",
   "about": "About"
 }
