@@ -3,6 +3,7 @@ import 'package:mentor_me/main.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../../language_provider.dart';
 import '../../../../models/user.dart';
 import '../../../../services/auth_service.dart';
 import '../../../../services/database_service.dart';
@@ -42,7 +43,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  String lang = "English";
+  late String lang;
 
   void _pushAboutEditor(MyUser? user) async {
     await showDialog(
@@ -87,6 +88,7 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<MyUser?>(context);
+    lang = Provider.of<LanguageProvider>(context).lang;
     final AuthService _auth = AuthService();
     return Scaffold(
       appBar: AppBar(
@@ -465,6 +467,7 @@ class _ProfileState extends State<Profile> {
                                   onChanged: (value) {
                                     setState(() {
                                       lang = value.toString();
+                                      Provider.of<LanguageProvider>(context, listen: false).changeLanguage(lang);
                                     });
                                     Navigator.pop(context);
 
@@ -484,6 +487,7 @@ class _ProfileState extends State<Profile> {
                                     onChanged: (value) {
                                       setState(() {
                                         lang = value.toString();
+                                        Provider.of<LanguageProvider>(context, listen: false).changeLanguage(lang);
                                       });
                                       Navigator.pop(context);
 
