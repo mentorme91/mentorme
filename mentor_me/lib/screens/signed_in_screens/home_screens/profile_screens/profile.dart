@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mentor_me/main.dart';
+import 'package:mentor_me/models/language_constants.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../models/user.dart';
+import '../../../../models/language.dart';
 import '../../../../services/auth_service.dart';
 import '../../../../services/database_service.dart';
 import '../../../../services/storage_service.dart';
@@ -462,19 +464,18 @@ class _ProfileState extends State<Profile> {
                                       AppLocalizations.of(context)!.english),
                                   value: "English",
                                   groupValue: lang,
-                                  onChanged: (value) {
+                                  onChanged: (value) async {
                                     setState(() {
                                       lang = value.toString();
                                     });
                                     Navigator.pop(context);
 
-                                    MyApp.setLocale(
-                                        context,
-                                        Locale(
-                                            Language.languageList()
-                                                .first
-                                                .languageCode,
-                                            ''));
+                                    Locale _locale = await setLocale(
+                                        Language.languageList()
+                                            .first
+                                            .languageCode);
+
+                                    MyApp.setLocale(context, _locale);
                                   },
                                 ),
                                 const Divider(
@@ -486,19 +487,18 @@ class _ProfileState extends State<Profile> {
                                         AppLocalizations.of(context)!.french),
                                     value: "French",
                                     groupValue: lang,
-                                    onChanged: (value) {
+                                    onChanged: (value) async {
                                       setState(() {
                                         lang = value.toString();
                                       });
                                       Navigator.pop(context);
 
-                                      MyApp.setLocale(
-                                          context,
-                                          Locale(
-                                              Language.languageList()
-                                                  .last
-                                                  .languageCode,
-                                              ''));
+                                      Locale _locales = await setLocale(
+                                          Language.languageList()
+                                              .last
+                                              .languageCode);
+
+                                      MyApp.setLocale(context, _locales);
                                     })
                               ],
                             );
