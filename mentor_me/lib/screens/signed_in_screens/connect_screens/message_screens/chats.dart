@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
 import '../../../../models/message.dart';
 import '../../../../models/user.dart';
 import '../../../../services/chat_service.dart';

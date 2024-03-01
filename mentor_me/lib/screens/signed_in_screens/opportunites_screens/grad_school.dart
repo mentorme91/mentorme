@@ -5,7 +5,6 @@ import 'package:mentor_me/services/database_service.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
 import '../../../models/post.dart';
 import '../../../models/user.dart';
 import '../../../theme_provider.dart';

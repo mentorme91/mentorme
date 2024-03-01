@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'language_provider.dart';
 import 'models/user.dart';
+import 'models/language_constants.dart';
 import 'theme_provider.dart';
 import 'services/auth_service.dart';
 import 'screens/wrapper.dart';
@@ -40,11 +41,18 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Locale? _locale;
+  int nate = 0;
 
   setLocale(Locale locale) {
     setState(() {
       _locale = locale;
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    getLocale().then((locale) => {setLocale(locale)});
+    super.didChangeDependencies();
   }
 
   // This widget is the root of this application.
