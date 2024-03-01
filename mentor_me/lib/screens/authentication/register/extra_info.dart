@@ -51,7 +51,7 @@ class ExtraInfo extends StatefulWidget {
 }
 
 class _ExtraInfoState extends State<ExtraInfo> {
-  void _createAccount() async {
+  Future<bool> _createAccount() async {
     if (_formkey.currentState != null) {
       if (_formkey.currentState?.validate() ?? false) {
         setState(() {
@@ -59,17 +59,22 @@ class _ExtraInfoState extends State<ExtraInfo> {
         });
         dynamic authUser = await _auth.register(widget.user);
         if (authUser == null) {
+          print('Failed to register');
           setState(() {
             loading = false;
           });
-          print('Failed to register');
         } else {
           print('Success');
+          setState(() {
+            loading = false;
+          });
+          return true;
         }
       }
     } else {
       print(_formkey.currentState?.validate());
     }
+    return false;
   }
 
   bool loading = false;
@@ -273,7 +278,13 @@ class _ExtraInfoState extends State<ExtraInfo> {
                           padding: const MaterialStatePropertyAll<EdgeInsets>(
                               EdgeInsets.symmetric(horizontal: 40)),
                         ),
-                        onPressed: _createAccount,
+                        onPressed: () async {
+                          bool res = await _createAccount();
+                          if (res) {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          }
+                        },
                         child: Text(
                           AppLocalizations.of(context)!.newAccount,
                           style: const TextStyle(

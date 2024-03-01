@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'language_provider.dart';
 import 'models/user.dart';
 import 'models/language_constants.dart';
 import 'theme_provider.dart';
@@ -61,9 +62,13 @@ class _MyAppState extends State<MyApp> {
       value: AuthService()
           .user, // provides a user stream which tracks updates in our user credentials
       initialData: null,
-      child: ChangeNotifierProvider(
-        create: (context) =>
-            MyThemeProvider(), // provides our theme so it can be accesses from other pages through the BuildContext
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => LanguageProvider()),
+          ChangeNotifierProvider(
+            create: (context) => MyThemeProvider(),
+          ),
+        ],
         child: MaterialApp(
           theme: lightTheme,
           darkTheme: darkTheme,
