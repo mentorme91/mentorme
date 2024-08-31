@@ -39,4 +39,4 @@ Visit MentorMe at [MentorMe site](https://mentorme-4ae20.web.app/)
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/mentor-me.git
+   git clone https://github.com/mentorme91/mentorme.git
